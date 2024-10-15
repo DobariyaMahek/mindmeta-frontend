@@ -1,0 +1,172 @@
+body {
+  margin: 0;
+  padding: 0;
+}
+* {
+  box-sizing: border-box;
+}
+input,
+button {
+  font-family: Roboto, Helvetica, Arial, sans-serif;
+}
+::placeholder,
+.css-1jqq78o-placeholder {
+  font-family: Roboto, Helvetica, Arial, sans-serif !important;
+  color: lightgray !important;
+  font-size: 13px !important;
+}
+img {
+  width: 100%;
+}
+a {
+  text-decoration: none;
+}
+textarea {
+  display: block !important;
+  font-family: Roboto, Helvetica, Arial, sans-serif !important;
+  padding: 10px !important;
+}
+
+input,
+.css-qbdosj-Input,
+select {
+  font-family: Roboto, Helvetica, Arial, sans-serif !important;
+  font-size: 0.875rem !important;
+  font-weight: 400 !important;
+  color: #495057 !important;
+  width: 100%;
+}
+input:focus {
+  outline: none !important;
+}
+
+.css-1dimb5e-singleValue {
+  font-family: Roboto, Helvetica, Arial, sans-serif !important;
+  font-size: 0.875rem !important;
+  font-weight: 400 !important;
+  color: #495057 !important;
+}
+.css-1nmdiq5-menu {
+  font-size: 13px !important;
+  font-weight: 400 !important;
+}
+@keyframes fadeInOut {
+  0% {
+    opacity: 0;
+  }
+  25% {
+    opacity: 1;
+  }
+  75% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes rotateOnHover {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+div[style*="position: fixed"][style*="z-index: 999999999"] {
+  display: none !important;
+}
+.hidden-input {
+  display: none;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.2);
+    opacity: 0.7;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.animate-dot {
+  animation: pulse 1s infinite;
+}
+.react-datepicker-wrapper {
+  display: block;
+  width: 100%;
+}
+.react-datepicker__input-container .input {
+  letter-spacing: 0.00938em;
+  padding: 0.5rem 0.75rem;
+  font-size: 0.875rem !important;
+  font-weight: 400 !important;
+  line-height: 1.4 !important;
+  color: #495057 !important;
+  background-color: #ffffff !important;
+  border: 0.0625rem solid #d2d6da;
+  appearance: none !important;
+  border-radius: 0.5rem;
+}
+
+.react-datepicker__day--selected,
+.react-datepicker__time-list-item--selected {
+  background-color: #66b5a3 !important;
+}
+.react-datepicker__day--keyboard-selected {
+  background-color: #66b5a362 !important;
+}
+.input.errorInput {
+  border: 0.0625rem solid red;
+}
+label {
+  font-size: 12px;
+  span {
+    color: red;
+  }
+}
+.error {
+  font-weight: 500;
+  display: block;
+  color: red;
+  font-size: 12px;
+}
+::-webkit-scrollbar {
+  width: 10px; /* Width of the scrollbar */
+}
+
+::-webkit-scrollbar-track {
+  background: transparent; /* Background of the scrollbar track */
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: transparent; /* Scrollbar thumb color */
+  border-radius: 6px; /* Roundness of the scrollbar thumb */
+  border: none; /* Padding around the scrollbar thumb */
+  background-color: rgba(114, 111, 111, 0.103);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: #03534227; /* Darker shade for hover effect */
+}
+
+.material-icons-round {
+  font-size: 18px !important;
+}
+.iconSize {
+  font-size: 10px !important;
+  padding-right: 20px !important;
+}
+.css-cmyovl-MuiPaper-root-MuiMenu-paper-MuiPopover-paper,
+.css-1mznjfp,
+.css-19fh958-MuiPaper-root-MuiPopover-paper-MuiMenu-paper {
+  top: 121px !important;
+  width: 450px !important;
+}
