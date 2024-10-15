@@ -11,7 +11,7 @@ import { GetCallDetails } from "../../redux/ApiSlice/familySlice";
 export default function SidebarCallHistory({ setHistoryState, singleHistory, callHistory }) {
   const dispatch = useDispatch();
   const handleGetCallDetails = async (obj) => {
-    await dispatch(GetCallDetails({ id: obj?.id })).then((res) => {
+    await dispatch(GetCallDetails({ id: obj?.id, page: 1 })).then((res) => {
       if (res?.payload?.success) {
       } else {
         toast.error(res?.payload?.detail || res?.payload?.message || SOMETHING_WRONG);
@@ -42,8 +42,7 @@ export default function SidebarCallHistory({ setHistoryState, singleHistory, cal
                   display: "flex",
                   alignItems: "center",
                   padding: 1,
-                  backgroundColor:
-                    singleHistory?.id === obj?.id ? "#66b5a32e" : "transparent",
+                  backgroundColor: singleHistory?.id === obj?.id ? "#66b5a32e" : "transparent",
                   cursor: "pointer",
                   color: singleHistory?.id !== obj?.id ? "gray" : "#66B5A3",
                   "&:hover": {

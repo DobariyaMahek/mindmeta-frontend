@@ -5,7 +5,7 @@ const initialState = {
   familyLoader: false,
   familyTrainingLogs: [],
   callHistory: [],
-  callDetails: {},
+  callDetails: [],
   trainingLogsCount: 0,
 };
 
@@ -36,7 +36,7 @@ export const getCallHistory = createAsyncThunk("/call/get-calls", async () => {
 });
 export const GetCallDetails = createAsyncThunk("/call/get-call-history", async (body) => {
   try {
-    const response = await get(`/call/get-call-history/${body?.id}`);
+    const response = await get(`/call/get-call-history/${body?.id}?page=${body?.page}&limit=1000`);
     return response.data;
   } catch (e) {
     return e.response.data;

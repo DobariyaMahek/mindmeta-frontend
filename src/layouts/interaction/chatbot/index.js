@@ -11,8 +11,9 @@ import AnimatedRobot from "components/AnimatedRobot";
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import SoftBox from "components/SoftBox";
 import { useLocation } from "react-router-dom";
+import { getDateLabel } from "helper/constant";
 
-const useStyles = makeStyles((theme) => ({
+export const useStyles = makeStyles((theme) => ({
   chatSection: {
     width: "100%",
     height: "82vh",
@@ -147,16 +148,6 @@ const ChatBot = () => {
     }
   };
 
-  const getDateLabel = (dateString) => {
-    const today = moment().startOf("day"); // Set today to the start of the day for accurate comparisons
-    const messageDate = moment(dateString.substring(0, 19)); // Remove the microseconds part of the string
-    const diffInDays = today.diff(messageDate.startOf("day"), "days"); // Compare start of days for accurate day difference
-
-    if (diffInDays === 0) return "Today";
-    if (diffInDays === 1) return "Yesterday";
-    if (diffInDays < 7) return messageDate.format("dddd");
-    return messageDate.format("MMMM D, YYYY");
-  };
 
   // Group messages by date
   const groupedMessages =

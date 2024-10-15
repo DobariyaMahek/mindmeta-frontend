@@ -6,7 +6,6 @@ import toast, { Toaster, useToasterStore } from "react-hot-toast";
 import { SoftUIControllerProvider } from "context";
 import { Provider } from "react-redux";
 import store from "./redux/index";
-import * as serviceWorker from "./serviceWorker";
 import { WebSocketProvider } from "api/WebSocketProvider";
 const TOAST_LIMIT = 1;
 
@@ -48,4 +47,3 @@ root.render(
     </BrowserRouter>
   </Provider>
 );
-serviceWorker.register();
