@@ -163,54 +163,77 @@ function CalendarComponent() {
 
     return (
       <SoftBox sx={{ cursor: "auto" }}>
-        <SoftBox style={{ display: "flex", flexDirection: "row", justifyContent: "space-between" }}>
-          <SoftBox display="flex" justifyContent="center" alignItems="center">
-            {currentView === "agenda" && (
+        {/* Patient Name Row */}
+        <Grid container spacing={1}>
+          {/* Key: Patient Name */}
+          {currentView === "agenda" && (
+            <Grid item xs={1}>
+              {" "}
+              {/* 3 columns for key */}
               <Typography
                 color={currentView === "agenda" ? "#000" : "#fff"}
                 fontSize="14px"
                 fontWeight={"bold"}
               >
-                Patient Name:
+                Patient Name
               </Typography>
-            )}
-            <Typography color={currentView === "agenda" ? "#000" : "#fff"} fontSize="14px">
-              &nbsp;{event?.patient?.label}
-            </Typography>{" "}
-          </SoftBox>
-          <Typography
-            color={currentView === "agenda" ? "#000" : "#fff"}
-            fontSize="12px"
-            textAlign="end"
-            marginLeft="10px"
-          >
-            {format(new Date(event.start), "hh:mm a")}
-          </Typography>
-        </SoftBox>
-        <SoftBox display="flex" alignItems="center">
-          {currentView === "agenda" && (
-            <Typography
-              color={currentView === "agenda" ? "#000" : "#fff"}
-              fontSize="14px"
-              fontWeight={"bold"}
-            >
-              Title:
-            </Typography>
+            </Grid>
           )}
-          <Typography color={currentView === "agenda" ? "#000" : "#fff"} fontSize="13px">
-            &nbsp;{event?.title}
-          </Typography>
-        </SoftBox>
-        {currentView === "agenda" && (
-          <SoftBox display="flex" alignItems="start">
-            <Typography color="#000" fontSize="14px" fontWeight={"bold"}>
-              Description:
+          {/* Value: Darsh Dubai */}
+          <Grid item xs={currentView === "agenda" ? 10 : 8.5}>
+            {" "}
+            {/* 9 columns for value */}
+            <Typography color={currentView === "agenda" ? "#000" : "#fff"} fontSize="14px">
+               {currentView === "agenda" && `: ${'\u00A0'}`}
+              {event?.patient?.label}
             </Typography>
-            <SoftBox maxWidth={"78rem"}>
-              <Typography color="#000" fontSize="13px" display={"inline"}>
-                &nbsp;{displayDescription}
-              </Typography>
+          </Grid>
+          <Grid item xs={1} textAlign={"end"}>
+            <Typography color={currentView === "agenda" ? "#000" : "#fff"} fontSize="12px">
+              {format(new Date(event.start), "hh:mm a")}
+            </Typography>
+          </Grid>
+        </Grid>
 
+        {/* Title Row */}
+        <Grid container spacing={1}>
+          {/* Key: Title */}
+          {currentView === "agenda" && (
+            <Grid item xs={1}>
+              <Typography
+                color={currentView === "agenda" ? "#000" : "#fff"}
+                fontSize="14px"
+                fontWeight={"bold"}
+              >
+                Title:
+              </Typography>
+            </Grid>
+          )}
+          {/* Value: Free Check-up */}
+          <Grid item xs={currentView === "agenda" ? 11 : 12}>
+            <Typography color={currentView === "agenda" ? "#000" : "#fff"} fontSize="13px">
+                  {currentView === "agenda" && `: ${'\u00A0'}`} {event?.title}
+            </Typography>
+          </Grid>
+        </Grid>
+
+        {currentView === "agenda" && (
+          <Grid container spacing={1}>
+            {/* Key: Description */}
+            <Grid item xs={1}>
+              <Typography
+                color={currentView === "agenda" ? "#000" : "#fff"}
+                fontSize="14px"
+                fontWeight={"bold"}
+              >
+                Description:
+              </Typography>
+            </Grid>
+            {/* Value: Hypertension Description */}
+            <Grid item xs={11}>
+              <Typography color="#000" fontSize="13px" display={"inline"}>
+                : &nbsp; {displayDescription}
+              </Typography>
               {isLongDescription && (
                 <Typography
                   onClick={() => toggleReadMore(event.id)}
@@ -223,8 +246,8 @@ function CalendarComponent() {
                   {isExpanded ? "Read Less" : "Read More"}
                 </Typography>
               )}
-            </SoftBox>
-          </SoftBox>
+            </Grid>
+          </Grid>
         )}
       </SoftBox>
     );
@@ -246,7 +269,7 @@ function CalendarComponent() {
 
               <Grid container justifyContent="center" alignItems="center" mb={2}>
                 <Grid item xs={2}>
-                  <Box sx={{ position: "relative", zIndex: 4 }}>
+                  <Box sx={{ position: "relative", zIndex: 5 }}>
                     <DatePicker
                       selected={selectedDate}
                       onChange={(date) => {

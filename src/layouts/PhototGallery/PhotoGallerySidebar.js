@@ -8,7 +8,7 @@ import { SOMETHING_WRONG } from "helper/constant";
 import { useDispatch } from "react-redux";
 import { GetCallDetails } from "../../redux/ApiSlice/familySlice";
 
-export default function SidebarCallHistory({ setHistoryState, singleHistory, callHistory }) {
+export default function PhotoGallerySidebar({ setHistoryState, singleHistory, callHistory }) {
   const dispatch = useDispatch();
   const handleGetCallDetails = async (obj) => {
     await dispatch(GetCallDetails({ id: obj?.id, page: 1 })).then((res) => {
@@ -28,7 +28,7 @@ export default function SidebarCallHistory({ setHistoryState, singleHistory, cal
       }}
     >
       <Typography variant="h6" align="center" gutterBottom>
-        Call History
+        Photo Gallery
       </Typography>
       <Divider />
 
@@ -53,7 +53,6 @@ export default function SidebarCallHistory({ setHistoryState, singleHistory, cal
                     },
                   },
                   marginBottom: "5px",
-                  overflow: "hidden",
                 }}
                 onClick={() => {
                   setHistoryState(obj);
@@ -69,9 +68,6 @@ export default function SidebarCallHistory({ setHistoryState, singleHistory, cal
                 </IconButton>
 
                 <Box sx={{ marginLeft: 1 }}>
-                  {/* <Typography fontSize={"15px"} fontWeight={"bold"}>
-                    Web Call
-                  </Typography>{" "} */}
                   <Typography
                     sx={{
                       display: "-webkit-box",
@@ -104,7 +100,7 @@ export default function SidebarCallHistory({ setHistoryState, singleHistory, cal
 }
 
 // Prop validation using PropTypes
-SidebarCallHistory.propTypes = {
+PhotoGallerySidebar.propTypes = {
   setHistoryState: PropTypes.func.isRequired,
   singleHistory: PropTypes.shape({
     id: PropTypes.string,

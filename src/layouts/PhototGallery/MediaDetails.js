@@ -7,7 +7,7 @@ import moment from "moment";
 import PropTypes from "prop-types";
 import { getDateLabel } from "helper/constant";
 import { useStyles } from "layouts/interaction/chatbot";
-const CallHistoryDetails = ({ singleHistory, callHistory }) => {
+const MediaDetails = ({ singleHistory, callHistory }) => {
   const messageArr = singleHistory?.transcript;
   const { callDetails, familyLoader } = useSelector((state) => state.family);
   const firstMessageRef = useRef(null); // Create a ref for the first message
@@ -76,14 +76,13 @@ const CallHistoryDetails = ({ singleHistory, callHistory }) => {
               </Grid>
             </SoftBox>
           </Card>
-
           <Card variant="outlined" sx={{ padding: 2 }}>
-            <Typography variant="h6">Messages</Typography>
+            <Typography variant="h6">Media</Typography>
             <Divider sx={{ mb: 2 }} />
             {callDetails?.length > 0 && !familyLoader ? (
               <Box
                 sx={{
-                  maxHeight: "555px",
+                  maxHeight: "580px",
                   overflow: "auto",
                 }}
               >
@@ -204,7 +203,7 @@ const CallHistoryDetails = ({ singleHistory, callHistory }) => {
         >
           <Typography variant="body2" align="center">
             {!callHistory?.length
-              ? "No Call History Available"
+              ? "No Photo Gallery Available"
               : "Please select a call from the list to see the details."}
           </Typography>
         </SoftBox>
@@ -214,13 +213,13 @@ const CallHistoryDetails = ({ singleHistory, callHistory }) => {
 };
 
 // Prop validation using PropTypes
-CallHistoryDetails.propTypes = {
+MediaDetails.propTypes = {
   singleHistory: PropTypes.shape({
     id: PropTypes.string,
     start_time: PropTypes.string,
     end_time: PropTypes.string,
-    call_scheduled_title: PropTypes.string,
     transcript: PropTypes.string,
+    call_scheduled_title: PropTypes.string,
   }),
   callHistory: PropTypes.arrayOf(
     PropTypes.shape({
@@ -231,4 +230,4 @@ CallHistoryDetails.propTypes = {
   ).isRequired,
 };
 
-export default CallHistoryDetails;
+export default MediaDetails;

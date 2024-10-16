@@ -27,19 +27,13 @@ export default function App() {
   const routes = useRoutes();
   const navigate = useNavigate();
   const { notificationMessages } = useWebSocketContext();
-
-  useEffect(() => {
-    document.body.setAttribute("dir", direction);
-  }, [direction]);
   useEffect(() => {
     if (userInfo) {
       const intervalId = setInterval(() => {
         if (isTokenExpired(userInfo?.refresh_token)) {
-          // Token is expired, clear local storage
           localStorage.clear();
           navigate("/authentication/sign-in");
         } else {
-          // Token is valid, call checkToken
           checkToken();
         }
       }, 60000); // 60000 milliseconds = 1 minute
