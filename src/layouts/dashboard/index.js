@@ -34,13 +34,14 @@ import WorkWithTheRockets from "layouts/dashboard/components/WorkWithTheRockets"
 import reportsBarChartData from "layouts/dashboard/data/reportsBarChartData";
 import { getSession } from "helper/authHelper";
 import SoftTypography from "components/SoftTypography";
-import { Card } from "@mui/material";
+import { Card, Icon } from "@mui/material";
 import moment from "moment";
 import { useEffect, useState } from "react";
 import { getPatientById } from "../../redux/ApiSlice/patientSlice";
 import { useDispatch } from "react-redux";
 import toast from "react-hot-toast";
 import { SOMETHING_WRONG } from "helper/constant";
+import { Group } from "@mui/icons-material";
 function Dashboard() {
   const { size } = typography;
   const { chart, items } = reportsBarChartData;
@@ -61,12 +62,48 @@ function Dashboard() {
           <SoftBox mb={3}>
             <Grid container spacing={3}>
               <Grid item xs={12} sm={6} xl={3}>
-                <MiniStatisticsCard
-                  title={{ text: "Active Patients" }}
-                  count="0"
-                  percentage={{ color: "success" }}
-                  icon={{ color: "info", component: "group" }}
-                ></MiniStatisticsCard>
+                <Card>
+                  <SoftBox bgColor={"white"} variant="gradient">
+                    <SoftBox p={2}>
+                      <Grid container alignItems="center">
+                        <Grid item xs={8}>
+                          <SoftBox ml={0} lineHeight={1}>
+                            <SoftTypography
+                              variant="button"
+                              color={"dark"}
+                              opacity={0.7}
+                              textTransform="capitalize"
+                            >
+                              Active Patients
+                            </SoftTypography>
+                            <SoftTypography variant="h5" fontWeight="bold" color={"dark"}>
+                              0
+                            </SoftTypography>
+                          </SoftBox>
+                        </Grid>
+                        <Grid item xs={4}>
+                          <SoftBox
+                            variant="gradient"
+                            bgColor={"info"}
+                            color={"white"}
+                            width="3rem"
+                            height="3rem"
+                            marginLeft="auto"
+                            borderRadius="md"
+                            display="flex"
+                            justifyContent="center"
+                            alignItems="center"
+                            shadow="md"
+                          >
+                            <Icon fontSize="small" color="inherit">
+                              <Group />
+                            </Icon>
+                          </SoftBox>
+                        </Grid>
+                      </Grid>
+                    </SoftBox>
+                  </SoftBox>
+                </Card>
               </Grid>
             </Grid>
           </SoftBox>

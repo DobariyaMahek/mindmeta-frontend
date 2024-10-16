@@ -1,3 +1,5 @@
+import moment from "moment";
+
 //------------------------------------regex------------------------------------------------//
 export const EMAIL_REGEX =
   /^(?!.*[@]{2})(?!.*[._%+-]{2})[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
@@ -117,21 +119,19 @@ export const capitalizeValue = (value) => {
   return value?.charAt(0)?.toUpperCase() + value?.slice(1);
 };
 export const functionGetTime = (time) => {
-  const date = new Date(time);
-  let hours = date.getHours();
-  const minutes = date.getMinutes().toString().padStart(2, "0"); // Ensure two-digit minutes
-  const seconds = date.getSeconds().toString().padStart(2, "0"); // Ensure two-digit seconds
-  const day = date.getDate().toString().padStart(2, "0"); // Ensure two-digit day
-  const month = (date.getMonth() + 1).toString().padStart(2, "0"); // Ensure two-digit month
-  const year = date.getFullYear();
-
-  // Determine AM or PM and convert to 12-hour format
-  const ampm = hours >= 12 ? "PM" : "AM";
-  hours = hours % 12 || 12; // Convert 24-hour format to 12-hour format
-
-  return `${day}/${month}/${year} - ${hours}:${minutes}:${seconds} ${ampm}`;
+  return moment?.utc(time)?.local()?.format("DD/MM/YYYY - hh:mm:ss A");
 };
 
+export const getDateLabel = (dateString) => {
+    const today = moment().startOf("day"); // Set today to the start of the day for accurate comparisons
+    const messageDate = moment(dateString.substring(0, 19)); // Remove the microseconds part of the string
+    const diffInDays = today.diff(messageDate.startOf("day"), "days"); // Compare start of days for accurate day difference
+
+    if (diffInDays === 0) return "Today";
+    if (diffInDays === 1) return "Yesterday";
+    if (diffInDays < 7) return messageDate.format("dddd");
+    return messageDate.format("MMMM D, YYYY");
+  };
 //----------------------------validation message --------------------------------------//
 export const PASSWORD_VALIDATION_MESSAGES = {
   minLength: "at least 8 characters",

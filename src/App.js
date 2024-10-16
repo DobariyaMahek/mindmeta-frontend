@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import React, { useEffect } from "react";
 import { Routes, Route, Navigate, useLocation, useNavigate } from "react-router-dom";
 import { ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -11,12 +11,9 @@ import useRoutes from "routes";
 import Loader from "components/Loader";
 import { useSelector } from "react-redux";
 import Calling from "components/Calling";
-import * as serviceWorker from "./serviceWorker";
 import { getSession } from "helper/authHelper";
 import { useWebSocketContext } from "api/WebSocketProvider";
 import { checkToken } from "helper/authHelper";
-import Box from "@mui/material/Box";
-import LinearProgress from "@mui/material/LinearProgress";
 import { jwtDecode } from "jwt-decode";
 export default function App() {
   const { authLoader } = useSelector((state) => state.auth);
@@ -30,21 +27,13 @@ export default function App() {
   const routes = useRoutes();
   const navigate = useNavigate();
   const { notificationMessages } = useWebSocketContext();
-
-  serviceWorker.register();
-
-  useEffect(() => {
-    document.body.setAttribute("dir", direction);
-  }, [direction]);
   useEffect(() => {
     if (userInfo) {
       const intervalId = setInterval(() => {
         if (isTokenExpired(userInfo?.refresh_token)) {
-          // Token is expired, clear local storage
           localStorage.clear();
           navigate("/authentication/sign-in");
         } else {
-          // Token is valid, call checkToken
           checkToken();
         }
       }, 60000); // 60000 milliseconds = 1 minute
@@ -123,8 +112,10 @@ export default function App() {
         />
       </Routes>{" "}
       {userInfo &&
-      userInfo?.role == "patient" &&
-      notificationMessages?.[notificationMessages?.length - 1]?.message == "Receive call" ? (
+        userInfo?.role == "patient"
+        &&
+        notificationMessages?.[notificationMessages?.length - 1]?.message == "Receive call"
+        ? (
         <Calling />
       ) : null}
     </ThemeProvider>

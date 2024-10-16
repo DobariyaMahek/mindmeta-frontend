@@ -113,7 +113,7 @@ function Patient() {
       <SoftBadge
         variant="gradient"
         badgeContent={item.is_active === true ? "Active" : "Inactive"}
-        color={item.is_active === true ? "#66B5A3" : "secondary"}
+        color={item.is_active === true ? "info" : "secondary"}
         size="xs"
         container
       />

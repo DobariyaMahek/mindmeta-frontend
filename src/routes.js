@@ -15,6 +15,7 @@ import ForgotPassword from "layouts/authentication/forgotPassword";
 import Interaction from "layouts/interaction";
 import {
   CalendarMonth,
+  Collections,
   History,
   HomeSharp,
   Layers,
@@ -33,6 +34,7 @@ import VerifyOTP from "layouts/authentication/verifyOTP";
 import ResetPassword from "layouts/authentication/resetPassword";
 import ChatBot from "layouts/interaction/chatbot";
 import TrainingLogs from "layouts/traininglog";
+import PhotoGallery from "layouts/PhototGallery";
 
 const useRoutes = () => {
   // State to track open dropdown
@@ -189,6 +191,20 @@ const useRoutes = () => {
       isShow: userInfo?.role === "family_member",
       onClick: () => handleClick("call-history"),
       isOpen: openDropdown === "call-history",
+    },
+    {
+      type: "collapse",
+      name: "Photo Gallery",
+      key: "photo-gallery",
+      route: "/photo-gallery",
+      icon: <Collections size="12px" />,
+      component: <PhotoGallery />,
+      noCollapse: true,
+      isProtected: true,
+      isActive: collapseName === "/photo-gallery",
+      isShow: userInfo?.role === "patient",
+      onClick: () => handleClick("photo-gallery"),
+      isOpen: openDropdown === "photo-gallery",
     },
     {
       type: "collapse",

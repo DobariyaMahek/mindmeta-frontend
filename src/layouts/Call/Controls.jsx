@@ -45,10 +45,10 @@ function Controls({ callReceive, setCallReceive }) {
         localStorage.removeItem("startTime");
         localStorage.removeItem("scheduled_call_id");
         localStorage.removeItem("chat_metadata");
-        setCallReceive(null);
+        setCallReceive(false);
       } else {
         toast.error(res?.payload?.detail || res?.payload?.message || SOMETHING_WRONG);
-            setCallReceive(null);
+        setCallReceive(false);
       }
     });
   };
@@ -171,6 +171,6 @@ function Controls({ callReceive, setCallReceive }) {
 }
 Controls.propTypes = {
   callReceive: PropTypes.func.isRequired, // Validate that callReceive is a required function
-  setCallReceive:PropTypes.func.isRequired,
+  setCallReceive: PropTypes.func.isRequired,
 };
 export default Controls;

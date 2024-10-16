@@ -74,9 +74,6 @@ input:focus {
   }
 }
 
-div[style*="position: fixed"][style*="z-index: 999999999"] {
-  display: none !important;
-}
 .hidden-input {
   display: none;
 }
