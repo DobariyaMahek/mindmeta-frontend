@@ -29,7 +29,9 @@ import { LazyLoadImage } from "react-lazy-load-image-component";
 
 function TrainingLogs() {
   document.title = "Mind Meta AI | Training";
-  const { trainingLogsCount, familyTrainingLogs } = useSelector((state) => state.family);
+  const { trainingLogsCount, familyTrainingLogs, familyLoader } = useSelector(
+    (state) => state.family
+  );
 
   const [open, setOpen] = useState(false);
   const [selectedLogs, setSelectedLogs] = useState(null);
@@ -208,7 +210,7 @@ function TrainingLogs() {
                 },
               }}
             >
-              <Table columns={TRAINING_LOGS_COLUMNS} rows={currentRows} text={"training"} />
+              <Table columns={TRAINING_LOGS_COLUMNS} rows={currentRows} text={"training"} loader={'familyLoader'} />
             </SoftBox>
           </Card>
         </SoftBox>
