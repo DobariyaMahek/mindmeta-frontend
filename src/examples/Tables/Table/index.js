@@ -14,7 +14,7 @@ import borders from "assets/theme/base/borders";
 import { position } from "stylis";
 import zIndex from "@mui/material/styles/zIndex";
 
-function Table({ columns, rows ,text}) {
+function Table({ columns, rows, text, loader }) {
   const { light } = colors;
   const { size, fontWeightBold } = typography;
   const { borderWidth } = borders;
@@ -59,7 +59,7 @@ function Table({ columns, rows ,text}) {
   });
 
   const renderRows =
-    rows.length > 0 ? (
+    rows.length > 0 && !loader ? (
       rows.map((row, key) => {
         const rowKey = `row-${key}`;
 
@@ -71,7 +71,7 @@ function Table({ columns, rows ,text}) {
               <SoftBox
                 key={uuidv4()}
                 component="td"
-                p={2}
+                p={1}
                 borderBottom={row.hasBorder ? `${borderWidth[1]} solid ${light.main}` : null}
               >
                 <SoftBox display="flex" alignItems="center" px={1}>
@@ -98,7 +98,7 @@ function Table({ columns, rows ,text}) {
               <SoftBox
                 key={uuidv4()}
                 component="td"
-                p={2}
+                p={1.7}
                 textAlign={align}
                 borderBottom={row.hasBorder ? `${borderWidth[1]} solid ${light.main}` : null}
               >
@@ -124,7 +124,7 @@ function Table({ columns, rows ,text}) {
         <SoftBox component="td" colSpan={columns.length} textAlign="center" p={4}>
           <Box display="flex" justifyContent="center" alignItems="center" width="100%">
             <Typography variant="h6" color="#66b5a3" fontSize="14px">
-              No {text} records found
+              {loader ? `Loading ${text} data, please wait...` : `No ${text} records found`}
             </Typography>
           </Box>
         </SoftBox>

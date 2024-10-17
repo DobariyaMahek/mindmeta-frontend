@@ -11,6 +11,7 @@ export const WebSocketProvider = ({ children }) => {
   const chatSocketRef = useRef(null);
   const [messages, setMessages] = useState([]);
   const [notificationMessages, setNotificationMessages] = useState([]);
+  const [timeUp, setTimeUp] = useState(false);
   const { pathname } = useLocation();
   const userInfo = getSession();
   const userId = userInfo?.user_info?.id;
@@ -29,7 +30,7 @@ export const WebSocketProvider = ({ children }) => {
   };
 
   const openChatSocket = () => {
-    if (!chatId || !userInfo || !pathname?.startsWith("/chatbot")) return;
+    if (!chatId || !userInfo || !pathname?.startsWith("/chatbot") || timeUp) return;
 
     if (chatSocketRef.current) {
       chatSocketRef.current.close(); // Close the existing socket
@@ -50,6 +51,8 @@ export const WebSocketProvider = ({ children }) => {
       if (newMessage?.socket) {
         chatSocketRef.current.close(); // Trigger reconnect
         navigate("/dashboard");
+      } else if (messages.message == "Our chat time is up.") {
+        setTimeUp(true);
       } else {
         setMessages((prevMessages) => [...prevMessages, newMessage]);
       }
@@ -126,7 +129,7 @@ export const WebSocketProvider = ({ children }) => {
   };
 
   const sendMessage = (message) => {
-    if (isSocketOpen(chatSocketRef)) {
+    if (isSocketOpen(chatSocketRef) && !timeUp) {
       chatSocketRef.current.send(message);
     } else {
       console.warn("Chat socket is not open. Unable to send message.");
@@ -143,6 +146,7 @@ export const WebSocketProvider = ({ children }) => {
         notificationMessages,
         sendReadAllEvent,
         clearAllNotification,
+        timeUp,
       }}
     >
       {children}

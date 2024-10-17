@@ -129,6 +129,7 @@ function CalendarComponent() {
       if (res?.payload?.success) {
         setModalOpen(false);
         handleGetData();
+        toast.success(res?.payload?.message);
       } else {
         toast.error(res?.payload?.error);
         setModalOpen(false);
@@ -179,20 +180,22 @@ function CalendarComponent() {
               </Typography>
             </Grid>
           )}
+          {currentView === "agenda" && <Grid item>: &nbsp;</Grid>}
           {/* Value: Darsh Dubai */}
           <Grid item xs={currentView === "agenda" ? 10 : 8.5}>
             {" "}
             {/* 9 columns for value */}
             <Typography color={currentView === "agenda" ? "#000" : "#fff"} fontSize="14px">
-               {currentView === "agenda" && `: ${'\u00A0'}`}
               {event?.patient?.label}
             </Typography>
           </Grid>
-          <Grid item xs={1} textAlign={"end"}>
-            <Typography color={currentView === "agenda" ? "#000" : "#fff"} fontSize="12px">
-              {format(new Date(event.start), "hh:mm a")}
-            </Typography>
-          </Grid>
+          {currentView !== "agenda" && (
+            <Grid item xs={1} textAlign={"end"}>
+              <Typography color={currentView === "agenda" ? "#000" : "#fff"} fontSize="12px">
+                {format(new Date(event.start), "hh:mm a")}
+              </Typography>
+            </Grid>
+          )}
         </Grid>
 
         {/* Title Row */}
@@ -209,10 +212,11 @@ function CalendarComponent() {
               </Typography>
             </Grid>
           )}
+          {currentView === "agenda" && <Grid item>: &nbsp;</Grid>}
           {/* Value: Free Check-up */}
-          <Grid item xs={currentView === "agenda" ? 11 : 12}>
+          <Grid item xs={currentView === "agenda" ? 10 : 12}>
             <Typography color={currentView === "agenda" ? "#000" : "#fff"} fontSize="13px">
-                  {currentView === "agenda" && `: ${'\u00A0'}`} {event?.title}
+              {event?.title}
             </Typography>
           </Grid>
         </Grid>
@@ -226,13 +230,14 @@ function CalendarComponent() {
                 fontSize="14px"
                 fontWeight={"bold"}
               >
-                Description:
+                Description
               </Typography>
             </Grid>
+            <Grid item>: &nbsp;</Grid>
             {/* Value: Hypertension Description */}
-            <Grid item xs={11}>
+            <Grid item xs={10}>
               <Typography color="#000" fontSize="13px" display={"inline"}>
-                : &nbsp; {displayDescription}
+                {displayDescription}
               </Typography>
               {isLongDescription && (
                 <Typography
@@ -259,14 +264,6 @@ function CalendarComponent() {
         <SoftBox mb={3}>
           <Card>
             <div style={{ height: "auto", padding: "10px" }}>
-              {userInfo?.role == "care_home" && (
-                <SoftBox sx={{ textAlign: "end", marginBottom: "10px" }}>
-                  <SoftButton variant="gradient" color="info" onClick={handleScheduleCall}>
-                    <Add sx={{ marginRight: "5px" }} /> Schedule Call
-                  </SoftButton>
-                </SoftBox>
-              )}
-
               <Grid container justifyContent="center" alignItems="center" mb={2}>
                 <Grid item xs={2}>
                   <Box sx={{ position: "relative", zIndex: 5 }}>
@@ -294,7 +291,7 @@ function CalendarComponent() {
                 </Grid>
                 <Grid
                   item
-                  xs={8}
+                  xs={7}
                   container
                   justifyContent="flex-end"
                   alignItems="center"
@@ -306,7 +303,7 @@ function CalendarComponent() {
                       Today
                     </SoftButton>
                   </Grid>
-                  <Grid item container xs={8} alignItems="center">
+                  <Grid item container xs={7} alignItems="center">
                     <SoftBox sx={{ display: "flex" }}>
                       <IconButton aria-label="Previous" onClick={onPrevClick}>
                         <ArrowLeft />
@@ -329,23 +326,38 @@ function CalendarComponent() {
                     </SoftBox>
                   </Grid>
                 </Grid>
-                <Grid item xs={2}>
-                  <ButtonGroup variant="contained" fullWidth>
-                    {VIEW_OPTIONS.map(({ id, label }) => (
+                <Grid item xs={3}>
+                  <SoftBox display="flex" justifyContent="end" alignItems="center">
+                    {userInfo?.role == "care_home" && (
                       <SoftButton
-                        key={id}
-                        onClick={() => {
-                          setCurrentView(id);
-                          id != currentView && setExpandedDescriptions({});
-                        }}
-                        variant="outlined"
+                        variant="gradient"
                         color="info"
-                        sx={id === currentView ? { color: "#66B5A3" } : { color: "#000" }}
+                        sx={{
+                          marginRight: "10px",
+                        }}
+                        onClick={handleScheduleCall}
                       >
-                        {label}
+                        <Add sx={{ marginLeft: "5px" }} /> Schedule Call
                       </SoftButton>
-                    ))}
-                  </ButtonGroup>
+                    )}
+
+                    <ButtonGroup variant="contained">
+                      {VIEW_OPTIONS.map(({ id, label }) => (
+                        <SoftButton
+                          key={id}
+                          onClick={() => {
+                            setCurrentView(id);
+                            id != currentView && setExpandedDescriptions({});
+                          }}
+                          variant="outlined"
+                          color="info"
+                          sx={id === currentView ? { color: "#66B5A3" } : { color: "#000" }}
+                        >
+                          {label}
+                        </SoftButton>
+                      ))}
+                    </ButtonGroup>
+                  </SoftBox>
                 </Grid>
               </Grid>
 
@@ -361,7 +373,7 @@ function CalendarComponent() {
                 components={{
                   event: eventRenderer,
                 }}
-                style={{ height: 700, cursor: "default" }}
+                style={{ height: 735, cursor: "default" }}
                 view={currentView}
                 date={selectedDate}
                 onView={setCurrentView}

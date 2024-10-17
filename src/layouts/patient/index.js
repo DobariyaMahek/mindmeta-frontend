@@ -74,7 +74,7 @@ Function.propTypes = {
 
 function Patient() {
   document.title = "Mind Meta AI | Patients";
-  const { patientInfo, totalPatients } = useSelector((state) => state.patient);
+  const { patientInfo, totalPatients, patientLoader } = useSelector((state) => state.patient);
   const [open, setOpen] = useState(false);
   const [selectedPatient, setSelectedPatient] = useState(null);
   const navigate = useNavigate();
@@ -233,22 +233,29 @@ function Patient() {
                 },
               }}
             >
-              <Table columns={PATIENT_LIST_COLUMNS} rows={currentRows} text={"patient"} />
+              <Table
+                columns={PATIENT_LIST_COLUMNS}
+                rows={currentRows}
+                text={"patient"}
+                loader={patientLoader}
+              />
             </SoftBox>
           </Card>
         </SoftBox>
-        <Grid container spacing={3} marginTop="20px">
-          <Grid xs={12} display="flex" justifyContent="end">
-            <Pagination
-              count={Math.ceil(totalPatients / pageSize)} // Total pages calculated from totalPatients
-              page={currentPage} // Current page
-              onChange={handlePageChange} // Handle page change
-              color="primary"
-              // variant="outlined"
-              shape="rounded"
-            />
+        {totalPatients > pageSize && (
+          <Grid container spacing={3} marginTop="20px">
+            <Grid xs={12} display="flex" justifyContent="end">
+              <Pagination
+                count={Math.ceil(totalPatients / pageSize)} // Total pages calculated from totalPatients
+                page={currentPage} // Current page
+                onChange={handlePageChange} // Handle page change
+                color="primary"
+                // variant="outlined"
+                shape="rounded"
+              />
+            </Grid>
           </Grid>
-        </Grid>
+        )}
       </SoftBox>
 
       {/* Confirmation Dialog */}

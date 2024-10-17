@@ -1,4 +1,5 @@
 import moment from "moment";
+import { useEffect, useState } from "react";
 
 //------------------------------------regex------------------------------------------------//
 export const EMAIL_REGEX =
@@ -119,19 +120,21 @@ export const capitalizeValue = (value) => {
   return value?.charAt(0)?.toUpperCase() + value?.slice(1);
 };
 export const functionGetTime = (time) => {
-  return moment?.utc(time)?.local()?.format("DD/MM/YYYY - hh:mm:ss A");
+  return moment?.utc(time)?.local()?.format("DD MMM YYYY - hh:mm:ss A");
 };
 
 export const getDateLabel = (dateString) => {
-    const today = moment().startOf("day"); // Set today to the start of the day for accurate comparisons
-    const messageDate = moment(dateString.substring(0, 19)); // Remove the microseconds part of the string
-    const diffInDays = today.diff(messageDate.startOf("day"), "days"); // Compare start of days for accurate day difference
+    const today = moment()?.startOf("day"); // Set today to the start of the day for accurate comparisons
+    const messageDate = moment(dateString?.substring(0, 19)); // Remove the microseconds part of the string
+    const diffInDays = today.diff(messageDate?.startOf("day"), "days"); // Compare start of days for accurate day difference
 
     if (diffInDays === 0) return "Today";
     if (diffInDays === 1) return "Yesterday";
     if (diffInDays < 7) return messageDate.format("dddd");
-    return messageDate.format("MMMM D, YYYY");
-  };
+    return messageDate?.format("MMMM D, YYYY");
+};
+  
+ 
 //----------------------------validation message --------------------------------------//
 export const PASSWORD_VALIDATION_MESSAGES = {
   minLength: "at least 8 characters",
