@@ -1,27 +1,81 @@
-import React, { Fragment, useEffect, useRef } from "react";
-import { Box, Typography, Card, Divider, Grid } from "@mui/material";
+import React, { Fragment } from "react";
+import { Box, Typography, Card, Divider, Grid, ListItem } from "@mui/material";
 import SoftBox from "components/SoftBox";
 import { functionGetTime } from "helper/constant";
 import { useSelector } from "react-redux";
-import moment from "moment";
 import PropTypes from "prop-types";
-import { getDateLabel } from "helper/constant";
 import { useStyles } from "layouts/interaction/chatbot";
-const MediaDetails = ({ singleHistory, callHistory }) => {
-  const messageArr = singleHistory?.transcript;
-  const { callDetails, familyLoader } = useSelector((state) => state.family);
-  const firstMessageRef = useRef(null); // Create a ref for the first message
-  const classes = useStyles();
-  // Scroll to the top when the component mounts
+import { LazyLoadImage } from "react-lazy-load-image-component";
 
-  const groupedMessages =
-    callDetails &&
-    callDetails?.reduce((acc, msg) => {
-      const dateLabel = getDateLabel(msg.created_at || new Date());
-      if (!acc[dateLabel]) acc[dateLabel] = [];
-      acc[dateLabel].push(msg);
-      return acc;
-    }, {});
+const MediaDetails = ({ singleHistory, callHistory }) => {
+  const { mediaDetails, familyLoader } = useSelector((state) => state.family);
+  const classes = useStyles();
+
+  const dummyImage =
+    "https://img.freepik.com/premium-photo/top-view-abstract-paper-texture-background_225709-2718.jpg";
+
+  // Aggregate media details by file type
+  const aggregatedMedia = mediaDetails.reduce((acc, media) => {
+    const { file_type, urls } = media;
+    if (!acc[file_type]) {
+      acc[file_type] = { file_type, urls: [] };
+    }
+    acc[file_type].urls.push(...urls);
+    return acc;
+  }, {});
+
+  const renderMediaPreview = (file, type, index) => {
+    return (
+      <Box
+        sx={{
+          display: "grid",
+          gridTemplateColumns: type === "audio" ? "1fr" : "repeat(auto-fill, minmax(185px, 1fr))",
+          gap: "10px",
+          padding: "10px",
+          textAlign: "center",
+        }}
+        key={index}
+      >
+        {file.urls?.map((url, index) => (
+          <Box
+            display={"flex"}
+            justifyContent={type === "audio" ? "start" : "center"}
+            alignItems={"center"}
+            key={index} // Ensure 'file.name' is unique
+          >
+            <ListItem
+              sx={{
+                width: "auto",
+                height: type === "audio" ? "auto" : "150px",
+              }}
+            >
+              {type === "image" && (
+                <LazyLoadImage
+                  height={"100%"}
+                  src={url}
+                  alt={type}
+                  width={"100%"}
+                  placeholderSrc={dummyImage}
+                />
+              )}
+              {type === "video" && (
+                <video width="100%" controls style={{ height: "100%" }}>
+                  <source src={url} type={"video/mp4"} />
+                </video>
+              )}
+              {type === "audio" && (
+                <audio controls>
+                  <source src={url} type={"audio/wav"} />
+                  Your browser does not support the audio tag.
+                </audio>
+              )}
+            </ListItem>
+          </Box>
+        ))}
+      </Box>
+    );
+  };
+
   return (
     <Fragment>
       {singleHistory?.id ? (
@@ -36,7 +90,7 @@ const MediaDetails = ({ singleHistory, callHistory }) => {
               <Grid container spacing={1}>
                 <Grid item xs={1}>
                   <Typography fontSize="14px" fontWeight={"bold"}>
-                    Patient Name
+                    Title
                   </Typography>
                 </Grid>
                 <Grid item xs={11}>
@@ -46,7 +100,6 @@ const MediaDetails = ({ singleHistory, callHistory }) => {
                   </Typography>
                 </Grid>
               </Grid>
-
               <Grid container spacing={1}>
                 <Grid item xs={1}>
                   <Typography fontSize="14px" fontWeight={"bold"}>
@@ -60,7 +113,6 @@ const MediaDetails = ({ singleHistory, callHistory }) => {
                   </Typography>
                 </Grid>
               </Grid>
-
               <Grid container spacing={1}>
                 <Grid item xs={1}>
                   <Typography fontSize="14px" fontWeight={"bold"}>
@@ -79,114 +131,27 @@ const MediaDetails = ({ singleHistory, callHistory }) => {
           <Card variant="outlined" sx={{ padding: 2 }}>
             <Typography variant="h6">Media</Typography>
             <Divider sx={{ mb: 2 }} />
-            {callDetails?.length > 0 && !familyLoader ? (
+            {Object.keys(aggregatedMedia).length > 0 && !familyLoader ? (
               <Box
                 sx={{
-                  maxHeight: "580px",
+                  maxHeight: "560px",
                   overflow: "auto",
                 }}
               >
-                {groupedMessages &&
-                  !familyLoader &&
-                  Object.keys(groupedMessages).map((dateLabel, index) => (
-                    <React.Fragment key={index}>
-                      <SoftBox className={classes.stickyHeader} sx={{ backgroundColor: "#fff" }}>
-                        <Typography
-                          variant="p"
-                          onClick={() => {
-                            const element = document.getElementById(dateLabel);
-                            if (element) {
-                              element.scrollIntoView({ behavior: "smooth" });
-                            }
-                          }}
-                          className={classes.stickyHeaderText}
-                        >
-                          {dateLabel}
-                        </Typography>
-                      </SoftBox>
-                      <Box id={dateLabel}>
-                        {groupedMessages[dateLabel] &&
-                          dateLabel &&
-                          groupedMessages[dateLabel]?.map((msg, idx) => {
-                            return (
-                              <Box
-                                key={msg.id}
-                                sx={{
-                                  display: "flex",
-                                  justifyContent: msg.type === "bot" ? "flex-start" : "flex-end",
-                                  marginBottom: 1,
-                                }}
-                              >
-                                <Box
-                                  sx={{
-                                    backgroundColor: msg.type === "bot" ? "#E9ECEF" : "#66b5a32e",
-                                    color: msg.type === "bot" ? "gray" : "#66B5A3",
-                                    borderRadius:
-                                      msg.type === "bot"
-                                        ? "0px 10px 10px 10px"
-                                        : "10px 0px 10px 10px",
-                                    padding: 1,
-                                    wordBreak: "break-word",
-                                    minWidth: "8%",
-                                    maxWidth: {
-                                      xs: "90%",
-                                      sm: "80%",
-                                      md: "70%",
-                                      lg: "40%",
-                                    },
-                                  }}
-                                >
-                                  <SoftBox
-                                    sx={{
-                                      display: "flex",
-                                      flexDirection: "row",
-                                      justifyContent: "space-between",
-                                    }}
-                                  >
-                                    <Typography
-                                      variant="body1"
-                                      sx={{
-                                        fontSize: "14px",
-                                        fontWeight: "bold",
-                                        textTransform: "capitalize",
-                                        color: msg.type === "bot" ? "gray" : "#66B5A3",
-                                      }}
-                                    >
-                                      {msg.type}
-                                    </Typography>
-                                    <Typography
-                                      variant="body1"
-                                      sx={{
-                                        fontSize: "12px",
-                                        textTransform: "capitalize",
-                                        color: msg?.type === "bot" ? "gray" : "#66B5A3",
-                                        ml: "10px",
-                                      }}
-                                    >
-                                      {moment?.utc(msg?.created_at)?.local()?.format("hh:mm A")}
-                                    </Typography>
-                                  </SoftBox>
-                                  <Typography
-                                    variant="body1"
-                                    sx={{
-                                      fontSize: "14px",
-                                    }}
-                                  >
-                                    {msg.message}
-                                  </Typography>
-                                </Box>
-                              </Box>
-                            );
-                          })}
-                      </Box>
-                    </React.Fragment>
-                  ))}
+                {Object.values(aggregatedMedia).map((media, index) => (
+                  <Box key={index}>
+                    <Typography variant="h6">
+                      {media?.file_type?.charAt(0)?.toUpperCase() + media?.file_type?.slice(1)}
+                    </Typography>
+                    {renderMediaPreview(media, media.file_type, index)}
+                  </Box>
+                ))}
               </Box>
             ) : (
               <Typography variant="body2" align="center">
                 {familyLoader
-                  ? "Please wait while we load your messages..."
-                  : "No Transcript Records Found"}
+                  ? "Please wait while we load your media..."
+                  : "No Media Records Found"}
               </Typography>
             )}
           </Card>

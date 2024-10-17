@@ -6,12 +6,12 @@ import { functionGetTime } from "helper/constant";
 import toast from "react-hot-toast";
 import { SOMETHING_WRONG } from "helper/constant";
 import { useDispatch } from "react-redux";
-import { GetCallDetails } from "../../redux/ApiSlice/familySlice";
+import { GetMediaDetails } from "../../redux/ApiSlice/familySlice";
 
 export default function PhotoGallerySidebar({ setHistoryState, singleHistory, callHistory }) {
   const dispatch = useDispatch();
-  const handleGetCallDetails = async (obj) => {
-    await dispatch(GetCallDetails({ id: obj?.id, page: 1 })).then((res) => {
+  const handleGetMediaDetails = async (obj) => {
+    await dispatch(GetMediaDetails({ id: obj?.id })).then((res) => {
       if (res?.payload?.success) {
       } else {
         toast.error(res?.payload?.detail || res?.payload?.message || SOMETHING_WRONG);
@@ -56,7 +56,7 @@ export default function PhotoGallerySidebar({ setHistoryState, singleHistory, ca
                 }}
                 onClick={() => {
                   setHistoryState(obj);
-                  handleGetCallDetails(obj);
+                  handleGetMediaDetails(obj);
                 }}
               >
                 <IconButton

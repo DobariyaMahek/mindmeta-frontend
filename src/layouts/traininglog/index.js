@@ -210,22 +210,29 @@ function TrainingLogs() {
                 },
               }}
             >
-              <Table columns={TRAINING_LOGS_COLUMNS} rows={currentRows} text={"training"} loader={'familyLoader'} />
+              <Table
+                columns={TRAINING_LOGS_COLUMNS}
+                rows={currentRows}
+                text={"training"}
+                loader={familyLoader}
+              />
             </SoftBox>
           </Card>
         </SoftBox>
-        <Grid container spacing={3} marginTop="20px">
-          <Grid xs={12} display="flex" justifyContent="end">
-            <Pagination
-              count={Math.ceil(trainingLogsCount / pageSize)} // Total pages calculated from trainingLogsCount
-              page={currentPage} // Current page
-              onChange={handlePageChange} // Handle page change
-              color="primary"
-              // variant="outlined"
-              shape="rounded"
-            />
+        {trainingLogsCount > pageSize && (
+          <Grid container spacing={3} marginTop="20px">
+            <Grid xs={12} display="flex" justifyContent="end">
+              <Pagination
+                count={Math.ceil(trainingLogsCount / pageSize)} // Total pages calculated from trainingLogsCount
+                page={currentPage} // Current page
+                onChange={handlePageChange} // Handle page change
+                color="primary"
+                // variant="outlined"
+                shape="rounded"
+              />
+            </Grid>
           </Grid>
-        </Grid>
+        )}
       </SoftBox>
       <Modal
         open={open}

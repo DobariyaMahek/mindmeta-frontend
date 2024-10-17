@@ -6,7 +6,9 @@ const initialState = {
   familyTrainingLogs: [],
   callHistory: [],
   callDetails: [],
+  mediaDetails: [],
   trainingLogsCount: 0,
+  callDetailsPageCount: 0,
 };
 
 export const uploadMediaInstruction = createAsyncThunk("/media/upload-media", async (body) => {
@@ -36,7 +38,15 @@ export const getCallHistory = createAsyncThunk("/call/get-calls", async () => {
 });
 export const GetCallDetails = createAsyncThunk("/call/get-call-history", async (body) => {
   try {
-    const response = await get(`/call/get-call-history/${body?.id}?page=${body?.page}&limit=1000`);
+    const response = await get(`/call/get-call-history/${body?.id}?page=${body?.page}&limit=10000`);
+    return response.data;
+  } catch (e) {
+    return e.response.data;
+  }
+});
+export const GetMediaDetails = createAsyncThunk("/call/get-photo-gallery", async (body) => {
+  try {
+    const response = await get(`/call/get-photo-gallery/${body?.id}`);
     return response.data;
   } catch (e) {
     return e.response.data;
@@ -73,10 +83,23 @@ export const familySlice = createSlice({
         state.familyLoader = true;
       })
       .addCase(GetCallDetails.fulfilled, (state, action) => {
-        state.callDetails = action.payload.data;
+        if (action.payload.data) {
+          state.callDetails = [...state.callDetails, ...action.payload.data];
+        }
+        state.callDetailsPageCount = action.payload.page_count;
         state.familyLoader = false;
       })
       .addCase(GetCallDetails.rejected, (state, action) => {
+        state.familyLoader = false;
+      })
+      .addCase(GetMediaDetails.pending, (state) => {
+        state.familyLoader = true;
+      })
+      .addCase(GetMediaDetails.fulfilled, (state, action) => {
+        state.mediaDetails = action.payload.data;
+        state.familyLoader = false;
+      })
+      .addCase(GetMediaDetails.rejected, (state, action) => {
         state.familyLoader = false;
       })
       .addCase(getTrainingLogs.pending, (state) => {
