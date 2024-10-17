@@ -58,7 +58,8 @@ function DashboardLayout({ children }) {
     <SoftBox
       sx={({ breakpoints, transitions, functions: { pxToRem } }) => ({
         px: 3,
-        pt:3,
+        pt: 3,
+        pb: 0,
         position: "relative",
 
         [breakpoints.up("xl")]: {

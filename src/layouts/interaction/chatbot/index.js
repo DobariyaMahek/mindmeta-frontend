@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import { Box, Typography, Card, IconButton } from "@mui/material";
+import { Box, Typography, Card, IconButton, Tooltip } from "@mui/material";
 import { Mic, ArrowDownward, PlayArrow, Pause, Send } from "@mui/icons-material";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllChat } from "../../../redux/ApiSlice/patientSlice";
@@ -97,7 +97,7 @@ const ChatBot = () => {
   const { transcript, resetTranscript, listening, browserSupportsSpeechRecognition } =
     useSpeechRecognition();
   const chatContainerRef = useRef(null);
-  const { messages, sendMessage } = useWebSocketContext();
+  const { messages, sendMessage, timeUp } = useWebSocketContext();
   const [chatMessage, setChatMessage] = useState([]);
   const [chatHistory, setChatHistory] = useState([]);
   const [playingAudioId, setPlayingAudioId] = useState(null); // To track which message is playing
@@ -106,7 +106,6 @@ const ChatBot = () => {
   const { pathname } = useLocation();
   const segments = pathname?.split("/");
   const id = segments[2];
-
   useEffect(() => {
     const msg = messages?.length ? messages[messages?.length - 1] : null;
     const allMessage = [...chatMessage, msg];
@@ -147,7 +146,6 @@ const ChatBot = () => {
       resetTranscript();
     }
   };
-
 
   // Group messages by date
   const groupedMessages =
@@ -325,6 +323,8 @@ const ChatBot = () => {
                           ? SpeechRecognition.stopListening
                           : SpeechRecognition.startListening
                       }
+                      disabled={timeUp}
+                      cursor={timeUp ? "not-allowed" : "pointer"}
                     >
                       <Mic />
                     </IconButton>
@@ -334,20 +334,32 @@ const ChatBot = () => {
                       <Typography variant="h6">Press Mic to Speak</Typography>
                     )}
                   </Box>
-
-                  <IconButton
-                    className={classes.sendButton}
-                    onClick={handleSendMessage}
-                    aria-label="send message"
-                    size="medium"
-                    style={{
-                      backgroundColor: "#66b5a3",
-                      borderRadius: "50%",
-                      color: "white",
-                    }}
+                  <Tooltip
+                    title={
+                      listening ? "Listening..." : transcript ? "Send voice" : "Press Mic to Speak"
+                    }
+                    placement="top"
                   >
-                    <Send />
-                  </IconButton>
+                    <IconButton
+                      className={classes.sendButton}
+                      onClick={() => {
+                        if (!listening) {
+                          handleSendMessage();
+                        }
+                      }}
+                      aria-label="send message"
+                      size="medium"
+                      style={{
+                        backgroundColor: "#66b5a3",
+                        borderRadius: "50%",
+                        color: "white",
+                      }}
+                      disabled={timeUp}
+                      cursor={timeUp ? "not-allowed" : "pointer"}
+                    >
+                      <Send />
+                    </IconButton>
+                  </Tooltip>
                 </SoftBox>
               </div>
             </SoftBox>
