@@ -198,7 +198,7 @@ const EventModal = ({ open, handleClose, handleSave }) => {
           <AsyncPaginate
             id="related-category"
             isMulti={false}
-            placeholder="Assign to..."
+            placeholder="Select patient name"
             loadOptions={loadOptions}
             additional={{
               page: 1,

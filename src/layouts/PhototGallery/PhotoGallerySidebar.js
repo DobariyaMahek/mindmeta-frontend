@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { Box, Typography, Divider, IconButton, Card } from "@mui/material";
-import { Monitor, PhoneInTalk } from "@mui/icons-material";
+import { Call, PhoneInTalk } from "@mui/icons-material";
 import { functionGetTime } from "helper/constant";
 import toast from "react-hot-toast";
 import { SOMETHING_WRONG } from "helper/constant";
@@ -64,7 +64,7 @@ export default function PhotoGallerySidebar({ setHistoryState, singleHistory, ca
                     color: singleHistory?.id !== obj?.id ? "secondary.main" : "info.main",
                   }}
                 >
-                  <Monitor fontSize="small" />
+                  <Call fontSize="small" />
                 </IconButton>
 
                 <Box sx={{ marginLeft: 1 }}>

@@ -38,7 +38,7 @@ export const getCallHistory = createAsyncThunk("/call/get-calls", async () => {
 });
 export const GetCallDetails = createAsyncThunk("/call/get-call-history", async (body) => {
   try {
-    const response = await get(`/call/get-call-history/${body?.id}?page=${body?.page}&limit=10000`);
+    const response = await get(`/call/get-call-history/${body?.id}?page=${body?.page}&limit=100`);
     return response.data;
   } catch (e) {
     return e.response.data;
@@ -56,7 +56,11 @@ export const GetMediaDetails = createAsyncThunk("/call/get-photo-gallery", async
 export const familySlice = createSlice({
   name: "family",
   initialState: initialState,
-  reducers: {},
+  reducers: {
+    setCallDetails(state, action) {
+      state.callDetails = action.payload; // Update callDetails with the action payload
+    },
+  },
   extraReducers(builder) {
     builder
 
@@ -83,8 +87,10 @@ export const familySlice = createSlice({
         state.familyLoader = true;
       })
       .addCase(GetCallDetails.fulfilled, (state, action) => {
-        if (action.payload.data) {
+        if (state.callDetails) {
           state.callDetails = [...state.callDetails, ...action.payload.data];
+        } else {
+          state.callDetails = state.callDetails;
         }
         state.callDetailsPageCount = action.payload.page_count;
         state.familyLoader = false;
@@ -115,5 +121,5 @@ export const familySlice = createSlice({
       });
   },
 });
-
+export const { setCallDetails } = familySlice.actions;
 export default familySlice.reducer;

@@ -123,7 +123,7 @@ export const checkToken = async () => {
 
   const token = userInfo?.access_token;
 
-  if (token) {
+  if (token && userInfo?.refresh_token) {
     const tokenData = jwtDecode(token);
     const timeStamp = tokenData.exp * 1000 - Date.now();
 
@@ -133,12 +133,10 @@ export const checkToken = async () => {
           headers: refreshAuthHeader(),
         });
         if (res?.data?.success) {
-          const info = JSON.parse(localStorage.getItem("authUser"));
-
           // Make sure to check if `res` and the token are valid before proceeding
           if (res && res.data && res.data.data) {
             const updatedData = {
-              ...info, // Spread existing info
+              ...userInfo, // Spread existing info
               access_token: res.data.data.access_token,
             };
 
