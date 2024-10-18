@@ -48,10 +48,10 @@ export const WebSocketProvider = ({ children }) => {
     chatSocketRef.current.onmessage = (event) => {
       const newMessage = JSON.parse(event.data);
       newMessage.id = uniqid();
-      if (newMessage?.socket) {
+      if (newMessage?.socket || newMessage.message == "You session is expired") {
         chatSocketRef.current.close(); // Trigger reconnect
         navigate("/dashboard");
-      } else if (messages.message == "Our chat time is up.") {
+      } else if (newMessage.message == "Our chat time is up.") {
         setTimeUp(true);
       } else {
         setMessages((prevMessages) => [...prevMessages, newMessage]);

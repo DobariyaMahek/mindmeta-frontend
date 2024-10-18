@@ -24,7 +24,6 @@ import { Badge, Icon, Menu } from "@mui/material";
 import { useWebSocketContext } from "api/WebSocketProvider";
 import SoftTypography from "components/SoftTypography";
 import { Notifications } from "@mui/icons-material";
-import SoftButton from "components/SoftButton";
 
 function DashboardNavbar({ absolute = false, light = false, isMini = false }) {
   const [newMessage, setNewMessage] = useState(false);
@@ -111,7 +110,8 @@ function DashboardNavbar({ absolute = false, light = false, isMini = false }) {
     setAnimateDot(false);
     setNewMessage(false);
   };
-
+  // top: 121px !important;
+  // width: 450px !important;
   const renderMenu = () => (
     <Menu
       anchorEl={openMenu}
@@ -122,7 +122,13 @@ function DashboardNavbar({ absolute = false, light = false, isMini = false }) {
       }}
       open={Boolean(openMenu)}
       onClose={handleCloseMenu}
-      className="notification-message"
+      sx={{
+        "& .MuiPaper-root": {
+          top: "121px !important", // Adjust top position
+          width: "450px", // Set the width
+          left: "1445px !important",
+        },
+      }}
     >
       <SoftBox
         sx={{
@@ -195,12 +201,14 @@ function DashboardNavbar({ absolute = false, light = false, isMini = false }) {
                 </Icon>
               </IconButton>
               <IconButton
-                size={"small"}
-                color={"inherit"}
-                sx={navbarIconButton}
+                size="small"
+                color="inherit"
                 aria-controls="notification-menu"
                 aria-haspopup="true"
                 onClick={handleOpenMenu}
+                sx={{
+                  ...navbarIconButton, // Spread the styles from `navbarIconButton`
+                }}
               >
                 <Badge
                   color="primary"

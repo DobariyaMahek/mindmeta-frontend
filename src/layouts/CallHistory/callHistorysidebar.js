@@ -1,23 +1,16 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { Box, Typography, Divider, IconButton, Card } from "@mui/material";
-import { Monitor, PhoneInTalk } from "@mui/icons-material";
+import { Call, PhoneInTalk } from "@mui/icons-material";
 import { functionGetTime } from "helper/constant";
 import toast from "react-hot-toast";
 import { SOMETHING_WRONG } from "helper/constant";
 import { useDispatch } from "react-redux";
-import { GetCallDetails } from "../../redux/ApiSlice/familySlice";
+import { GetCallDetails, setCallDetails } from "../../redux/ApiSlice/familySlice";
 
 export default function SidebarCallHistory({ setHistoryState, singleHistory, callHistory }) {
   const dispatch = useDispatch();
-  const handleGetCallDetails = async (obj) => {
-    await dispatch(GetCallDetails({ id: obj?.id, page: 1 })).then((res) => {
-      if (res?.payload?.success) {
-      } else {
-        toast.error(res?.payload?.detail || res?.payload?.message || SOMETHING_WRONG);
-      }
-    });
-  };
+
   return (
     <Card
       sx={{
@@ -57,7 +50,7 @@ export default function SidebarCallHistory({ setHistoryState, singleHistory, cal
                 }}
                 onClick={() => {
                   setHistoryState(obj);
-                  handleGetCallDetails(obj);
+                  dispatch(setCallDetails([]));
                 }}
               >
                 <IconButton
@@ -65,7 +58,7 @@ export default function SidebarCallHistory({ setHistoryState, singleHistory, cal
                     color: singleHistory?.id !== obj?.id ? "secondary.main" : "info.main",
                   }}
                 >
-                  <Monitor fontSize="small" />
+                  <Call fontSize="small" />
                 </IconButton>
 
                 <Box sx={{ marginLeft: 1 }}>
