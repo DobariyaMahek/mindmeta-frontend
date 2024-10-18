@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { Box, Typography, Card, IconButton, Tooltip } from "@mui/material";
-import { Mic, ArrowDownward, PlayArrow, Pause, Send } from "@mui/icons-material";
+import { Mic, ArrowDownward, PlayArrow, Pause, Send, MicOff } from "@mui/icons-material";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllChat } from "../../../redux/ApiSlice/patientSlice";
 import { useWebSocketContext } from "api/WebSocketProvider";
@@ -16,13 +16,10 @@ import { getDateLabel } from "helper/constant";
 export const useStyles = makeStyles((theme) => ({
   chatSection: {
     width: "100%",
-    height: "82vh",
+    height: "84.6vh",
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    [theme.breakpoints.down("sm")]: {
-      height: "70vh",
-    },
   },
   chatContainer: {
     width: "100%",
@@ -45,7 +42,7 @@ export const useStyles = makeStyles((theme) => ({
   },
   chatInput: {
     display: "flex",
-    borderTop: `1px solid #66b5a3`,
+    width: "200px",
     alignItems: "center",
     padding: theme.spacing(1),
   },
@@ -314,7 +311,7 @@ const ChatBot = () => {
                     ))
                   )}
                 </Box>
-                <SoftBox display="flex" justifyContent="space-between" alignItems="center">
+                <SoftBox display="flex" justifyContent="center" alignItems="center">
                   <Box className={classes.chatInput}>
                     <IconButton
                       className={classes.micButton}
@@ -326,7 +323,7 @@ const ChatBot = () => {
                       disabled={timeUp}
                       cursor={timeUp ? "not-allowed" : "pointer"}
                     >
-                      <Mic />
+                      {listening ? <Mic /> : <MicOff />}
                     </IconButton>
                     {listening ? (
                       <Typography variant="h6">Listening...</Typography>

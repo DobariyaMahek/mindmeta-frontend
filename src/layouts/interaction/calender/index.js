@@ -260,8 +260,8 @@ function CalendarComponent() {
 
   return (
     <DashboardLayout>
-      <SoftBox py={3}>
-        <SoftBox mb={3}>
+      <SoftBox pt={3} >
+        <SoftBox>
           <Card>
             <div style={{ height: "auto", padding: "10px" }}>
               <Grid container justifyContent="center" alignItems="center" mb={2}>

@@ -4,18 +4,7 @@ import SoftBox from "components/SoftBox";
 import SoftTypography from "components/SoftTypography";
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import Table from "examples/Tables/Table";
-import SoftBadge from "components/SoftBadge";
-import {
-  Box,
-  Grid,
-  Icon,
-  IconButton,
-  ListItem,
-  Modal,
-  Pagination,
-  Tooltip,
-  Typography,
-} from "@mui/material";
+import { Box, Grid, Icon, ListItem, Modal, Pagination, Tooltip, Typography } from "@mui/material";
 import { Clear, Visibility } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 import Close from "@mui/icons-material/Close";
@@ -41,6 +30,15 @@ function TrainingLogs() {
   const debounceSearch = useDebounce(search, 1000);
   const [currentPage, setCurrentPage] = useState(1); // Current page
   const [pageSize] = useState(10); // Page limit
+  const [showFullDescription, setShowFullDescription] = useState(false);
+  const [showFullInstruction, setShowFullInstruction] = useState(false);
+
+  // Character limits for truncation
+  const textLimit = 208;
+
+  const toggleDescription = () => setShowFullDescription(!showFullDescription);
+  const toggleInstruction = () => setShowFullInstruction(!showFullInstruction);
+
   const currentRows = familyTrainingLogs.map((item, index) => ({
     sr: (
       <SoftTypography variant="caption" color="secondary" fontWeight="medium">
@@ -64,23 +62,25 @@ function TrainingLogs() {
     ),
     action: (
       <Box sx={{ gap: "10px", display: "flex" }}>
-        {" "}
         <Tooltip title="View details" placement="top">
           <Icon
             sx={{ cursor: "pointer" }}
             onClick={() => {
               setOpen(true);
               setSelectedLogs(item);
+              setShowFullDescription(false);
+              setShowFullInstruction(false);
             }}
             fontSize="1px"
             style={{ fontSize: "18px" }}
           >
             <Visibility />
           </Icon>
-        </Tooltip>{" "}
+        </Tooltip>
       </Box>
     ),
   }));
+
   const fetchData = async () => {
     try {
       await dispatch(
@@ -92,13 +92,16 @@ function TrainingLogs() {
       );
     } catch (error) {}
   };
+
   useEffect(() => {
     fetchData();
   }, [debounceSearch, currentPage, pageSize]);
+
   const handleClose = () => {
     setOpen(false);
     setSelectedLogs(null);
   };
+
   const dummyImage =
     "https://img.freepik.com/premium-photo/top-view-abstract-paper-texture-background_225709-2718.jpg";
 
@@ -107,57 +110,74 @@ function TrainingLogs() {
       <Box
         sx={{
           display: "grid",
-          gridTemplateColumns: type == "audio" ? "1fr" : "repeat(auto-fill, minmax(185px, 1fr))",
-          gap: "10px",
-          padding: "10px",
+          gridTemplateColumns: type === "audio" ? "300px" : "repeat(auto-fill, minmax(185px, 1fr))",
+          gap: "15px",
+          padding: "15px",
           textAlign: "center",
+          borderRadius: "12px",
         }}
       >
-        {file?.map((file, index) => {
-          return (
-            <Box
-              display={"flex"}
-              justifyContent={type == "audio" ? "start" : "center"}
-              alignItems={"center"}
-              key={file} // Ensure 'file.name' is unique
+        {file?.map((file, index) => (
+          <Box
+            display={"flex"}
+            justifyContent={type === "audio" ? "start" : "center"}
+            alignItems={"center"}
+            key={index}
+            sx={{
+              borderRadius: "12px",
+              overflow: "hidden",
+              transition: "transform 0.2s",
+              "&:hover": { transform: "scale(1.05)" },
+            }}
+          >
+            <ListItem
+              sx={{
+                width: "auto",
+                height: type === "audio" ? "auto" : "150px",
+                padding: "0",
+              }}
             >
-              <ListItem
-                sx={{
-                  width: "auto",
-                  height: type == "audio" ? "auto" : "150px",
-                }}
-              >
-                {/* Render image, video, or audio preview */}
-                {type === "image" && (
-                  <LazyLoadImage
-                    height={"100%"}
-                    src={file}
-                    alt={type}
-                    width={"100%"}
-                    placeholderSrc={dummyImage}
-                  />
-                )}
-                {type === "video" && (
-                  <video width="100%" height="" controls style={{ width: "100%", height: "100%" }}>
-                    <source src={file} type={"video/mp4"} />
-                  </video>
-                )}
-                {type === "audio" && (
-                  <audio controls>
-                    <source src={file} type={"audio/wav"} />
-                    Your browser does not support the audio tag.
-                  </audio>
-                )}
-              </ListItem>
-            </Box>
-          );
-        })}
+              {type === "image" && (
+                <LazyLoadImage
+                  height={"100%"}
+                  src={file}
+                  alt={type}
+                  width={"100%"}
+                  placeholderSrc={dummyImage}
+                  style={{ borderRadius: "12px" }}
+                />
+              )}
+              {type === "video" && (
+                <video
+                  width="100%"
+                  height=""
+                  controls
+                  style={{ width: "100%", height: "100%", borderRadius: "12px" }}
+                >
+                  <source src={file} type={"video/mp4"} />
+                </video>
+              )}
+              {type === "audio" && (
+                <audio controls>
+                  <source src={file} type={"audio/wav"} />
+                  Your browser does not support the audio tag.
+                </audio>
+              )}
+            </ListItem>
+          </Box>
+        ))}
       </Box>
     );
   };
 
   const handlePageChange = (event, value) => {
     setCurrentPage(value); // Update the current page
+  };
+  const getTruncatedText = (text, charLimit) => {
+    if (text.length > charLimit) {
+      return text.substring(0, charLimit) + "...";
+    }
+    return text;
   };
   return (
     <DashboardLayout>
@@ -227,7 +247,6 @@ function TrainingLogs() {
                 page={currentPage} // Current page
                 onChange={handlePageChange} // Handle page change
                 color="primary"
-                // variant="outlined"
                 shape="rounded"
               />
             </Grid>
@@ -248,18 +267,16 @@ function TrainingLogs() {
             left: "50%",
             transform: "translate(-50%, -50%)",
             width: 900,
-
-            bgcolor: "background.paper",
-            borderRadius: 2,
+            bgcolor: "#ffffff",
+            borderRadius: 3,
             boxShadow: 24,
-
             textAlign: "center",
             outline: "none",
           }}
         >
           <SoftBox display="flex" justifyContent="space-between" alignItems="center" px={4} py={2}>
-            <Typography id="confirm-modal-title" variant="h5">
-              View training details
+            <Typography id="confirm-modal-title" variant="h5" fontWeight="bold" color="dark">
+              View Training Details
             </Typography>
             <Icon
               aria-label="close"
@@ -267,6 +284,7 @@ function TrainingLogs() {
               sx={{
                 color: "text.secondary",
                 cursor: "pointer",
+                transition: "color 0.2s",
               }}
             >
               <Close />
@@ -274,35 +292,109 @@ function TrainingLogs() {
           </SoftBox>
 
           <SoftBox textAlign="start" sx={{ maxHeight: 600, overflow: "auto", p: 4 }}>
-            <Typography variant="h6">Media</Typography>
-            {renderMediaPreview(selectedLogs?.file_url, selectedLogs?.file_type)}{" "}
-            <Typography variant="h6">Tags</Typography>
-            {(typeof selectedLogs?.tags === "string"
-              ? [selectedLogs?.tags]
-              : selectedLogs?.tags
-            )?.map((tag, index) => (
-              <SoftBox
-                key={index}
-                border="0.0625rem solid #d2d6da"
-                display="inline-flex"
-                alignItems="center"
-                borderRadius="0.5rem"
-                padding="3px 8px"
-                marginRight="5px"
-              >
-                <SoftTypography variant="h6" fontSize="14px" color="text">
-                  {tag}
-                </SoftTypography>
-              </SoftBox>
-            ))}
-            <Typography variant="h6" marginTop={"10px"}>
-              Description
+            <Typography variant="h6" color="dark">
+              Media
             </Typography>
-            <Typography fontSize={"14px"}>{selectedLogs?.description}</Typography>{" "}
-            <Typography variant="h6" marginTop={"10px"}>
-              Instruction
-            </Typography>
-            <Typography fontSize={"14px"}>{selectedLogs?.instruction}</Typography>
+            {renderMediaPreview(selectedLogs?.file_url, selectedLogs?.file_type)}
+
+            <SoftBox>
+              {/* Tags Section */}
+              <Grid container spacing={1} mt={1}>
+                <Grid item xs={1.5}>
+                  <Typography variant="h6" color="dark">
+                    Tags
+                  </Typography>
+                </Grid>
+                <Grid item>: </Grid>
+                <Grid item xs={10}>
+                  {(typeof selectedLogs?.tags === "string"
+                    ? [selectedLogs?.tags]
+                    : selectedLogs?.tags
+                  )?.map((tag, index) => (
+                    <SoftBox
+                      key={index}
+                      border="0.0625rem solid #d2d6da"
+                      display="inline-flex"
+                      alignItems="center"
+                      borderRadius="0.5rem"
+                      padding="2px 10px"
+                      bgcolor="%fff"
+                      sx={{
+                        transition: "all 0.3s ease",
+                        "&:hover": {
+                          bgcolor: "primary.main",
+                          "& .MuiTypography-root": {
+                            color: "#ffffff",
+                          },
+                        },
+                      }}
+                    >
+                      <SoftTypography variant="h6" fontSize="14px" color="primary">
+                        {tag}
+                      </SoftTypography>
+                    </SoftBox>
+                  ))}
+                </Grid>
+              </Grid>
+
+              {/* Description Section */}
+              <Grid container spacing={1} mt={1}>
+                <Grid item xs={1.5}>
+                  <Typography variant="h6" color="dark">
+                    Description
+                  </Typography>
+                </Grid>
+                <Grid item>: </Grid>
+                <Grid item xs={10}>
+                  <Typography fontSize="14px" color="text.secondary">
+                    {showFullDescription
+                      ? selectedLogs?.description
+                      : getTruncatedText(selectedLogs?.description || "", textLimit)}{" "}
+                    {selectedLogs?.description?.length > textLimit && (
+                      <Typography
+                        color={"#000"}
+                        fontSize={"12px"}
+                        fontWeight={"bold"}
+                        sx={{ cursor: "pointer" }}
+                        display={"inline"}
+                        onClick={toggleDescription}
+                      >
+                        {showFullDescription ? "Read Less" : "Read More"}
+                      </Typography>
+                    )}
+                  </Typography>
+                </Grid>
+              </Grid>
+
+              {/* Instruction Section */}
+              <Grid container spacing={1} mt={1}>
+                <Grid item xs={1.5}>
+                  <Typography variant="h6" color="dark">
+                    Instruction
+                  </Typography>
+                </Grid>
+                <Grid item>: </Grid>
+                <Grid item xs={10}>
+                  <Typography fontSize="14px" color="text.secondary">
+                    {showFullInstruction
+                      ? selectedLogs?.instruction
+                      : getTruncatedText(selectedLogs?.instruction || "", textLimit)}{" "}
+                    {selectedLogs?.instruction?.length > textLimit && (
+                      <Typography
+                        color={"#000"}
+                        fontSize={"12px"}
+                        fontWeight={"bold"}
+                        sx={{ cursor: "pointer" }}
+                        display={"inline"}
+                        onClick={toggleInstruction}
+                      >
+                        {showFullInstruction ? "Read Less" : "Read More"}
+                      </Typography>
+                    )}
+                  </Typography>
+                </Grid>
+              </Grid>
+            </SoftBox>
           </SoftBox>
         </Box>
       </Modal>
