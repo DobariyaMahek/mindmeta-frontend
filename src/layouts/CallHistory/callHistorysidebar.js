@@ -50,7 +50,9 @@ export default function SidebarCallHistory({ setHistoryState, singleHistory, cal
                 }}
                 onClick={() => {
                   setHistoryState(obj);
-                  dispatch(setCallDetails([]));
+                  if (obj?.id != singleHistory?.id) {
+                    dispatch(setCallDetails([]));
+                  }
                 }}
               >
                 <IconButton

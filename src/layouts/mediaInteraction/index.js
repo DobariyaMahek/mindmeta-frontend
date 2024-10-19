@@ -228,7 +228,7 @@ function MediaInteraction() {
   // Render the upload section for each type of media
   const renderUploadSection = (type) => (
     <>
-      <Grid item xs={12} sm={6} md={4}>
+      <Grid item xs={12} >
         <Box
           sx={{
             border: "2px dashed #90caf9",

@@ -21,50 +21,141 @@ axiosApi.interceptors.response.use(
 );
 export const axiosInstance = axiosApi;
 export async function get(url, config = {}) {
-  checkToken();
-  return await axiosApi
-    .get(url, { params: config, headers: authHeader() })
-    .then((response) => response)
-    .catch((error) => error.response);
+  try {
+    const res = await checkToken(); // Await checkToken to get the result first
+
+    if (res === "time") {
+      if (res == true) {
+        return await axiosApi
+          .get(url, { params: config, headers: authHeader() })
+          .then((response) => response)
+          .catch((error) => error.response);
+      }
+    } else {
+      return await axiosApi
+        .get(url, { params: config, headers: authHeader() })
+        .then((response) => response)
+        .catch((error) => error.response);
+    }
+  } catch (error) {
+    console.error("Error during token validation or API call:", error);
+    throw error;
+  }
 }
 
 export async function patch(url, data, config = {}) {
-  checkToken();
-  return await axiosApi
-    .patch(url, { ...data }, { ...config, headers: authHeader() })
-    .then((response) => response)
-    .catch((error) => error.response);
+  try {
+    const res = await checkToken(); // Await checkToken to get the result first
+
+    if (res === "time") {
+      if (res == true) {
+        return await axiosApi
+          .patch(url, { ...data }, { ...config, headers: authHeader() })
+          .then((response) => response)
+          .catch((error) => error.response);
+      }
+    } else {
+      return await axiosApi
+        .patch(url, { ...data }, { ...config, headers: authHeader() })
+        .then((response) => response)
+        .catch((error) => error.response);
+    }
+  } catch (error) {
+    console.error("Error during token validation or API call:", error);
+    throw error;
+  }
 }
 
 export async function post(url, data, config = {}) {
-  checkToken();
-  return axiosApi
-    .post(url, { ...data }, { ...config, headers: authHeader() })
-    .then((response) => response)
-    .catch((error) => error.response);
+  try {
+    const res = await checkToken(); // Await checkToken to get the result first
+
+    if (res === "time") {
+      if (res == true) {
+        return axiosApi
+          .post(url, { ...data }, { ...config, headers: authHeader() })
+          .then((response) => response)
+          .catch((error) => error.response);
+      }
+    } else {
+      return axiosApi
+        .post(url, { ...data }, { ...config, headers: authHeader() })
+        .then((response) => response)
+        .catch((error) => error.response);
+    }
+  } catch (error) {
+    console.error("Error during token validation or API call:", error);
+    throw error;
+  }
 }
 export async function postFormData(url, data, config = {}) {
-  checkToken();
-  return axiosApi
-    .post(url, data, {
-      ...config,
-      headers: authHeaderForm(),
-    })
-    .then((response) => response)
-    .catch((error) => error.response);
+  try {
+    const res = await checkToken(); // Await checkToken to get the result first
+
+    if (res === "time") {
+      if (res == true) {
+        return axiosApi
+          .post(url, data, {
+            ...config,
+            headers: authHeaderForm(),
+          })
+          .then((response) => response)
+          .catch((error) => error.response);
+      }
+    } else {
+      return axiosApi
+        .post(url, data, {
+          ...config,
+          headers: authHeaderForm(),
+        })
+        .then((response) => response)
+        .catch((error) => error.response);
+    }
+  } catch (error) {
+    console.error("Error during token validation or API call:", error);
+    throw error;
+  }
 }
 export async function put(url, data, config = {}) {
-  checkToken();
-  return axiosApi
-    .put(url, { ...data }, { ...config, headers: authHeader() })
-    .then((response) => response);
+  try {
+    const res = await checkToken(); // Await checkToken to get the result first
+
+    if (res === "time") {
+      if (res == true) {
+        return axiosApi
+          .put(url, { ...data }, { ...config, headers: authHeader() })
+          .then((response) => response);
+      }
+    } else {
+      return axiosApi
+        .put(url, { ...data }, { ...config, headers: authHeader() })
+        .then((response) => response);
+    }
+  } catch (error) {
+    console.error("Error during token validation or API call:", error);
+    throw error;
+  }
 }
 
 export async function del(url, config = {}) {
-  checkToken();
-  return await axiosApi
-    .delete(url, { ...config, headers: authHeader() })
-    .then((response) => response);
+  try {
+    const res = await checkToken(); // Await checkToken to get the result first
+
+    if (res === "time") {
+      if (res == true) {
+        return await axiosApi
+          .delete(url, { ...config, headers: authHeader() })
+          .then((response) => response);
+      }
+    } else {
+      return await axiosApi
+        .delete(url, { ...config, headers: authHeader() })
+        .then((response) => response);
+    }
+  } catch (error) {
+    console.error("Error during token validation or API call:", error);
+    throw error;
+  }
 }
 
 export function isSuccessResp(status) {
