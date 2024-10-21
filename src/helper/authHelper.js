@@ -133,24 +133,29 @@ export const checkToken = async () => {
           headers: refreshAuthHeader(),
         });
         if (res?.data?.success) {
-          // Make sure to check if `res` and the token are valid before proceeding
+          const info = JSON.parse(localStorage.getItem("authUser"));
           if (res && res.data && res.data.data) {
             const updatedData = {
-              ...userInfo, // Spread existing info
+              ...info,
               access_token: res.data.data.access_token,
             };
-
-            // Save the updated data back to localStorage
             localStorage.setItem("authUser", JSON.stringify(updatedData));
           }
+          return true;
+        } else {
+          return false;
         }
       } catch (error) {
         if (error.response && error.response.status === 401) {
           toast.error(SESSION_EXPIRED);
           localStorage.clear();
           window.location.href = "/authentication/sign-in";
+          return false;
         }
       }
+      return "time";
+    } else {
+      return false;
     }
   }
 };
