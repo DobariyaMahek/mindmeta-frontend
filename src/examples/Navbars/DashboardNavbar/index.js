@@ -24,6 +24,7 @@ import { Badge, Icon, Menu } from "@mui/material";
 import { useWebSocketContext } from "api/WebSocketProvider";
 import SoftTypography from "components/SoftTypography";
 import { Notifications } from "@mui/icons-material";
+import moment from "moment";
 
 function DashboardNavbar({ absolute = false, light = false, isMini = false }) {
   const [newMessage, setNewMessage] = useState(false);
@@ -47,6 +48,7 @@ function DashboardNavbar({ absolute = false, light = false, isMini = false }) {
   useEffect(() => {
     if (newMessage) {
       setAnimateDot(true);
+      setOpenMenu(false);
     }
   }, [newMessage]);
 
@@ -55,47 +57,36 @@ function DashboardNavbar({ absolute = false, light = false, isMini = false }) {
       notificationMessages[notificationMessages?.length - 1]?.success &&
       notificationMessages[notificationMessages?.length - 1]?.count > 0
     ) {
+      setOpenMenu(false);
       setNewMessage(true);
     } else {
       setNewMessage(false);
     }
   }, [notificationMessages]);
   function timeAgo(dateString) {
-    const now = new Date();
-    const pastDate = new Date(dateString);
-    const diffInMs = now - pastDate;
+    const now = moment();
+    const pastDate = moment.utc(dateString);
 
-    if (isNaN(pastDate)) {
+    // Check for invalid date
+    if (!pastDate.isValid()) {
       return "Invalid date";
     }
 
-    const seconds = Math.floor(diffInMs / 1000);
-    const minutes = Math.floor(seconds / 60);
-    const hours = Math.floor(minutes / 60);
+    const diffInMs = now - pastDate;
     const days = Math.floor(diffInMs / (1000 * 60 * 60 * 24));
-    const weeks = Math.floor(days / 7);
-    const months = Math.floor(days / 30); // Rough estimate
-    const years = Math.floor(days / 365); // Rough estimate
 
-    if (days === 0) {
-      if (hours > 0) {
-        return hours === 1 ? "1 hour ago" : `${hours} hours ago`;
-      } else if (minutes > 0) {
-        return minutes === 1 ? "1 minute ago" : `${minutes} minutes ago`;
-      } else {
-        return "Just now";
-      }
-    } else if (days === 1) {
-      return "1 day ago";
-    } else if (days < 7) {
-      return `${days} days ago`;
-    } else if (weeks < 5) {
-      return weeks === 1 ? "1 week ago" : `${weeks} weeks ago`;
-    } else if (months < 12) {
-      return months === 1 ? "1 month ago" : `${months} months ago`;
-    } else {
-      return years === 1 ? "1 year ago" : `${years} years ago`;
+    // Check if the date is today
+    if (now.isSame(pastDate, "day")) {
+      return "Today";
     }
+
+    // Check if the date is yesterday
+    if (now.clone().subtract(1, "days").isSame(pastDate, "day")) {
+      return "Yesterday";
+    }
+
+    // Return formatted date for all other cases
+    return pastDate.format("DD MMM YYYY");
   }
   const handleMiniSidenav = () => setMiniSidenav(dispatch, !miniSidenav);
   const handleConfiguratorOpen = () => setOpenConfigurator(dispatch, !openConfigurator);
@@ -126,7 +117,6 @@ function DashboardNavbar({ absolute = false, light = false, isMini = false }) {
         "& .MuiPaper-root": {
           top: "121px !important", // Adjust top position
           width: "450px", // Set the width
-          left: "1445px !important",
         },
       }}
     >
