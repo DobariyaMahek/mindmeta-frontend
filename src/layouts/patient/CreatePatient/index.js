@@ -943,7 +943,7 @@ function CreatePatient() {
                 selected={
                   !isEmpty(currentFamilyMember?.birth_date)
                     ? currentFamilyMember?.birth_date
-                    : new Date()
+                    : ''
                 }
                 onChange={(date) => {
                   const selectedDate = new Date(date);
