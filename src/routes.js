@@ -161,22 +161,22 @@ const useRoutes = () => {
     //   isOpen: openDropdown === "chatbot",
     // },
 
-    {
-      type: "collapse",
-      name: "Bot Interaction",
-      key: "bot-interaction",
-      route: `/chatbot/${
-        userInfo?.role === "patient" && userInfo?.user_info ? userInfo?.user_info?.id : "123"
-      }`,
-      component: <ChatBot />,
-      noCollapse: true,
-      isProtected: true,
-      icon: <SmartToy size="12px" />,
-      isActive: collapseName?.startsWith("/chatbot"),
-      isShow: userInfo?.role === "patient",
-      onClick: () => handleClick("bot-interaction"),
-      isOpen: openDropdown === "bot-interaction",
-    },
+    // {
+    //   type: "collapse",
+    //   name: "Bot Interaction",
+    //   key: "bot-interaction",
+    //   route: `/chatbot/${
+    //     userInfo?.role === "patient" && userInfo?.user_info ? userInfo?.user_info?.id : "123"
+    //   }`,
+    //   component: <ChatBot />,
+    //   noCollapse: true,
+    //   isProtected: true,
+    //   icon: <SmartToy size="12px" />,
+    //   isActive: collapseName?.startsWith("/chatbot"),
+    //   isShow: userInfo?.role === "patient",
+    //   onClick: () => handleClick("bot-interaction"),
+    //   isOpen: openDropdown === "bot-interaction",
+    // },
 
     {
       type: "collapse",
