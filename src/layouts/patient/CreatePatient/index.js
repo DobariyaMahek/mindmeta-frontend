@@ -497,7 +497,7 @@ function CreatePatient() {
                       dropdownMode="select"
                       dateFormat="dd-MM-yyyy"
                       minDate={minDate}
-                      maxDate={new Date()}
+                      maxDate={new Date(new Date().setFullYear(new Date().getFullYear() - 40))}
                       className={!errors.birthdate ? "input" : "input errorInput"}
                       onKeyDown={(e) => e.preventDefault()} // Prevent keyboard input
                       customInput={<input style={{ cursor: "pointer" }} />}
@@ -941,9 +941,7 @@ function CreatePatient() {
               <label>Date of Birth</label>
               <DatePicker
                 selected={
-                  !isEmpty(currentFamilyMember?.birth_date)
-                    ? currentFamilyMember?.birth_date
-                    : ''
+                  !isEmpty(currentFamilyMember?.birth_date) ? currentFamilyMember?.birth_date : ""
                 }
                 onChange={(date) => {
                   const selectedDate = new Date(date);
