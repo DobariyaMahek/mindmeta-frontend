@@ -195,12 +195,14 @@ function MediaInteraction() {
               }}
               onClick={() => removeMedia(type, index)}
             >
-              <Delete
-                sx={{
-                  color: "#fff", // White bin icon
-                  fontSize: "40px",
-                }}
-              />
+              <Tooltip title="Delete" placement="top">
+                <Delete
+                  sx={{
+                    color: "#fff", // White bin icon
+                    fontSize: "40px",
+                  }}
+                />
+              </Tooltip>
             </Box>
           )}
         </SoftBox>

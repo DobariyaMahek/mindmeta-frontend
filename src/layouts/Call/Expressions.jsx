@@ -9,85 +9,99 @@ import PropTypes from "prop-types";
 export default function Expressions({ values }) {
   const top3 = R.pipe(values, R.entries(), R.sortBy(R.pathOr([1], 0)), R.reverse(), R.take(3));
 
+  const containerStyle = {
+    display: "flex",
+    flexWrap: "wrap",
+    gap: "0.75rem",
+    borderTop: "1px solid #dee2e6",
+    padding: "0.75rem",
+    fontSize: "0.75rem",
+    width: "100%",
+    boxSizing: "border-box",
+  };
+
+  const expressionItemStyle = {
+    flex: "1 1 30%", // Flex items that try to take up 30% width
+    minWidth: "120px", // Ensure minimum width for readability
+    maxWidth: "calc(100% / 3)", // Restrict each item to one-third of the container's width
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "space-between",
+    alignItems: "flex-start", // Align labels to the left
+    overflow: "hidden",
+  };
+
+  const headerStyle = {
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+    width: "100%",
+    paddingBottom: "0.25rem",
+    fontFamily: "monospace",
+  };
+
+  const keyTextStyle = {
+    whiteSpace: "nowrap",
+    overflow: "hidden",
+    textOverflow: "ellipsis",
+    fontWeight: "500",
+    color: "#000",
+    flexGrow: 1, // Allow label to grow
+  };
+
+  const valueTextStyle = {
+    fontFamily: "Arial",
+    opacity: 0.5,
+    color: "#000",
+    paddingLeft: "0.5rem", // Space between label and value
+    flexShrink: 0, // Prevent the value from shrinking
+  };
+
+  const barWrapperStyle = {
+    position: "relative",
+    height: "0.25rem",
+    width: "100%",
+    backgroundColor: "var(--bg)",
+    borderRadius: "9999px",
+  };
+
+  const barBaseStyle = {
+    position: "absolute",
+    top: "0",
+    left: "0",
+    width: "100%",
+    height: "100%",
+    borderRadius: "9999px",
+    opacity: 0.1,
+  };
+
+  const barAnimatedStyle = (value) => ({
+    position: "absolute",
+    top: "0",
+    left: "0",
+    height: "100%",
+    borderRadius: "9999px",
+    backgroundColor: "var(--bg)",
+    width: `${R.pipe(value, R.clamp({ min: 0, max: 1 }), (value) => `${value * 100}%`)}`,
+  });
+
   return (
-    <div
-      style={{
-        display: "flex",
-        width: "100%",
-        flexDirection: "row",
-        gap: "0.75rem",
-        borderTop: "1px solid #dee2e6", // Example border color
-        padding: "0.75rem",
-        fontSize: "0.75rem",
-      }}
-    >
+    <div style={containerStyle}>
       {top3.map(([key, value]) => (
-        <div
-          style={{
-            width: "100%",
-            overflow: "hidden",
-          }}
-          key={value}
-        >
-          <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "space-between",
-              gap: "0.25rem",
-              paddingBottom: "0.25rem",
-              fontFamily: "monospace",
-            }}
-          >
-            <div
-              style={{
-                whiteSpace: "nowrap",
-                overflow: "hidden",
-                textOverflow: "ellipsis",
-                fontWeight: "500",
-                color: "#000", // Example text color for light mode
-              }}
-            >
-              {key}
-            </div>
-            <div
-              style={{
-                fontFamily: "Arial",
-                opacity: 0.5,
-                color: "#000", // Example text color for light mode
-              }}
-            >
-              {value?.toFixed(2)}
-            </div>
+        <div style={expressionItemStyle} key={key}>
+          <div style={headerStyle}>
+            <div style={keyTextStyle}>{key}</div>
+            <div style={valueTextStyle}>{value?.toFixed(2)}</div>
           </div>
           <div
             style={{
-              position: "relative",
-              height: "0.25rem",
+              ...barWrapperStyle,
               backgroundColor: isExpressionColor(key) ? expressionColors[key] : "var(--bg)",
             }}
           >
-            <div
-              style={{
-                position: "absolute",
-                top: "0",
-                left: "0",
-                width: "100%",
-                height: "100%",
-                backgroundColor: "var(--bg)",
-                borderRadius: "9999px",
-                opacity: 0.1,
-              }}
-            />
+            <div style={barBaseStyle} />
             <motion.div
-              style={{
-                position: "absolute",
-                top: "0",
-                left: "0",
-                height: "100%",
-                borderRadius: "9999px",
-                backgroundColor: "var(--bg)",
-              }}
+              style={barAnimatedStyle(value)}
               initial={{ width: 0 }}
               animate={{
                 width: `${R.pipe(
