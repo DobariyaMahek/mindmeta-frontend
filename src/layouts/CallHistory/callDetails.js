@@ -162,7 +162,13 @@ const CallHistoryDetails = ({ singleHistory, callHistory }) => {
                                       : "10px 0px 10px 10px",
                                   padding: 1,
                                   wordBreak: "break-word",
-                                  width: "auto",
+                                  minWidth: "8%",
+                                  maxWidth: {
+                                    xs: "90%",
+                                    sm: "80%",
+                                    md: "70%",
+                                    lg: "40%",
+                                  },
                                 }}
                               >
                                 <SoftBox
