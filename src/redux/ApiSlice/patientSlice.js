@@ -149,15 +149,7 @@ export const patientSlice = createSlice({
       .addCase(updatePatient.rejected, (state, action) => {
         state.patientLoader = false;
       })
-      .addCase(createCallHistory.pending, (state) => {
-        state.patientLoader = true;
-      })
-      .addCase(createCallHistory.fulfilled, (state, action) => {
-        state.patientLoader = false;
-      })
-      .addCase(createCallHistory.rejected, (state, action) => {
-        state.patientLoader = false;
-      })
+
       .addCase(deletePatient.pending, (state) => {
         state.patientLoader = true;
       })
