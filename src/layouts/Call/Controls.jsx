@@ -47,7 +47,6 @@ function Controls({ callReceive, setCallReceive }) {
         localStorage.removeItem("chat_metadata");
         setCallReceive(false);
       } else {
-        toast.error(res?.payload?.detail || res?.payload?.message || SOMETHING_WRONG);
         setCallReceive(false);
       }
     });

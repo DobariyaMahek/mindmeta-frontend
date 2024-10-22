@@ -29,6 +29,7 @@ import moment from "moment";
 import "react-datepicker/dist/react-datepicker.css";
 import DatePicker from "react-datepicker";
 import { VIEW_OPTIONS } from "helper/constant";
+import SoftInput from "components/SoftInput";
 const locales = {
   "en-US": enUS,
 };
@@ -124,6 +125,7 @@ function CalendarComponent() {
       patient_id: event?.patient?.value,
       description: event.description,
       call_time: moment(event.callTime).utc(),
+      call_duration: event?.callDuration * 60,
     };
     dispatch(scheduleCall({ body })).then((res) => {
       if (res?.payload?.success) {
@@ -260,7 +262,7 @@ function CalendarComponent() {
 
   return (
     <DashboardLayout>
-      <SoftBox pt={3} >
+      <SoftBox pt={3}>
         <SoftBox>
           <Card>
             <div style={{ height: "auto", padding: "10px" }}>
@@ -273,19 +275,14 @@ function CalendarComponent() {
                         setSelectedDate(date);
                         setExpandedDescriptions({});
                       }}
-                      customInput={
-                        <TextField
-                          variant="outlined"
-                          fullWidth
-                          InputProps={{
-                            sx: {
-                              border: `2px solid ${"#66B5A3"}`,
-                              borderRadius: "24px",
-                              padding: "6px 10px",
-                            },
-                          }}
-                        />
-                      }
+                      customInput={<input style={{ cursor: "pointer" }} />}
+                      className={"input"}
+                      peekNextMonth
+                      showMonthDropdown
+                      showYearDropdown
+                      dropdownMode="select"
+                      dateFormat="dd-MM-yyyy"
+                      onKeyDown={(e) => e.preventDefault()} // Prevent keyboard input
                     />
                   </Box>
                 </Grid>

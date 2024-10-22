@@ -22,6 +22,17 @@ export const TRAINING_LOGS_COLUMNS = [
   { name: "created date", align: "left" },
   { name: "action", align: "center" },
 ];
+export const CALL_DURATION = [
+  { label: "5 minutes", value: 5 },
+  { label: "10 minutes", value: 10 },
+  { label: "15 minutes", value: 15 },
+  { label: "20 minutes", value: 20 },
+  // { label: "25 minutes", value: 25 },
+  // { label: "30 minutes", value: 30 },
+  // { label: "35 minutes", value: 35 },
+  // { label: "40 minutes", value: 40 },
+  // { label: "45 minutes", value: 45 },
+];
 
 export const mainRelations = [
   "Family",
@@ -124,17 +135,16 @@ export const functionGetTime = (time) => {
 };
 
 export const getDateLabel = (dateString) => {
-    const today = moment()?.startOf("day"); // Set today to the start of the day for accurate comparisons
-    const messageDate = moment(dateString?.substring(0, 19)); // Remove the microseconds part of the string
-    const diffInDays = today.diff(messageDate?.startOf("day"), "days"); // Compare start of days for accurate day difference
+  const today = moment()?.startOf("day"); // Set today to the start of the day for accurate comparisons
+  const messageDate = moment(dateString?.substring(0, 19)); // Remove the microseconds part of the string
+  const diffInDays = today.diff(messageDate?.startOf("day"), "days"); // Compare start of days for accurate day difference
 
-    if (diffInDays === 0) return "Today";
-    if (diffInDays === 1) return "Yesterday";
-    if (diffInDays < 7) return messageDate.format("dddd");
-    return messageDate?.format("MMMM D, YYYY");
+  if (diffInDays === 0) return "Today";
+  if (diffInDays === 1) return "Yesterday";
+  if (diffInDays < 7) return messageDate.format("dddd");
+  return messageDate?.format("MMMM D, YYYY");
 };
-  
- 
+
 //----------------------------validation message --------------------------------------//
 export const PASSWORD_VALIDATION_MESSAGES = {
   minLength: "at least 8 characters",

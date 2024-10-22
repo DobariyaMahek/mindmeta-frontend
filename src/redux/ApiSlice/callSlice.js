@@ -30,14 +30,17 @@ export const getScheduleCallList = createAsyncThunk("/call/list-scheduled-calls"
     return e.response.data;
   }
 });
-export const trainCallBot = createAsyncThunk("/patients/get-config-id", async () => {
-  try {
-    const response = await get(`/patients/get-config-id`);
-    return response.data;
-  } catch (e) {
-    return e.response.data;
+export const trainCallBot = createAsyncThunk(
+  "/patients/add-call-time-duration",
+  async (call_id) => {
+    try {
+      const response = await get(`/patients/add-call-time-duration?scheduled_id=${call_id}`);
+      return response.data;
+    } catch (e) {
+      return e.response.data;
+    }
   }
-});
+);
 
 export const callSlice = createSlice({
   name: "call",
@@ -54,7 +57,7 @@ export const callSlice = createSlice({
       .addCase(scheduleCall.rejected, (state, action) => {
         state.callLoader = false;
       })
-     
+
       .addCase(getScheduleCallList.pending, (state) => {
         state.callLoader = true;
       })
