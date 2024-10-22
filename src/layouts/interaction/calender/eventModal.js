@@ -14,6 +14,7 @@ import { AsyncPaginate } from "react-select-async-paginate";
 import SoftBox from "components/SoftBox";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import { CALL_DURATION } from "helper/constant";
 const EventModal = ({ open, handleClose, handleSave }) => {
   const [controller] = useSoftUIController();
   const { sidenavColor } = controller;
@@ -22,6 +23,7 @@ const EventModal = ({ open, handleClose, handleSave }) => {
     description: "",
     patient: null,
     callTime: new Date(),
+    callDuration: 5,
   });
   const [errors, setErrors] = useState({});
   const dispatch = useDispatch();
@@ -115,6 +117,7 @@ const EventModal = ({ open, handleClose, handleSave }) => {
         description: "",
         patient: null,
         callTime: new Date(),
+        callDuration: 5,
       });
       setErrors({});
     }
@@ -128,7 +131,9 @@ const EventModal = ({ open, handleClose, handleSave }) => {
         setFormData({
           title: "",
           description: "",
+          patient: null,
           callTime: new Date(),
+          callDuration: 5,
         });
         setErrors({});
       }}
@@ -165,7 +170,9 @@ const EventModal = ({ open, handleClose, handleSave }) => {
               setFormData({
                 title: "",
                 description: "",
+                patient: null,
                 callTime: new Date(),
+                callDuration: 5,
               });
               setErrors({});
             }}
@@ -259,8 +266,40 @@ const EventModal = ({ open, handleClose, handleSave }) => {
                 dropdownMode="select"
                 onKeyDown={(e) => e.preventDefault()} // Prevent keyboard input
                 customInput={<input style={{ cursor: "pointer" }} />}
+                
               />
               <span className="error"> {errors.callTime && errors.callTime}</span>
+            </SoftBox>
+          </Grid>{" "}
+          <Grid item xs={12}>
+            <label className="form-label" htmlFor="call-time">
+              Call Duration <span>*</span>
+            </label>
+            <SoftBox>
+              <select
+                name="callDuration"
+                className="relation-dropdown"
+                value={formData?.callDuration}
+                onChange={(e) => {
+                  const { name, value } = e.target;
+                  setFormData({
+                    ...formData,
+                    callDuration: value,
+                  });
+                }}
+                style={{
+                  width: "100%",
+                  padding: "8px",
+                  cursor: "pointer",
+                }}
+              >
+                {CALL_DURATION &&
+                  CALL_DURATION?.map((item, i) => (
+                    <option value={item?.value} key={i}>
+                      {item?.label}
+                    </option>
+                  ))}
+              </select>
             </SoftBox>
           </Grid>
         </Grid>
@@ -271,7 +310,9 @@ const EventModal = ({ open, handleClose, handleSave }) => {
               setFormData({
                 title: "",
                 description: "",
+                patient: null,
                 callTime: new Date(),
+                callDuration: 5,
               });
               setErrors({});
             }}

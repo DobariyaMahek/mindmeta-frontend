@@ -7,8 +7,8 @@ import SoftBox from "components/SoftBox";
 import SoftTypography from "components/SoftTypography";
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import IconButton from "@mui/material/IconButton";
-import { Close, CloudUpload, Delete } from "@mui/icons-material";
-import { Box, Icon, List, ListItem, Typography } from "@mui/material";
+import { Close, CloudUpload, Delete, Download } from "@mui/icons-material";
+import { Box, Icon, List, ListItem, Tooltip, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { capitalizeValue } from "helper/constant";
 import { useSoftUIController } from "context";
@@ -16,7 +16,8 @@ import toast from "react-hot-toast";
 import { FILE_TYPE } from "helper/constant";
 import { useDispatch } from "react-redux";
 import { uploadMediaInstruction } from "../../redux/ApiSlice/familySlice";
-
+import AudioRecorder from "./audioRecorder";
+import { saveAs } from "file-saver";
 function MediaInteraction() {
   const [controller] = useSoftUIController();
   const { sidenavColor } = controller;
@@ -83,7 +84,6 @@ function MediaInteraction() {
     }));
     setErrors((prev) => ({ ...prev, media: "" }));
   };
-
   const removeMedia = (type, index) => {
     setMedia((prev) => ({
       ...prev,
@@ -147,9 +147,11 @@ function MediaInteraction() {
             marginBottom: "16px",
             backgroundColor: "#f4f4f4", // Subtle background color for empty space
             position: "relative", // For the hover effect on the image/video
-            "&:hover .delete-icon": {
-              opacity: 1, // Show the delete icon on hover
-            },
+            ...(type == "image" && {
+              "&:hover .delete-icon": {
+                opacity: 1, // Show the delete icon on hover
+              },
+            }),
           }}
         >
           {/* Render image, video, or audio preview */}
@@ -167,56 +169,94 @@ function MediaInteraction() {
             </video>
           )}
           {type === "audio" && (
-            <audio controls style={{ width: "100%" }}>
+            <audio controls style={{ width: "100%" }} controlsList="nodownload">
               <source src={fileUrl} type={file.type} />
               Your browser does not support the audio tag.
             </audio>
           )}
 
           {/* Overlay with delete bin icon */}
-          <Box
-            className="delete-icon"
-            sx={{
-              position: "absolute",
-              top: 0,
-              left: 0,
-              width: "100%",
-              height: "100%",
-              backgroundColor: "rgba(0, 0, 0, 0.6)", // Dark overlay
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              opacity: 0,
-              transition: "opacity 0.3s ease",
-              cursor: "pointer", // Make it clickable
-            }}
-            onClick={() => removeMedia(type, index)}
-          >
-            <Delete
+          {type == "image" && (
+            <Box
+              className="delete-icon"
               sx={{
-                color: "#fff", // White bin icon
-                fontSize: "40px",
+                position: "absolute",
+                top: 0,
+                left: 0,
+                width: "100%",
+                height: "100%",
+                backgroundColor: "rgba(0, 0, 0, 0.6)", // Dark overlay
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                opacity: 0,
+                transition: "opacity 0.3s ease",
+                cursor: "pointer", // Make it clickable
               }}
-            />
-          </Box>
+              onClick={() => removeMedia(type, index)}
+            >
+              <Delete
+                sx={{
+                  color: "#fff", // White bin icon
+                  fontSize: "40px",
+                }}
+              />
+            </Box>
+          )}
         </SoftBox>
-
         {/* File Info */}
-        <SoftBox sx={{ width: "100%", textAlign: "center", marginBottom: "8px" }}>
-          <Typography
-            variant="h6"
-            color="primary.main"
-            sx={{
-              fontWeight: "bold",
-              overflow: "hidden",
-              textOverflow: "ellipsis",
-              whiteSpace: "nowrap", // Prevent text from wrapping to the next line
-              maxWidth: "100%", // Make sure it doesn’t overflow its container
-            }}
+        <SoftBox
+          sx={{
+            width: "100%",
+            textAlign: type !== "image" ? "start" : "center",
+            marginBottom: "8px",
+          }}
+        >
+          <SoftBox
+            display="flex"
+            justifyContent={type !== "image" ? "space-between" : "center"}
+            alignItems="center"
           >
-            {file.name}
-          </Typography>
-
+            <Typography
+              variant="h6"
+              color="primary.main"
+              sx={{
+                fontWeight: "bold",
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+                whiteSpace: "nowrap", // Prevent text from wrapping to the next line
+                maxWidth: "70%", // Make sure it doesn’t overflow its container
+              }}
+            >
+              {file.name || "audio-recording"}
+            </Typography>
+            {type !== "image" && (
+              <SoftBox display="flex">
+                <Tooltip title="Delete" placement="top">
+                  <IconButton
+                    onClick={() => removeMedia(type, index)}
+                    sx={{
+                      fontSize: "20px",
+                    }}
+                  >
+                    <Delete />{" "}
+                  </IconButton>
+                </Tooltip>
+                <Tooltip title="Download" placement="top">
+                  <IconButton
+                    onClick={() => {
+                      const downloadLink = document.createElement("a");
+                      downloadLink.href = fileUrl;
+                      downloadLink.download = file?.name || "audio-recording.wav"; // Set the file name
+                      downloadLink.click();
+                    }}
+                  >
+                    <Download />
+                  </IconButton>
+                </Tooltip>
+              </SoftBox>
+            )}
+          </SoftBox>
           <Typography variant="caption" color="text.secondary">
             Size: {fileSize} | Type: {file.type}
           </Typography>
@@ -228,7 +268,7 @@ function MediaInteraction() {
   // Render the upload section for each type of media
   const renderUploadSection = (type) => (
     <>
-      <Grid item xs={12} >
+      <Grid item xs={12}>
         <Box
           sx={{
             border: "2px dashed #90caf9",
@@ -347,6 +387,7 @@ function MediaInteraction() {
                       ))}
                   </select>
                 </Grid>
+                {fileType == "audio" && <AudioRecorder setMedia={setMedia} />}
                 <Grid container spacing={2}>
                   {fileType === "image" && renderUploadSection("image")}
                   {fileType === "audio" && renderUploadSection("audio")}

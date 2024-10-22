@@ -7,11 +7,15 @@ import { trainCallBot } from "../../redux/ApiSlice/callSlice";
 import toast from "react-hot-toast";
 import { useDispatch } from "react-redux";
 import { SOMETHING_WRONG } from "helper/constant";
+import { useNavigate } from "react-router-dom";
 
 function Calling() {
   const [accessToken, setAccessToken] = useState(null);
   const [configId, setConfigId] = useState(null);
+  const [groupId, setGroupId] = useState(null);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const call_id = JSON.parse(localStorage.getItem("scheduled_call_id"));
   useEffect(() => {
     const handleFetch = async () => {
       const data = await getHumeAccessToken();
@@ -20,16 +24,21 @@ function Calling() {
     handleFetch();
   }, []);
   useEffect(() => {
-    if (accessToken) {
+    if (accessToken && call_id) {
       handleGetInfo();
     }
-  }, [accessToken]);
-  const groupId = "897a264d-d9c2-459c-aa73-6ef3b7800c6d";
+  }, [accessToken, call_id]);
   const handleGetInfo = async () => {
-    await dispatch(trainCallBot()).then(async (res) => {
-      if (res?.payload?.success) {
+    await dispatch(trainCallBot(call_id)).then(async (res) => {
+      if (
+        res?.payload?.success &&
+        (res?.payload?.data?.hume_config_id || res?.payload?.data?.chat_group_id)
+      ) {
         setConfigId(res?.payload?.data?.hume_config_id);
+        setGroupId(res?.payload?.data?.chat_group_id);
       } else {
+        localStorage.clear();
+        navigate("/authentication/sign-in");
         toast.error(res?.payload?.detail || res?.payload?.message || SOMETHING_WRONG);
       }
     });
@@ -39,8 +48,8 @@ function Calling() {
       {accessToken && (
         <VoiceProvider
           auth={{ type: "accessToken", value: accessToken }}
-          configId={configId}
-          // resumedChatGroupId={groupId}
+          {...(!groupId && configId && { configId: configId })}
+          {...(groupId && { resumedChatGroupId: groupId })}
         >
           <CallPopup {...{ accessToken }} />
         </VoiceProvider>
