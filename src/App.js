@@ -94,7 +94,7 @@ export default function App() {
       );
     }
   }, [notificationMessages]);
-
+console.log('first')
   return (
     <ThemeProvider theme={theme}>
       {/* {(authLoader || patientLoader || callLoader || familyLoader) && (
