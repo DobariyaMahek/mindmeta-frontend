@@ -497,7 +497,14 @@ function CreatePatient() {
                       dropdownMode="select"
                       dateFormat="dd-MM-yyyy"
                       minDate={minDate}
-                      maxDate={new Date(new Date().setFullYear(new Date().getFullYear() - 40))}
+                      maxDate={new Date()} // Allow display of all years, but disable dates from the past 40 years
+                      filterDate={(date) => {
+                        // Disable all dates within the last 40 years
+                        const cutoffDate = new Date(
+                          new Date().setFullYear(new Date().getFullYear() - 40)
+                        );
+                        return date <= cutoffDate; // Disable dates greater than 40 years ago
+                      }}
                       className={!errors.birthdate ? "input" : "input errorInput"}
                       onKeyDown={(e) => e.preventDefault()} // Prevent keyboard input
                       customInput={<input style={{ cursor: "pointer" }} />}
