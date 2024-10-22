@@ -9,6 +9,7 @@ import { getDateLabel } from "helper/constant";
 import { useStyles } from "layouts/interaction/chatbot";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { GetCallDetails } from "../../redux/ApiSlice/familySlice";
+import Expressions from "layouts/Call/Expressions";
 
 const CallHistoryDetails = ({ singleHistory, callHistory }) => {
   const dispatch = useDispatch();
@@ -161,13 +162,7 @@ const CallHistoryDetails = ({ singleHistory, callHistory }) => {
                                       : "10px 0px 10px 10px",
                                   padding: 1,
                                   wordBreak: "break-word",
-                                  minWidth: "8%",
-                                  maxWidth: {
-                                    xs: "90%",
-                                    sm: "80%",
-                                    md: "70%",
-                                    lg: "40%",
-                                  },
+                                  width: "auto",
                                 }}
                               >
                                 <SoftBox
@@ -203,6 +198,9 @@ const CallHistoryDetails = ({ singleHistory, callHistory }) => {
                                 <Typography variant="body1" sx={{ fontSize: "14px" }}>
                                   {msg.message}
                                 </Typography>
+                                {msg?.emotion_features && (
+                                  <Expressions values={msg?.emotion_features} />
+                                )}
                               </Box>
                             </Box>
                           ))}
