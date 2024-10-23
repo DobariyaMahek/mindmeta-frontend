@@ -116,8 +116,10 @@ export const patientSlice = createSlice({
       })
       .addCase(GetActivePatientInfo.fulfilled, (state, action) => {
         state.patientLoader = false;
-        state.patientInfo = action.payload.data || [];
-        state.totalPatients = action.payload.count || [];
+        if (action?.payload?.success) {
+          state.patientInfo = action.payload.data || [];
+          state.totalPatients = action.payload.count || [];
+        }
       })
       .addCase(GetActivePatientInfo.rejected, (state, action) => {
         state.patientLoader = false;
