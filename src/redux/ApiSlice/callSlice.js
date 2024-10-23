@@ -77,7 +77,9 @@ export const callSlice = createSlice({
             end: call?.call_time,
           }));
         state.callLoader = false;
-        state.meeting = meetings || [];
+        if (action?.payload?.success) {
+          state.meeting = meetings || [];
+        }
       })
       .addCase(getScheduleCallList.rejected, (state, action) => {
         state.callLoader = false;
