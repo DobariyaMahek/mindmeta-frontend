@@ -57,6 +57,7 @@ function Controls({ callReceive, setCallReceive }) {
     } else {
       setIsTiming(false); // Stop the timer when the call is disconnected
       resetTimer(); // Reset the timer after the call ends
+      handleDisconnect()
     }
   }, [status.value, callReceive]);
 
