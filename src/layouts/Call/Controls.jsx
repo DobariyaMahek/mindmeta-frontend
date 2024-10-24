@@ -52,12 +52,16 @@ function Controls({ callReceive, setCallReceive }) {
   };
 
   useEffect(() => {
+    console.log(status.value);
     if (status.value === "connected" && callReceive) {
       setIsTiming(true); // Start the timer when the call is connected
+    } else if (status.value == "error" || status.value === "disconnected") {
+      setIsTiming(false); // Stop the timer when the call is disconnected
+      resetTimer(); // Reset the timer after the call ends
+      handleDisconnect();
     } else {
       setIsTiming(false); // Stop the timer when the call is disconnected
       resetTimer(); // Reset the timer after the call ends
-      handleDisconnect()
     }
   }, [status.value, callReceive]);
 
