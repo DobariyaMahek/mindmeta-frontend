@@ -330,13 +330,19 @@ function CreatePatient() {
       let body = {
         last_name: generalInfo.lastName?.trim(),
         first_name: generalInfo.firstName?.trim(),
-        birthdate: moment(new Date(generalInfo?.birthdate)).format("YYYY-MM-DD"),
+
         email: generalInfo.patientEmail?.trim(),
         family_members: newFamily,
         gender: generalInfo?.gender,
         medical_history: medicalHistory.description?.trim(),
       };
       if (isUpdate) {
+        if (oldDate != generalInfo?.birthdate) {
+          body = {
+            ...body,
+            birthdate: moment(new Date(generalInfo?.birthdate))?.format("YYYY-MM-DD"),
+          };
+        }
         dispatch(updatePatient({ id, body })).then((res) => {
           if (res?.payload?.success) {
             toast.success(UPDATE_PATIENT);
@@ -353,6 +359,10 @@ function CreatePatient() {
           }
         });
       } else {
+        body = {
+          ...body,
+          birthdate: moment(new Date(generalInfo?.birthdate))?.format("YYYY-MM-DD"),
+        };
         dispatch(createPatient(body)).then((res) => {
           if (res?.payload?.success) {
             toast.success(CREATE_PATIENT);
@@ -427,6 +437,7 @@ function CreatePatient() {
       clearState();
     }
   }, [isUpdate]);
+  console.log(generalInfo.birthdate, oldDate);
   return (
     <DashboardLayout>
       <SoftBox py={3}>
@@ -486,7 +497,7 @@ function CreatePatient() {
                         handleInputChange({
                           target: {
                             name: "birthdate",
-                            value: selectedDate, // Use the date with the time reset
+                            value: moment(selectedDate, "YYYY-MM-DD").format("YYYY/MM/DD"), // Use the date with the time reset
                           },
                         });
                       }}
