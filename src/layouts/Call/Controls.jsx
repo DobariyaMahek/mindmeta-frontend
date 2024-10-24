@@ -55,7 +55,7 @@ function Controls({ callReceive, setCallReceive }) {
     console.log(status.value);
     if (status.value === "connected" && callReceive) {
       setIsTiming(true); // Start the timer when the call is connected
-    } else if (status.value == "error") {
+    } else if (status.value == "error" && callReceive) {
       setIsTiming(false); // Stop the timer when the call is disconnected
       resetTimer(); // Reset the timer after the call ends
       handleDisconnect();
