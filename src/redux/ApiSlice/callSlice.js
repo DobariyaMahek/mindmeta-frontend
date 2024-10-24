@@ -75,6 +75,7 @@ export const callSlice = createSlice({
             description: call?.description,
             start: call.call_time,
             end: call?.call_time,
+            call_duration: call?.call_duration,
           }));
         state.callLoader = false;
         if (action?.payload?.success) {
