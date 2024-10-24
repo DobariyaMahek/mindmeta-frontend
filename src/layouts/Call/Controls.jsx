@@ -55,13 +55,10 @@ function Controls({ callReceive, setCallReceive }) {
     console.log(status.value);
     if (status.value === "connected" && callReceive) {
       setIsTiming(true); // Start the timer when the call is connected
-    } else if (status.value == "error" || status.value === "disconnected") {
+    } else if (status.value == "error") {
       setIsTiming(false); // Stop the timer when the call is disconnected
       resetTimer(); // Reset the timer after the call ends
       handleDisconnect();
-    } else {
-      setIsTiming(false); // Stop the timer when the call is disconnected
-      resetTimer(); // Reset the timer after the call ends
     }
   }, [status.value, callReceive]);
 
