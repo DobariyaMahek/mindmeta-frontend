@@ -224,37 +224,58 @@ function CalendarComponent() {
         </Grid>
 
         {currentView === "agenda" && (
-          <Grid container spacing={1}>
-            {/* Key: Description */}
-            <Grid item xs={1}>
-              <Typography
-                color={currentView === "agenda" ? "#000" : "#fff"}
-                fontSize="14px"
-                fontWeight={"bold"}
-              >
-                Description
-              </Typography>
-            </Grid>
-            <Grid item>: &nbsp;</Grid>
-            {/* Value: Hypertension Description */}
-            <Grid item xs={10}>
-              <Typography color="#000" fontSize="13px" display={"inline"}>
-                {displayDescription}
-              </Typography>
-              {isLongDescription && (
+          <>
+            <Grid container spacing={1}>
+              {/* Key: Description */}
+              <Grid item xs={1}>
                 <Typography
-                  onClick={() => toggleReadMore(event.id)}
-                  color={"#000"}
-                  fontSize={"12px"}
+                  color={currentView === "agenda" ? "#000" : "#fff"}
+                  fontSize="14px"
                   fontWeight={"bold"}
-                  sx={{ cursor: "pointer" }}
-                  display={"inline"}
                 >
-                  {isExpanded ? "Read Less" : "Read More"}
+                  Description
                 </Typography>
-              )}
+              </Grid>
+              <Grid item>: &nbsp;</Grid>
+              {/* Value: Hypertension Description */}
+              <Grid item xs={10}>
+                <Typography color="#000" fontSize="13px" display={"inline"}>
+                  {displayDescription}
+                </Typography>
+                {isLongDescription && (
+                  <Typography
+                    onClick={() => toggleReadMore(event.id)}
+                    color={"#000"}
+                    fontSize={"12px"}
+                    fontWeight={"bold"}
+                    sx={{ cursor: "pointer" }}
+                    display={"inline"}
+                  >
+                    {isExpanded ? "Read Less" : "Read More"}
+                  </Typography>
+                )}
+              </Grid>
             </Grid>
-          </Grid>
+            <Grid container spacing={1}>
+              {/* Key: Description */}
+              <Grid item xs={1}>
+                <Typography
+                  color={currentView === "agenda" ? "#000" : "#fff"}
+                  fontSize="14px"
+                  fontWeight={"bold"}
+                >
+                  Call Duration
+                </Typography>
+              </Grid>
+              <Grid item>: &nbsp;</Grid>
+              {/* Value: Hypertension Description */}
+              <Grid item xs={10}>
+                <Typography color={"#000"} fontSize="13px">
+                  {event?.call_duration} minute
+                </Typography>
+              </Grid>
+            </Grid>
+          </>
         )}
       </SoftBox>
     );
