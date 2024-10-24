@@ -8,11 +8,10 @@ import { useDispatch } from "react-redux";
 import PropTypes from "prop-types";
 import SoftBox from "components/SoftBox";
 
-const CallPopup = ({ accessToken }) => {
+const CallPopup = ({ accessToken,setCallReceive, callReceive }) => {
   const [controller] = useSoftUIController();
   const { miniSidenav, sidenavColor, layout } = controller;
   const { connect, disconnect, status } = useVoice();
-  const [callReceive, setCallReceive] = useState(null); // callReceive will track whether the call is answered
   const dispatch = useDispatch();
 
   const handleHangUp = () => {
@@ -71,5 +70,7 @@ const CallPopup = ({ accessToken }) => {
 };
 CallPopup.propTypes = {
   accessToken: PropTypes.string.isRequired, // Replace 'string' with the appropriate type for accessToken
+      callReceive: PropTypes.bool.isRequired,  // Expecting a boolean
+    setCallReceive: PropTypes.func.isRequired,  // Expecting a function
 };
 export default CallPopup;

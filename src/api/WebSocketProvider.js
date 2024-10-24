@@ -84,6 +84,7 @@ export const WebSocketProvider = ({ children }) => {
       notificationSocketRef.current.onmessage = (event) => {
         try {
           const newMessage = JSON.parse(event.data);
+
           setNotificationMessages([newMessage]);
         } catch (error) {
           console.error("Error parsing notification message", error);
