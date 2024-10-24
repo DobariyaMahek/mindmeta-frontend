@@ -64,23 +64,20 @@ function DashboardNavbar({ absolute = false, light = false, isMini = false }) {
     }
   }, [notificationMessages]);
   function timeAgo(dateString) {
-    const now = moment();
-    const pastDate = moment.utc(dateString);
+    const now = moment.utc(); // Use UTC for now
+    const pastDate = moment.utc(dateString); // Use UTC for created date
 
     // Check for invalid date
     if (!pastDate.isValid()) {
       return "Invalid date";
     }
 
-    const diffInMs = now - pastDate;
-    const days = Math.floor(diffInMs / (1000 * 60 * 60 * 24));
-
-    // Check if the date is today
+    // Check if the date is today in UTC
     if (now.isSame(pastDate, "day")) {
       return "Today";
     }
 
-    // Check if the date is yesterday
+    // Check if the date is yesterday in UTC
     if (now.clone().subtract(1, "days").isSame(pastDate, "day")) {
       return "Yesterday";
     }
