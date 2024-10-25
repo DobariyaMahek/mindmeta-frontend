@@ -100,6 +100,15 @@ export const FAMILY_MODAL = {
   memberInfo: {},
   memberIndex: null,
 };
+export const PROFILE_FIELD = {
+  name: "",
+  email: "",
+  address: "",
+  administratorName: "",
+  phone: "",
+  countryCode: "in",
+  // Add more fields as needed
+};
 
 export const FILE_TYPE = ["image", "video", "audio"];
 

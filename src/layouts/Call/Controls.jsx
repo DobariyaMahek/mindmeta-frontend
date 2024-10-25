@@ -52,7 +52,6 @@ function Controls({ callReceive, setCallReceive }) {
   };
 
   useEffect(() => {
-    console.log(status.value);
     if (status.value === "connected" && callReceive) {
       setIsTiming(true); // Start the timer when the call is connected
     } else if (status.value == "error" && callReceive) {
