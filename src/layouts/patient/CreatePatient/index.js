@@ -437,7 +437,6 @@ function CreatePatient() {
       clearState();
     }
   }, [isUpdate]);
-  console.log(generalInfo.birthdate, oldDate);
   return (
     <DashboardLayout>
       <SoftBox py={3}>

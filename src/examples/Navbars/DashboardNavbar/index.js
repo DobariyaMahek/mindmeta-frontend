@@ -113,7 +113,7 @@ function DashboardNavbar({ absolute = false, light = false, isMini = false }) {
       sx={{
         "& .MuiPaper-root": {
           top: "121px !important", // Adjust top position
-          width: "450px", // Set the width
+          width: "400px", // Set the width
         },
       }}
     >

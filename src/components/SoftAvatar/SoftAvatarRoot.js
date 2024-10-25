@@ -72,9 +72,9 @@ export default styled(Avatar)(({ theme, ownerState }) => {
       break;
     default: {
       sizeValue = {
-        width: pxToRem(48),
-        height: pxToRem(48),
-        fontSize: fontSize.md,
+        width: pxToRem(70),
+        height: pxToRem(70),
+        fontSize: '35px',
       };
     }
   }
