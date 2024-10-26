@@ -22,7 +22,7 @@ export default function Expressions({ values }) {
 
   const expressionItemStyle = {
     flex: "1 1 30%", // Flex items that try to take up 30% width
-    minWidth: "120px", // Ensure minimum width for readability
+    minWidth: "150px", // Ensure minimum width for readability
     maxWidth: "calc(100% / 3)", // Restrict each item to one-third of the container's width
     display: "flex",
     flexDirection: "column",
@@ -41,9 +41,9 @@ export default function Expressions({ values }) {
   };
 
   const keyTextStyle = {
-    whiteSpace: "nowrap",
-    overflow: "hidden",
-    textOverflow: "ellipsis",
+    // whiteSpace: "nowrap",
+    // overflow: "hidden",
+    // textOverflow: "ellipsis",
     fontWeight: "500",
     color: "#000",
     flexGrow: 1, // Allow label to grow

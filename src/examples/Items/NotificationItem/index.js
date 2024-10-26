@@ -35,16 +35,16 @@ const NotificationItem = forwardRef(({ color, image, title, date, ...rest }, ref
     ref={ref}
     sx={(theme) => menuItem(theme)}
     style={{
-      width: "435px",
+      width: "100%",
       cursor: "auto",
+      marginBottom: "1px",
+      padding: "2px 10px",
     }}
   >
     <SoftBox
-      width="3.25rem"
-      height="2.75rem"
-      mt={0.25}
+      width="2.50rem"
+      height="2.50rem"
       mr={2}
-      mb={0.25}
       borderRadius="lg"
       sx={(theme) => menuImage(theme, { color })}
     >
@@ -60,6 +60,7 @@ const NotificationItem = forwardRef(({ color, image, title, date, ...rest }, ref
           maxWidth: "auto", // Set max width for proper layout
           overflowWrap: "break-word", // Break long words
           whiteSpace: "normal",
+          fontSize: "13px",
         }}
       >
         {title}
@@ -70,7 +71,7 @@ const NotificationItem = forwardRef(({ color, image, title, date, ...rest }, ref
         sx={{
           display: "flex",
           alignItems: "center",
-          mt: 0.5,
+          fontSize: "12px",
         }}
       >
         <SoftTypography variant="button" color="secondary">

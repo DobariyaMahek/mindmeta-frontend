@@ -20,7 +20,7 @@ import {
   setOpenConfigurator,
 } from "context";
 import SoftBox from "components/SoftBox";
-import { Badge, Icon, Menu } from "@mui/material";
+import { Badge, Divider, Icon, Menu } from "@mui/material";
 import { useWebSocketContext } from "api/WebSocketProvider";
 import SoftTypography from "components/SoftTypography";
 import { Notifications } from "@mui/icons-material";
