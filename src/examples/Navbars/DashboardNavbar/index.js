@@ -83,7 +83,7 @@ function DashboardNavbar({ absolute = false, light = false, isMini = false }) {
     }
 
     // Return formatted date for all other cases
-    return pastDate.format("DD MMM YYYY");
+    return pastDate.format("MMM DD, YYYY");
   }
   const handleMiniSidenav = () => setMiniSidenav(dispatch, !miniSidenav);
   const handleConfiguratorOpen = () => setOpenConfigurator(dispatch, !openConfigurator);
@@ -113,7 +113,7 @@ function DashboardNavbar({ absolute = false, light = false, isMini = false }) {
       sx={{
         "& .MuiPaper-root": {
           top: "121px !important", // Adjust top position
-          width: "400px", // Set the width
+          width: "380px", // Set the width
         },
       }}
     >
@@ -122,7 +122,7 @@ function DashboardNavbar({ absolute = false, light = false, isMini = false }) {
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
-          padding: "10px 10px 15px 10px",
+          padding: "0 0 10px 10px",
           borderBottom: "1px solid #e2e8f0",
         }}
       >

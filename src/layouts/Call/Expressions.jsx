@@ -13,8 +13,8 @@ export default function Expressions({ values }) {
     display: "flex",
     flexWrap: "wrap",
     gap: "0.75rem",
-    borderTop: "1px solid #dee2e6",
-    padding: "0.75rem",
+
+    padding: "5px 3px",
     fontSize: "0.75rem",
     width: "100%",
     boxSizing: "border-box",

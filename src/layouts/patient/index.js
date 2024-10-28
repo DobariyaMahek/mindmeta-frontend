@@ -40,18 +40,27 @@ import {
   Delete,
   DeleteOutlined,
   Edit,
+  EqualizerOutlined,
   Warning,
   WarningAmber,
 } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 import Close from "@mui/icons-material/Close";
 import SoftInput from "components/SoftInput";
-import { deletePatient, GetActivePatientInfo } from "../../redux/ApiSlice/patientSlice";
+import {
+  deletePatient,
+  GetActivePatientInfo,
+  getPatientChartData,
+} from "../../redux/ApiSlice/patientSlice";
 import { useDispatch, useSelector } from "react-redux";
 import useDebounce from "helper/useDebounce";
 import toast from "react-hot-toast";
 import moment from "moment";
 import { DELETE_PATIENT } from "helper/constant";
+import { Line } from "react-chartjs-2";
+import DatePicker from "react-datepicker";
+import EmotionChart from "./EmotionChart";
+import { isEmpty } from "helper/constant";
 
 // Function component
 function Function({ job, org }) {
@@ -74,8 +83,11 @@ Function.propTypes = {
 
 function Patient() {
   document.title = "Mind Meta AI | Patients";
-  const { patientInfo, totalPatients, patientLoader } = useSelector((state) => state.patient);
+  const { patientInfo, totalPatients, patientLoader, chartLoader, patientChartData } = useSelector(
+    (state) => state.patient
+  );
   const [open, setOpen] = useState(false);
+  const [openChat, setOpenChat] = useState(false);
   const [selectedPatient, setSelectedPatient] = useState(null);
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -83,6 +95,7 @@ function Patient() {
   const debounceSearch = useDebounce(search, 1000);
   const [currentPage, setCurrentPage] = useState(1); // Current page
   const [pageSize] = useState(10); // Page limit
+  const [selectedDate, setSelectedDate] = useState(null); // For date selection
   const currentRows = patientInfo.map((item, index) => ({
     sr: (
       <SoftTypography variant="caption" color="secondary" fontWeight="medium">
@@ -146,9 +159,32 @@ function Patient() {
             <Delete />
           </Icon>
         </Tooltip>
+        <Tooltip title="Overview" placement="top">
+          <Icon
+            sx={{ cursor: "pointer" }}
+            onClick={() => {
+              setSelectedPatient(item);
+              setOpenChat(true);
+            }}
+            fontSize="1px"
+            style={{ fontSize: "18px" }}
+          >
+            <EqualizerOutlined />
+          </Icon>
+        </Tooltip>
       </Box>
     ),
   }));
+
+  const handleCloseChat = () => {
+    setOpenChat(false);
+    setSelectedDate(null);
+  };
+
+  const getChatData = async (date) => {
+    if (!selectedPatient) return;
+    await dispatch(getPatientChartData({ id: selectedPatient?.id, date }));
+  };
   const fetchData = async () => {
     try {
       await dispatch(
@@ -306,6 +342,82 @@ function Patient() {
           <SoftButton variant="gradient" color="error" onClick={handleConfirmDelete}>
             Delete
           </SoftButton>
+        </Box>
+      </Modal>
+      <Modal
+        open={openChat}
+        onClose={handleCloseChat}
+        aria-labelledby="overview-modal-title"
+        sx={{ outline: "none" }}
+      >
+        <Box
+          sx={{
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            width: "70rem",
+            minHeight: "20rem",
+            bgcolor: "background.paper",
+            borderRadius: 2,
+            boxShadow: 24,
+            p: 4,
+            textAlign: "center",
+            outline: "none",
+          }}
+        >
+          <SoftBox
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+            }}
+          >
+            <Typography id="logout-modal-title" variant="h6" component="h2" gutterBottom>
+              Patient Overview
+            </Typography>
+            <Icon aria-label="close" onClick={handleCloseChat} sx={{ cursor: "pointer" }}>
+              <Close />
+            </Icon>
+          </SoftBox>
+          <SoftBox width={"400px"} textAlign="start">
+            <label>Date</label>
+            <DatePicker
+              selected={selectedDate}
+              onChange={(date) => {
+                setSelectedDate(date);
+                if (date) getChatData(moment(date).format("YYYY-MM-DD"));
+              }}
+              placeholderText="Select a date"
+              customInput={<input style={{ cursor: "pointer" }} />}
+              className={"input"}
+              peekNextMonth
+              showMonthDropdown
+              showYearDropdown
+              dropdownMode="select"
+              dateFormat="dd-MM-yyyy"
+              onKeyDown={(e) => e.preventDefault()}
+            />
+          </SoftBox>
+          <SoftBox height="100%" marginTop="40px">
+            {!selectedDate ? (
+              <SoftTypography variant="button" color="text">
+                Please select a date to view the overview.
+              </SoftTypography>
+            ) : chartLoader ? (
+              <SoftTypography variant="button" color="text">
+                Loading data...
+              </SoftTypography>
+            ) : isEmpty(patientChartData) || Object.keys(patientChartData).length === 0 ? (
+              <SoftTypography variant="button" color="text">
+                No record found for {moment(selectedDate)?.format("Do MMM YYYY")}
+              </SoftTypography>
+            ) : !isEmpty(patientChartData) && Object.keys(patientChartData).length > 0 ? (
+              <EmotionChart data={patientChartData} />
+            ) : (
+              ""
+            )}
+          </SoftBox>
         </Box>
       </Modal>
     </DashboardLayout>
