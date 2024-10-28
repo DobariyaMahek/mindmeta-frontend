@@ -139,7 +139,7 @@ export function isEmpty(value) {
 }
 export const capitalizeValue = (value = "") => {
   if (typeof value !== "string") return ""; // Ensure value is a string
-  return value.charAt(0).toUpperCase() + value.slice(1).toLowerCase();
+  return value.charAt(0).toUpperCase() + value.slice(1);
 };
 
 export const functionGetTime = (time) => {
