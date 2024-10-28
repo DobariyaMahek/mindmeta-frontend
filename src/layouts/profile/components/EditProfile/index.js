@@ -20,13 +20,16 @@ const EditProfile = ({ profileData, setProfileData, onSave, onCancel }) => {
     let error = "";
 
     switch (name) {
-      case "name":
+      case "username":
         if (!value) error = "Name is required.";
+        break;
+      case "carehome_name":
+        if (!value) error = "Care home name is required.";
         break;
       case "address":
         if (!value) error = "Address is required.";
         break;
-      case "phone":
+      case "phone_number":
         const selectedCountry = CountryPhoneNumberDigit?.find((item) => {
           if (item?.code?.toLowerCase() == countryCode?.toLowerCase()) {
             return item;
@@ -51,7 +54,7 @@ const EditProfile = ({ profileData, setProfileData, onSave, onCancel }) => {
           error = "Please enter a valid email address.";
         }
         break;
-      case "administratorName":
+      case "administrator_name":
         if (!value) error = "Administrator name is required.";
         break;
       default:
@@ -71,10 +74,10 @@ const EditProfile = ({ profileData, setProfileData, onSave, onCancel }) => {
 
   const handlePhoneChange = (value, country) => {
     const countryCode = country?.countryCode;
-    setProfileData({ ...profileData, phone: value, countryCode: countryCode });
+    setProfileData({ ...profileData, phone_number: value, countryCode: countryCode });
     setErrors((prevErrors) => ({
       ...prevErrors,
-      phone: validateField("phone", value, countryCode),
+      phone_number: validateField("phone_number", value, countryCode),
     }));
   };
 
@@ -98,14 +101,14 @@ const EditProfile = ({ profileData, setProfileData, onSave, onCancel }) => {
           <Grid container spacing={2}>
             <Grid item xs={12} md={6}>
               <label>
-                Name <span>* {errors.name && errors.name}</span>
+                Name <span>* {errors.username && errors.username}</span>
               </label>
               <SoftInput
                 label="Name"
-                name="name"
-                value={profileData.name}
+                name="username"
+                value={profileData.username}
                 onChange={(e) => {
-                  e.target.value = capitalizeValue(e.target.value?.trimStart());
+                  e.target.value = capitalizeValue(e?.target?.value?.trimStart());
                   handleChange(e);
                 }}
                 fullWidth
@@ -115,36 +118,53 @@ const EditProfile = ({ profileData, setProfileData, onSave, onCancel }) => {
             </Grid>
             <Grid item xs={12} md={6}>
               <label>
-                Administrator Name{" "}
-                <span>* {errors.administratorName && errors.administratorName}</span>
+                Care home name <span>* {errors.carehome_name && errors.carehome_name}</span>
               </label>
               <SoftInput
-                label="Administrator Name"
-                name="administratorName"
-                value={profileData.administratorName}
+                name="carehome_name"
+                value={profileData.carehome_name}
                 onChange={(e) => {
-                  e.target.value = capitalizeValue(e.target.value?.trimStart());
+                  e.target.value = capitalizeValue(e?.target?.value?.trimStart());
                   handleChange(e);
                 }}
                 fullWidth
-                placeholder="Please enter administrator name"
-                error={!!errors.administratorName}
+                placeholder="Please enter care home name"
+                error={!!errors.carehome_name}
               />
             </Grid>
             <Grid item xs={12} md={6}>
               <label>
-                Phone Number <span>* {errors.phone && errors.phone}</span>
+                Administrator Name{" "}
+                <span>* {errors.administrator_name && errors.administrator_name}</span>
+              </label>
+              <SoftInput
+                label="Administrator Name"
+                name="administrator_name"
+                value={profileData.administrator_name}
+                onChange={(e) => {
+                  e.target.value = capitalizeValue(e?.target?.value?.trimStart());
+                  handleChange(e);
+                }}
+                fullWidth
+                placeholder="Please enter administrator name"
+                error={!!errors.administrator_name}
+              />
+            </Grid>
+            <Grid item xs={12} md={6}>
+              <label>
+                Phone Number <span>* {errors.phone_number && errors.phone_number}</span>
               </label>
               <PhoneInput
-                country={profileData?.countryCode}
-                value={profileData.phone}
+                country={profileData.phone_number ? profileData?.countryCode : "in"}
+                value={profileData.phone_number}
                 onChange={handlePhoneChange}
                 inputProps={{
-                  name: "phone",
+                  name: "phone_number",
                   required: true,
                 }}
                 containerStyle={{ width: "100%" }}
                 placeholder="Please enter phone number"
+                isValid={!errors.phone_number}
                 inputStyle={{ width: "100%" }}
               />
             </Grid>
@@ -164,6 +184,7 @@ const EditProfile = ({ profileData, setProfileData, onSave, onCancel }) => {
                 error={!!errors.email}
                 placeholder="Please enter email"
                 helperText={errors.email}
+                disabled={true}
               />
             </Grid>{" "}
             <Grid item xs={12}>
