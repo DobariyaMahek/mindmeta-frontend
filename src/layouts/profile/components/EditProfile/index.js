@@ -30,11 +30,9 @@ const EditProfile = ({ profileData, setProfileData, onSave, onCancel }) => {
         if (!value) error = "Address is required.";
         break;
       case "phone_number":
-        const selectedCountry = CountryPhoneNumberDigit?.find((item) => {
-          if (item?.code?.toLowerCase() == countryCode?.toLowerCase()) {
-            return item;
-          }
-        });
+        const selectedCountry = CountryPhoneNumberDigit?.find(
+          (item) => item?.code?.toLowerCase() === countryCode?.toLowerCase()
+        );
         const maxPhoneLength = selectedCountry ? selectedCountry?.phoneNumberLength : null;
         if (!value) {
           error = "Phone number is required.";
@@ -44,7 +42,7 @@ const EditProfile = ({ profileData, setProfileData, onSave, onCancel }) => {
             selectedCountry?.phoneNumberLength +
               selectedCountry?.countryCode?.replace("+", "")?.length
         ) {
-          error = `Please enter a maximum of ${maxPhoneLength} digits.`;
+          error = `Phone number must be a maximum of ${maxPhoneLength} digits.`;
         }
         break;
       case "email":
@@ -101,7 +99,7 @@ const EditProfile = ({ profileData, setProfileData, onSave, onCancel }) => {
           <Grid container spacing={2}>
             <Grid item xs={12} md={6}>
               <label>
-                Name <span>* {errors.username && errors.username}</span>
+                Username <span>* {errors.username && errors.username}</span>
               </label>
               <SoftInput
                 label="Name"
@@ -113,7 +111,8 @@ const EditProfile = ({ profileData, setProfileData, onSave, onCancel }) => {
                 }}
                 fullWidth
                 placeholder="Please enter name"
-                error={!!errors.name}
+                error={!!errors.username}
+                disabled={true}
               />
             </Grid>
             <Grid item xs={12} md={6}>
@@ -155,16 +154,14 @@ const EditProfile = ({ profileData, setProfileData, onSave, onCancel }) => {
                 Phone Number <span>* {errors.phone_number && errors.phone_number}</span>
               </label>
               <PhoneInput
-                country={profileData.phone_number ? profileData?.countryCode : "in"}
+                country={"us"}
                 value={profileData.phone_number}
                 onChange={handlePhoneChange}
+                placeholder="Please enter phone number"
                 inputProps={{
                   name: "phone_number",
                   required: true,
                 }}
-                containerStyle={{ width: "100%" }}
-                placeholder="Please enter phone number"
-                isValid={!errors.phone_number}
                 inputStyle={{ width: "100%" }}
               />
             </Grid>
@@ -186,7 +183,7 @@ const EditProfile = ({ profileData, setProfileData, onSave, onCancel }) => {
                 helperText={errors.email}
                 disabled={true}
               />
-            </Grid>{" "}
+            </Grid>
             <Grid item xs={12}>
               <label>
                 Address <span>* {errors.address && errors.address}</span>
