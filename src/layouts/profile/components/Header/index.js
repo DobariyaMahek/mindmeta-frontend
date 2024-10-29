@@ -110,10 +110,10 @@ function Header({ setEdit, edit, newData }) {
               </SoftAvatar>
               <SoftBox height="100%" mt={0.5} lineHeight={1}>
                 <SoftTypography variant="h5" fontWeight="medium">
-                  {newData?.username}
+                  {newData?.username || "-"}
                 </SoftTypography>{" "}
                 <SoftTypography variant="button" color="text" fontWeight="medium">
-                  {newData?.email}
+                  {newData?.email || "-"}
                 </SoftTypography>
               </SoftBox>
             </SoftBox>
@@ -144,7 +144,7 @@ function Header({ setEdit, edit, newData }) {
             <Grid item>: &nbsp;</Grid>
             <Grid item xs={10}>
               <SoftTypography variant="button" color="text" fontWeight="medium">
-                {newData?.carehome_name}
+                {newData?.carehome_name || "-"}
               </SoftTypography>{" "}
             </Grid>
           </Grid>
@@ -157,7 +157,7 @@ function Header({ setEdit, edit, newData }) {
             <Grid item>: &nbsp;</Grid>
             <Grid item xs={10}>
               <SoftTypography variant="button" color="text" fontWeight="medium">
-                {newData?.administrator_name}
+                {newData?.administrator_name || "-"}
               </SoftTypography>{" "}
             </Grid>
           </Grid>
@@ -170,7 +170,8 @@ function Header({ setEdit, edit, newData }) {
             <Grid item>: &nbsp;</Grid>
             <Grid item xs={10}>
               <SoftTypography variant="button" color="text" fontWeight="medium">
-                +{newData?.phone_number}
+                {newData?.phone_number && "+"}
+                {newData?.phone_number || "-"}
               </SoftTypography>{" "}
             </Grid>
           </Grid>
@@ -181,12 +182,14 @@ function Header({ setEdit, edit, newData }) {
               </SoftTypography>
             </Grid>
             <Grid item>: &nbsp;</Grid>
-            <Grid item xs={10} lineHeight={'25px'}>
+            <Grid item xs={10} lineHeight={"25px"}>
               <SoftTypography
                 variant="button"
                 color="text"
                 fontWeight="medium"
-                dangerouslySetInnerHTML={{ __html: newData?.address.split(",").join(",<br>") }} // Renders <br /> as line breaks
+                dangerouslySetInnerHTML={{
+                  __html: newData?.address.split(",").join(",<br>") || "-",
+                }} // Renders <br /> as line breaks
               />
             </Grid>
           </Grid>
