@@ -5,6 +5,7 @@ import EditProfile from "./components/EditProfile";
 import { PROFILE_FIELD } from "helper/constant";
 import { useDispatch } from "react-redux";
 import { GetCareHomeProfile, UpdateCareHomeProfile } from "../../redux/ApiSlice/authSlice";
+import toast from "react-hot-toast";
 function Overview() {
   document.title = "Mind Meta AI | Profile";
   const [edit, setEdit] = useState(null);
@@ -14,8 +15,11 @@ function Overview() {
   const handleSaveProfile = (updatedData) => {
     dispatch(UpdateCareHomeProfile({ body: updatedData })).then((res) => {
       if (res?.payload?.success) {
+        toast.success(res?.payload?.message);
         fetchData();
         setEdit(false);
+      } else {
+        toast.error(res?.payload?.message);
       }
     });
   };
@@ -34,6 +38,8 @@ function Overview() {
         };
         setProfileData(data);
         setNewData(data);
+      } else {
+        toast.error(res?.payload?.message);
       }
     });
   };

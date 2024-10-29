@@ -410,7 +410,7 @@ function Patient() {
               </SoftTypography>
             ) : isEmpty(patientChartData) || Object.keys(patientChartData).length === 0 ? (
               <SoftTypography variant="button" color="text">
-                No record found for {moment(selectedDate)?.format("Do MMM YYYY")}
+                No overview available for the chosen date. Please select a different date
               </SoftTypography>
             ) : !isEmpty(patientChartData) && Object.keys(patientChartData).length > 0 ? (
               <EmotionChart data={patientChartData} />

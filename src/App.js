@@ -1,4 +1,4 @@
-import React, {useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Routes, Route, Navigate, useLocation, useNavigate } from "react-router-dom";
 import { ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -96,6 +96,35 @@ export default function App() {
       setCallReceive(null);
     }
   }, [notificationMessages]);
+  useEffect(() => {
+    if (
+      userInfo?.role === "care_home" &&
+      ![
+        "/patients",
+        "/create-patients",
+        "/update-patient/",
+        "/call-calendar",
+        "/profile",
+        "/dashboard",
+      ]?.some((path) => pathname?.includes(path))
+    ) {
+      navigate("/dashboard");
+    } else if (
+      userInfo?.role === "family_member" &&
+      !["/call-history", "/media-instruction", "/training-logs", "/dashboard"]?.some((path) =>
+        pathname?.includes(path)
+      )
+    ) {
+      navigate("/dashboard");
+    } else if (
+      userInfo?.role === "family_member" &&
+      !["/call-calendar", "/photo-gallery", "/call-calendar", "/dashboard"]?.some((path) =>
+        pathname?.includes(path)
+      )
+    ) {
+      navigate("/dashboard");
+    }
+  }, [pathname, userInfo, navigate]);
   return (
     <ThemeProvider theme={theme}>
       {/* {(authLoader || patientLoader || callLoader || familyLoader) && (
