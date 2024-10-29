@@ -245,8 +245,9 @@ function CreatePatient() {
         dispatch(createFamilyMember({ id, body })).then((res) => {
           if (res?.payload?.success) {
             toast.success(res?.payload?.message);
+            setFamilyInfo([...familyInfo, res?.payload.data]);
+            setFamilyErrors({});
 
-            getFamilyInfo();
             clearMember();
           } else {
             toast.error(res?.payload?.message);
@@ -271,7 +272,9 @@ function CreatePatient() {
           toast.success(res?.payload?.message);
           setDeleteConfirmation(false);
           setDeleteMemberIndex(null);
-          getFamilyInfo();
+          const data = familyInfo?.filter((item) => item?.id != deleteMemberIndex?.memberId);
+          setFamilyInfo(data);
+          setFamilyErrors({});
         } else {
           toast.error(res?.payload?.message);
         }
@@ -941,7 +944,7 @@ function CreatePatient() {
                   const { name, value } = e.target;
                   setCurrentFamilyMember((prev) => ({
                     ...prev,
-                    [name]: capitalizeValue(value)?.trim(),
+                    [name]: capitalizeValue(value)?.trimStart(),
                   }));
                   const error = validateField(name, value?.trim());
                   setFamilyErrors({

@@ -163,10 +163,10 @@ function Patient() {
           <Icon
             sx={{ cursor: "pointer" }}
             onClick={() => {
+              getChatData(moment(new Date()).format("YYYY-MM-DD"), item);
               setSelectedPatient(item);
               setOpenChat(true);
               setSelectedDate(new Date());
-              getChatData(moment(new Date()).format("YYYY-MM-DD"));
             }}
             fontSize="1px"
             style={{ fontSize: "18px" }}
@@ -183,9 +183,9 @@ function Patient() {
     setSelectedDate(null);
   };
 
-  const getChatData = async (date) => {
-    if (!selectedPatient) return;
-    await dispatch(getPatientChartData({ id: selectedPatient?.id, date }));
+  const getChatData = async (date, item) => {
+    if (!item) return;
+    await dispatch(getPatientChartData({ id: item?.id, date }));
   };
   const fetchData = async () => {
     try {
@@ -388,7 +388,7 @@ function Patient() {
               selected={selectedDate}
               onChange={(date) => {
                 setSelectedDate(date);
-                if (date) getChatData(moment(date).format("YYYY-MM-DD"));
+                if (date) getChatData(moment(date).format("YYYY-MM-DD"), selectedPatient);
               }}
               placeholderText="Select a date"
               customInput={<input style={{ cursor: "pointer" }} />}
