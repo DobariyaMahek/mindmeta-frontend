@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { useVoice } from "@humeai/voice-react";
 import { Button } from "./ui/button";
@@ -9,7 +9,6 @@ import MicFFT from "./MicFFT";
 import SoftButton from "components/SoftButton";
 import { useNavigate } from "react-router-dom";
 import { useSoftUIController } from "context";
-import { useEffect } from "react";
 import { createCallHistory } from "../../redux/ApiSlice/patientSlice";
 import toast from "react-hot-toast";
 import { getSession } from "helper/authHelper";
@@ -18,16 +17,50 @@ import { SOMETHING_WRONG } from "helper/constant";
 
 function Controls({ callReceive, setCallReceive }) {
   const [controller, dispatch] = useSoftUIController();
-  const { miniSidenav, sidenavColor, layout } = controller;
+  const { miniSidenav } = controller;
   const { disconnect, status, isMuted, unmute, mute, micFft, messages, connect } = useVoice();
   const navigate = useNavigate();
   const dispatchs = useDispatch();
   const session = getSession();
+
+  // Timer state
+  const [minutes, setMinutes] = useState(0);
+  const [seconds, setSeconds] = useState(0);
+  const [isTiming, setIsTiming] = useState(false);
+
   useEffect(() => {
-    if (messages && messages[1]?.type == "chat_metadata") {
-      localStorage.setItem("chat_metadata", JSON.stringify(messages[1]));
+    let timer;
+    if (isTiming) {
+      timer = setInterval(() => {
+        setSeconds((prevSeconds) => {
+          if (prevSeconds === 59) {
+            setMinutes((prevMinutes) => prevMinutes + 1);
+            return 0;
+          } else {
+            return prevSeconds + 1;
+          }
+        });
+      }, 1000);
     }
-  }, [messages]);
+    return () => clearInterval(timer);
+  }, [isTiming]);
+
+  // Reset timer when call ends
+  const resetTimer = () => {
+    setMinutes(0);
+    setSeconds(0);
+  };
+
+  useEffect(() => {
+    if (status.value === "connected" && callReceive) {
+      setIsTiming(true); // Start the timer when the call is connected
+    } else if (status.value == "error" && callReceive) {
+      setIsTiming(false); // Stop the timer when the call is disconnected
+      resetTimer(); // Reset the timer after the call ends
+      handleDisconnect();
+    }
+  }, [status.value, callReceive]);
+
   const handleDisconnect = async () => {
     const call_id = JSON.parse(localStorage.getItem("scheduled_call_id"));
     const startTime = JSON.parse(localStorage.getItem("startTime"));
@@ -51,11 +84,13 @@ function Controls({ callReceive, setCallReceive }) {
       }
     });
   };
+
   useEffect(() => {
-    if (status.value == "error" && callReceive) {
-      handleDisconnect();
+    if (messages && messages[1]?.type == "chat_metadata") {
+      localStorage.setItem("chat_metadata", JSON.stringify(messages[1]));
     }
-  }, [status, callReceive]);
+  }, [messages]);
+
   return (
     status.value == "connected" &&
     callReceive && (
@@ -117,11 +152,11 @@ function Controls({ callReceive, setCallReceive }) {
                   {isMuted ? (
                     <MicOff
                       style={{ width: "1rem", height: "1rem", color: "#1f2937", border: "none" }}
-                    /> // size-4 text-gray-800 equivalent
+                    />
                   ) : (
                     <Mic
                       style={{ width: "1rem", height: "1rem", color: "#1f2937", border: "none" }}
-                    /> // size-4 text-gray-800 equivalent
+                    />
                   )}
                 </Toggle>
 
@@ -135,6 +170,11 @@ function Controls({ callReceive, setCallReceive }) {
                   }}
                 >
                   <MicFFT fft={micFft} className={"fill-current"} />
+                </div>
+
+                {/* Timer Display */}
+                <div style={{ fontSize: "1rem", color: "#1f2937" }}>
+                  {String(minutes).padStart(2, "0")}:{String(seconds).padStart(2, "0")}
                 </div>
 
                 <SoftButton
@@ -153,12 +193,12 @@ function Controls({ callReceive, setCallReceive }) {
                         color: "#ef4444",
                         opacity: 0.5,
                         marginRight: "10px",
-                      }} // size-4 text-red-500 opacity-50 equivalent
+                      }}
                       strokeWidth={2}
                       stroke={"currentColor"}
                     />
                   </span>
-                  <span style={{ color: "#ef4444" }}>End Call</span> {/* text-red-500 equivalent */}
+                  <span style={{ color: "#ef4444" }}>End Call</span>
                 </SoftButton>
               </motion.div>
             ) : null}
@@ -168,8 +208,10 @@ function Controls({ callReceive, setCallReceive }) {
     )
   );
 }
+
 Controls.propTypes = {
   callReceive: PropTypes.func.isRequired, // Validate that callReceive is a required function
   setCallReceive: PropTypes.func.isRequired,
 };
+
 export default Controls;

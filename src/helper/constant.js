@@ -100,6 +100,16 @@ export const FAMILY_MODAL = {
   memberInfo: {},
   memberIndex: null,
 };
+export const PROFILE_FIELD = {
+  username: "",
+  carehome_name: "",
+  email: "",
+  address: "",
+  administrator_name: "",
+  phone_number: "",
+  countryCode: "us",
+  // Add more fields as needed
+};
 
 export const FILE_TYPE = ["image", "video", "audio"];
 
@@ -127,9 +137,11 @@ export function isEmpty(value) {
     (Array?.isArray(value) && !value?.length)
   );
 }
-export const capitalizeValue = (value) => {
-  return value?.charAt(0)?.toUpperCase() + value?.slice(1);
+export const capitalizeValue = (value = "") => {
+  if (typeof value !== "string") return ""; // Ensure value is a string
+  return value.charAt(0).toUpperCase() + value.slice(1);
 };
+
 export const functionGetTime = (time) => {
   return moment?.utc(time)?.local()?.format("DD MMM YYYY - hh:mm:ss A");
 };

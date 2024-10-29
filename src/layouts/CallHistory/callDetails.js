@@ -1,5 +1,5 @@
 import React, { Fragment, useEffect, useRef, useState } from "react";
-import { Box, Typography, Card, Divider, Grid } from "@mui/material";
+import { Box, Typography, Card, Divider, Grid, Icon, Tooltip, Modal } from "@mui/material";
 import SoftBox from "components/SoftBox";
 import { functionGetTime } from "helper/constant";
 import { useSelector, useDispatch } from "react-redux";
@@ -10,6 +10,11 @@ import { useStyles } from "layouts/interaction/chatbot";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { GetCallDetails } from "../../redux/ApiSlice/familySlice";
 import Expressions from "layouts/Call/Expressions";
+import { Close, EqualizerOutlined } from "@mui/icons-material";
+import SoftTypography from "components/SoftTypography";
+import CallEmotionChart from "./CallEmotionChart";
+import { isEmpty } from "helper/constant";
+import { GetCallChartData } from "../../redux/ApiSlice/patientSlice";
 
 const CallHistoryDetails = ({ singleHistory, callHistory }) => {
   const dispatch = useDispatch();
@@ -18,6 +23,8 @@ const CallHistoryDetails = ({ singleHistory, callHistory }) => {
   const [hasMore, setHasMore] = useState(true); // To check if more data is available
   const firstMessageRef = useRef(null); // Ref for the first message
   const classes = useStyles();
+  const [openChat, setOpenChat] = useState(false);
+  const { chartLoader, chartData } = useSelector((state) => state.patient);
 
   // Function to fetch call details for a particular page
   const handleGetCallDetails = async (obj, pageNumber = 1) => {
@@ -49,7 +56,9 @@ const CallHistoryDetails = ({ singleHistory, callHistory }) => {
       acc[dateLabel].push(msg);
       return acc;
     }, {});
-
+  const handleFetchData = (id) => {
+    dispatch(GetCallChartData(id));
+  };
   // Fetch the initial page of call details on component mount
   useEffect(() => {
     if (singleHistory?.id) {
@@ -65,7 +74,20 @@ const CallHistoryDetails = ({ singleHistory, callHistory }) => {
             <Box display="flex" justifyContent="space-between" alignItems="center" marginBottom={2}>
               <SoftBox display="flex" alignItems="center">
                 <Typography variant="h6">Call Details</Typography>
-              </SoftBox>
+              </SoftBox>{" "}
+              <Tooltip title="Overview" placement="top">
+                <Icon
+                  sx={{ cursor: "pointer" }}
+                  onClick={() => {
+                    setOpenChat(true);
+                    handleFetchData(singleHistory?.id);
+                  }}
+                  fontSize="1px"
+                  style={{ fontSize: "18px" }}
+                >
+                  <EqualizerOutlined />
+                </Icon>
+              </Tooltip>
             </Box>
             <SoftBox>
               <Grid container spacing={1}>
@@ -155,7 +177,7 @@ const CallHistoryDetails = ({ singleHistory, callHistory }) => {
                               <Box
                                 sx={{
                                   backgroundColor: msg.type === "bot" ? "#E9ECEF" : "#66b5a32e",
-                                  color: msg.type === "bot" ? "gray" : "#66B5A3",
+                                  color: "gray",
                                   borderRadius:
                                     msg.type === "bot"
                                       ? "0px 10px 10px 10px"
@@ -164,10 +186,7 @@ const CallHistoryDetails = ({ singleHistory, callHistory }) => {
                                   wordBreak: "break-word",
                                   minWidth: "8%",
                                   maxWidth: {
-                                    xs: "90%",
-                                    sm: "80%",
                                     md: "70%",
-                                    lg: "40%",
                                   },
                                 }}
                               >
@@ -184,7 +203,7 @@ const CallHistoryDetails = ({ singleHistory, callHistory }) => {
                                       fontSize: "14px",
                                       fontWeight: "bold",
                                       textTransform: "capitalize",
-                                      color: msg.type === "bot" ? "gray" : "#66B5A3",
+                                      color: "gray",
                                     }}
                                   >
                                     {msg.type}
@@ -194,14 +213,20 @@ const CallHistoryDetails = ({ singleHistory, callHistory }) => {
                                     sx={{
                                       fontSize: "12px",
                                       textTransform: "capitalize",
-                                      color: msg?.type === "bot" ? "gray" : "#66B5A3",
+                                      color: "gray",
                                       ml: "10px",
                                     }}
                                   >
                                     {moment.utc(msg?.created_at)?.local()?.format("hh:mm A")}
                                   </Typography>
                                 </SoftBox>
-                                <Typography variant="body1" sx={{ fontSize: "14px" }}>
+                                <Typography
+                                  variant="body1"
+                                  sx={{
+                                    fontSize: "14px",
+                                    borderTop: msg?.type == "bot" ? "none" : "1px solid #dee2e6",
+                                  }}
+                                >
                                   {msg.message}
                                 </Typography>
                                 {msg?.emotion_features && (
@@ -241,6 +266,73 @@ const CallHistoryDetails = ({ singleHistory, callHistory }) => {
           </Typography>
         </SoftBox>
       )}
+      <Modal
+        open={openChat}
+        onClose={() => {
+          setOpenChat(false);
+        }}
+        aria-labelledby="overview-modal-title"
+        sx={{ outline: "none" }}
+      >
+        <Box
+          sx={{
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            width: "70rem",
+            bgcolor: "background.paper",
+            borderRadius: 2,
+            boxShadow: 24,
+            p: 4,
+            outline: "none",
+          }}
+        >
+          <SoftBox
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+            }}
+          >
+            <Typography id="logout-modal-title" variant="h6" component="h2" gutterBottom>
+              Overview
+            </Typography>
+            <Icon
+              aria-label="close"
+              onClick={() => {
+                setOpenChat(false);
+              }}
+              sx={{ cursor: "pointer" }}
+            >
+              <Close />
+            </Icon>
+          </SoftBox>
+
+          <SoftBox
+            height="100%"
+            marginTop="40px"
+            display="flex"
+            alignItems="center"
+            justifyContent="center"
+            flex="column"
+          >
+            {chartLoader ? (
+              <SoftTypography variant="button" color="text">
+                Loading data...
+              </SoftTypography>
+            ) : !chartData || Object.keys(chartData)?.length === 0 ? (
+              <SoftTypography variant="button" color="text">
+                No record found for this call
+              </SoftTypography>
+            ) : !isEmpty(chartData) && Object.keys(chartData).length > 0 ? (
+              <CallEmotionChart data={chartData} />
+            ) : (
+              ""
+            )}
+          </SoftBox>
+        </Box>
+      </Modal>
     </Fragment>
   );
 };

@@ -44,7 +44,7 @@ import curved0 from "assets/images/curved-images/curved0.jpg";
 import { Edit } from "@mui/icons-material";
 import { Icon, Tooltip } from "@mui/material";
 import PropTypes from "prop-types";
-function Header({ setEdit, edit }) {
+function Header({ setEdit, edit, newData }) {
   const [tabsOrientation, setTabsOrientation] = useState("horizontal");
   const [tabValue, setTabValue] = useState(0);
 
@@ -104,26 +104,23 @@ function Header({ setEdit, edit }) {
       >
         <Grid container spacing={3} alignItems="center">
           <Grid item>
-            <SoftAvatar
-              src={burceMars}
-              alt="profile-image"
-              variant="rounded"
-              size="xl"
-              shadow="sm"
-            />
-          </Grid>
-          <Grid item>
-            <SoftBox height="100%" mt={0.5} lineHeight={1}>
-              <SoftTypography variant="h5" fontWeight="medium" color="light">
-                Alex Thompson
-              </SoftTypography>
-              <SoftTypography variant="button" color="text" fontWeight="medium">
-                CEO / Co-Founder
-              </SoftTypography>
+            <SoftBox display="flex" gap={2}>
+              <SoftAvatar alt="profile-image" variant="rounded" bgColor="secondary">
+                {newData?.username?.charAt(0)?.toUpperCase()}
+              </SoftAvatar>
+              <SoftBox height="100%" mt={0.5} lineHeight={1}>
+                <SoftTypography variant="h5" fontWeight="medium">
+                  {newData?.username || "-"}
+                </SoftTypography>{" "}
+                <SoftTypography variant="button" color="text" fontWeight="medium">
+                  {newData?.email || "-"}
+                </SoftTypography>
+              </SoftBox>
             </SoftBox>
           </Grid>
-          {!edit && (
-            <Grid item md={6} textAlign={"end"} sx={{ ml: "auto" }}>
+
+          <Grid item textAlign={"end"} sx={{ ml: "auto" }}>
+            {!edit && (
               <Tooltip title="Edit Profile" placement="top">
                 <Icon
                   sx={{ cursor: "pointer" }}
@@ -135,14 +132,75 @@ function Header({ setEdit, edit }) {
                   <Edit color="light" />
                 </Icon>
               </Tooltip>
-            </Grid>
-          )}
+            )}
+          </Grid>
         </Grid>
+        <SoftBox mt={1}>
+          <Grid container spacing={1}>
+            <Grid item xs={1.2}>
+              <SoftTypography variant="button" fontWeight="bold">
+                Care home name
+              </SoftTypography>
+            </Grid>
+            <Grid item>: &nbsp;</Grid>
+            <Grid item xs={10}>
+              <SoftTypography variant="button" color="text" fontWeight="medium">
+                {newData?.carehome_name || "-"}
+              </SoftTypography>{" "}
+            </Grid>
+          </Grid>
+          <Grid container spacing={1}>
+            <Grid item xs={1.2}>
+              <SoftTypography variant="button" fontWeight="bold">
+                Administrator name
+              </SoftTypography>
+            </Grid>
+            <Grid item>: &nbsp;</Grid>
+            <Grid item xs={10}>
+              <SoftTypography variant="button" color="text" fontWeight="medium">
+                {newData?.administrator_name || "-"}
+              </SoftTypography>{" "}
+            </Grid>
+          </Grid>
+          <Grid container spacing={1}>
+            <Grid item xs={1.2}>
+              <SoftTypography variant="button" fontWeight="bold">
+                Phone Number
+              </SoftTypography>
+            </Grid>
+            <Grid item>: &nbsp;</Grid>
+            <Grid item xs={10}>
+              <SoftTypography variant="button" color="text" fontWeight="medium">
+                {newData?.phone_number && "+"}
+                {newData?.phone_number || "-"}
+              </SoftTypography>{" "}
+            </Grid>
+          </Grid>
+          <Grid container spacing={1}>
+            <Grid item xs={1.2}>
+              <SoftTypography variant="button" fontWeight="bold">
+                Address
+              </SoftTypography>
+            </Grid>
+            <Grid item>: &nbsp;</Grid>
+            <Grid item xs={10} lineHeight={"25px"}>
+              <SoftTypography
+                variant="button"
+                color="text"
+                fontWeight="medium"
+                dangerouslySetInnerHTML={{
+                  __html: newData?.address.split(",").join(",<br>") || "-",
+                }} // Renders <br /> as line breaks
+              />
+            </Grid>
+          </Grid>
+        </SoftBox>
       </Card>
     </SoftBox>
   );
 }
 Header.propTypes = {
+  newData: PropTypes.func,
   setEdit: PropTypes.func, // Ensure `setEdit` is a function
   edit: PropTypes.bool, // Ensure `edit` is a boolean
 };

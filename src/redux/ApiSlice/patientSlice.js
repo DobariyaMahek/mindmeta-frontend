@@ -8,6 +8,9 @@ const initialState = {
   patientLoader: false,
   chatLoader: false,
   patientInfo: [],
+  chartLoader: false,
+  chartData: {},
+  patientChartData: {},
 };
 
 export const GetActivePatientInfo = createAsyncThunk(
@@ -104,6 +107,30 @@ export const getAllChat = createAsyncThunk("/chat", async (id) => {
     return e.response.data;
   }
 });
+export const getPatientChartData = createAsyncThunk(
+  "/call/get-emotion-features-by-patient",
+  async ({ id, date }) => {
+    try {
+      const response = await get(`/call/get-emotion-features-by-patient/${id}`, {
+        date,
+      });
+      return response.data;
+    } catch (e) {
+      return e.response.data;
+    }
+  }
+);
+export const GetCallChartData = createAsyncThunk(
+  "/call/get-emotion-features-by-call/",
+  async (id) => {
+    try {
+      const response = await get(`/call/get-emotion-features-by-call/${id}`);
+      return response.data;
+    } catch (e) {
+      return e.response.data;
+    }
+  }
+);
 export const patientSlice = createSlice({
   name: "patient",
   initialState: initialState,
@@ -116,8 +143,10 @@ export const patientSlice = createSlice({
       })
       .addCase(GetActivePatientInfo.fulfilled, (state, action) => {
         state.patientLoader = false;
-        state.patientInfo = action.payload.data || [];
-        state.totalPatients = action.payload.count || [];
+        if (action?.payload?.success) {
+          state.patientInfo = action.payload.data || [];
+          state.totalPatients = action.payload.count || [];
+        }
       })
       .addCase(GetActivePatientInfo.rejected, (state, action) => {
         state.patientLoader = false;
@@ -185,6 +214,30 @@ export const patientSlice = createSlice({
       })
       .addCase(uploadPatientInfo.rejected, (state, action) => {
         state.patientLoader = false;
+      })
+      .addCase(getPatientChartData.pending, (state) => {
+        state.chartLoader = true;
+      })
+      .addCase(getPatientChartData.fulfilled, (state, action) => {
+               if (action.payload.success) {
+                 state.patientChartData = action.payload.data;
+               }
+        state.chartLoader = false;
+      })
+      .addCase(getPatientChartData.rejected, (state, action) => {
+        state.chartLoader = false;
+      })
+      .addCase(GetCallChartData.pending, (state) => {
+        state.chartLoader = true;
+      })
+      .addCase(GetCallChartData.fulfilled, (state, action) => {
+        if (action.payload.success) {
+          state.chartData = action.payload.data;
+        }
+        state.chartLoader = false;
+      })
+      .addCase(GetCallChartData.rejected, (state, action) => {
+        state.chartLoader = false;
       })
 
       .addCase(getAllChat.pending, (state) => {

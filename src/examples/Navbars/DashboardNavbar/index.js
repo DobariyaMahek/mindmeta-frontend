@@ -20,7 +20,7 @@ import {
   setOpenConfigurator,
 } from "context";
 import SoftBox from "components/SoftBox";
-import { Badge, Icon, Menu } from "@mui/material";
+import { Badge, Divider, Icon, Menu } from "@mui/material";
 import { useWebSocketContext } from "api/WebSocketProvider";
 import SoftTypography from "components/SoftTypography";
 import { Notifications } from "@mui/icons-material";
@@ -64,29 +64,26 @@ function DashboardNavbar({ absolute = false, light = true, isMini = false }) {
     }
   }, [notificationMessages]);
   function timeAgo(dateString) {
-    const now = moment();
-    const pastDate = moment.utc(dateString);
+    const now = moment.utc(); // Use UTC for now
+    const pastDate = moment.utc(dateString); // Use UTC for created date
 
     // Check for invalid date
     if (!pastDate.isValid()) {
       return "Invalid date";
     }
 
-    const diffInMs = now - pastDate;
-    const days = Math.floor(diffInMs / (1000 * 60 * 60 * 24));
-
-    // Check if the date is today
+    // Check if the date is today in UTC
     if (now.isSame(pastDate, "day")) {
       return "Today";
     }
 
-    // Check if the date is yesterday
+    // Check if the date is yesterday in UTC
     if (now.clone().subtract(1, "days").isSame(pastDate, "day")) {
       return "Yesterday";
     }
 
     // Return formatted date for all other cases
-    return pastDate.format("DD MMM YYYY");
+    return pastDate.format("MMM DD, YYYY");
   }
   const handleMiniSidenav = () => setMiniSidenav(dispatch, !miniSidenav);
   const handleConfiguratorOpen = () => setOpenConfigurator(dispatch, !openConfigurator);
@@ -116,7 +113,7 @@ function DashboardNavbar({ absolute = false, light = true, isMini = false }) {
       sx={{
         "& .MuiPaper-root": {
           top: "121px !important", // Adjust top position
-          width: "450px", // Set the width
+          width: "380px", // Set the width
         },
       }}
     >
@@ -125,7 +122,7 @@ function DashboardNavbar({ absolute = false, light = true, isMini = false }) {
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
-          padding: "10px 10px 15px 10px",
+          padding: "0 0 10px 10px",
           borderBottom: "1px solid #e2e8f0",
         }}
       >

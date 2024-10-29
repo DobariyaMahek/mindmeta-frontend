@@ -28,24 +28,24 @@ import SoftTypography from "components/SoftTypography";
 
 // custom styles for the NotificationItem
 import { menuItem, menuImage } from "examples/Items/NotificationItem/styles";
-
+import WatchLaterOutlinedIcon from "@mui/icons-material/WatchLaterOutlined";
 const NotificationItem = forwardRef(({ color, image, title, date, ...rest }, ref) => (
   <MenuItem
     {...rest}
     ref={ref}
     sx={(theme) => menuItem(theme)}
     style={{
-      width: "435px",
+      width: "100%",
       cursor: "auto",
+      marginBottom: "1px",
+      padding: "2px 10px",
     }}
   >
     <SoftBox
-      width="3.25rem"
-      height="2.75rem"
-      mt={0.25}
-      mr={2}
-      mb={0.25}
-      borderRadius="lg"
+      width="2.50rem"
+      height="2rem"
+      mr={1}
+      borderRadius="md"
       sx={(theme) => menuImage(theme, { color })}
     >
       {image}
@@ -60,6 +60,8 @@ const NotificationItem = forwardRef(({ color, image, title, date, ...rest }, ref
           maxWidth: "auto", // Set max width for proper layout
           overflowWrap: "break-word", // Break long words
           whiteSpace: "normal",
+          fontSize: "13px",
+          fontWeight: "500",
         }}
       >
         {title}
@@ -70,17 +72,18 @@ const NotificationItem = forwardRef(({ color, image, title, date, ...rest }, ref
         sx={{
           display: "flex",
           alignItems: "center",
-          mt: 0.5,
+          fontSize: "12px",
+          alignItems: "start",
         }}
       >
         <SoftTypography variant="button" color="secondary">
           <Icon
             sx={{
-              lineHeight: 1.2,
+              lineHeight: 1,
               mr: 0.5,
             }}
           >
-            watch_later
+            <WatchLaterOutlinedIcon />
           </Icon>
         </SoftTypography>
         {date}

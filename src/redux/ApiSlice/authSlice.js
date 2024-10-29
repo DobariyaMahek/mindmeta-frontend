@@ -2,6 +2,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { setSession } from "../../helper/authHelper";
 import { post } from "api/base";
 import { get } from "api/base";
+import { put } from "api/base";
 const initialState = {
   user: {},
   authLoader: false,
@@ -60,6 +61,25 @@ export const GetNewToken = createAsyncThunk("/auth/refresh-token", async () => {
     return e.response.data;
   }
 });
+export const GetCareHomeProfile = createAsyncThunk("/carehome/get-detail", async () => {
+  try {
+    const response = await get(`/carehome/get-detail`);
+    return response.data;
+  } catch (e) {
+    return e.response.data;
+  }
+});
+export const UpdateCareHomeProfile = createAsyncThunk(
+  "/carehome/update-detail",
+  async ({ body }) => {
+    try {
+      const response = await put(`/carehome/update-detail`,body);
+      return response.data;
+    } catch (e) {
+      return e.response.data;
+    }
+  }
+);
 
 export const setSessionData = (token, userInfo) => {
   const sessionData = {
@@ -123,6 +143,24 @@ export const authSlice = createSlice({
         state.authLoader = false;
       })
       .addCase(ResetPassword.rejected, (state, action) => {
+        state.authLoader = false;
+      })
+      .addCase(GetCareHomeProfile.pending, (state) => {
+        state.authLoader = true;
+      })
+      .addCase(GetCareHomeProfile.fulfilled, (state, action) => {
+        state.authLoader = false;
+      })
+      .addCase(GetCareHomeProfile.rejected, (state, action) => {
+        state.authLoader = false;
+      })
+      .addCase(UpdateCareHomeProfile.pending, (state) => {
+        state.authLoader = true;
+      })
+      .addCase(UpdateCareHomeProfile.fulfilled, (state, action) => {
+        state.authLoader = false;
+      })
+      .addCase(UpdateCareHomeProfile.rejected, (state, action) => {
         state.authLoader = false;
       });
   },

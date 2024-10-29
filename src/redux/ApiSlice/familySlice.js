@@ -77,7 +77,9 @@ export const familySlice = createSlice({
         state.familyLoader = true;
       })
       .addCase(getCallHistory.fulfilled, (state, action) => {
-        state.callHistory = action.payload.data;
+        if (action?.payload?.success) {
+          state.callHistory = action.payload.data;
+        }
         state.familyLoader = false;
       })
       .addCase(getCallHistory.rejected, (state, action) => {
@@ -87,12 +89,14 @@ export const familySlice = createSlice({
         state.familyLoader = true;
       })
       .addCase(GetCallDetails.fulfilled, (state, action) => {
-        if (state.callDetails) {
-          state.callDetails = [...state.callDetails, ...action.payload.data];
-        } else {
-          state.callDetails = state.callDetails;
+        if (action?.payload?.success) {
+          if (state.callDetails) {
+            state.callDetails = [...state.callDetails, ...action.payload.data];
+          } else {
+            state.callDetails = state.callDetails;
+          }
+          state.callDetailsPageCount = action.payload.page_count;
         }
-        state.callDetailsPageCount = action.payload.page_count;
         state.familyLoader = false;
       })
       .addCase(GetCallDetails.rejected, (state, action) => {
@@ -102,7 +106,9 @@ export const familySlice = createSlice({
         state.familyLoader = true;
       })
       .addCase(GetMediaDetails.fulfilled, (state, action) => {
-        state.mediaDetails = action.payload.data;
+        if (action?.payload?.success) {
+          state.mediaDetails = action.payload.data;
+        }
         state.familyLoader = false;
       })
       .addCase(GetMediaDetails.rejected, (state, action) => {
@@ -112,8 +118,10 @@ export const familySlice = createSlice({
         state.familyLoader = true;
       })
       .addCase(getTrainingLogs.fulfilled, (state, action) => {
-        state.familyTrainingLogs = action.payload.data;
-        state.trainingLogsCount = action.payload.count || action.payload.data?.length;
+        if (action?.payload?.success) {
+          state.familyTrainingLogs = action.payload.data;
+          state.trainingLogsCount = action.payload.count || action.payload.data?.length;
+        }
         state.familyLoader = false;
       })
       .addCase(getTrainingLogs.rejected, (state, action) => {

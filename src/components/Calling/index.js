@@ -8,8 +8,8 @@ import toast from "react-hot-toast";
 import { useDispatch } from "react-redux";
 import { SOMETHING_WRONG } from "helper/constant";
 import { useNavigate } from "react-router-dom";
-
-function Calling() {
+import PropTypes from "prop-types";
+function Calling({ setCallReceive, callReceive }) {
   const [accessToken, setAccessToken] = useState(null);
   const [configId, setConfigId] = useState(null);
   const [groupId, setGroupId] = useState(null);
@@ -48,14 +48,18 @@ function Calling() {
       {accessToken && (
         <VoiceProvider
           auth={{ type: "accessToken", value: accessToken }}
-          {...(!groupId && configId && { configId: configId })}
-          {...(groupId && { resumedChatGroupId: groupId })}
+          configId={configId}
+          // {...(!groupId && configId && { configId: configId })}
+          // {...(groupId && { resumedChatGroupId: groupId })}
         >
-          <CallPopup {...{ accessToken }} />
+          <CallPopup {...{ accessToken, setCallReceive, callReceive }} />
         </VoiceProvider>
       )}
     </>
   );
 }
-
+Calling.propTypes = {
+  callReceive: PropTypes.bool.isRequired, // Expecting a boolean
+  setCallReceive: PropTypes.func.isRequired, // Expecting a function
+};
 export default Calling;

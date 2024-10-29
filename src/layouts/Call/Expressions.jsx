@@ -2,9 +2,9 @@
 
 import { motion } from "framer-motion";
 import * as R from "remeda";
+import PropTypes from "prop-types";
 import { expressionColors } from "utils/expressionColors";
 import { isExpressionColor } from "utils/expressionColors";
-import PropTypes from "prop-types";
 
 export default function Expressions({ values }) {
   const top3 = R.pipe(values, R.entries(), R.sortBy(R.pathOr([1], 0)), R.reverse(), R.take(3));
@@ -13,8 +13,8 @@ export default function Expressions({ values }) {
     display: "flex",
     flexWrap: "wrap",
     gap: "0.75rem",
-    borderTop: "1px solid #dee2e6",
-    padding: "0.75rem",
+
+    padding: "5px 3px",
     fontSize: "0.75rem",
     width: "100%",
     boxSizing: "border-box",
@@ -22,7 +22,7 @@ export default function Expressions({ values }) {
 
   const expressionItemStyle = {
     flex: "1 1 30%", // Flex items that try to take up 30% width
-    minWidth: "120px", // Ensure minimum width for readability
+    minWidth: "150px", // Ensure minimum width for readability
     maxWidth: "calc(100% / 3)", // Restrict each item to one-third of the container's width
     display: "flex",
     flexDirection: "column",
@@ -41,9 +41,9 @@ export default function Expressions({ values }) {
   };
 
   const keyTextStyle = {
-    whiteSpace: "nowrap",
-    overflow: "hidden",
-    textOverflow: "ellipsis",
+    // whiteSpace: "nowrap",
+    // overflow: "hidden",
+    // textOverflow: "ellipsis",
     fontWeight: "500",
     color: "#000",
     flexGrow: 1, // Allow label to grow
@@ -61,7 +61,7 @@ export default function Expressions({ values }) {
     position: "relative",
     height: "0.25rem",
     width: "100%",
-    backgroundColor: "var(--bg)",
+    backgroundColor: "#e0e0e0", // Set a default background color
     borderRadius: "9999px",
   };
 
@@ -75,13 +75,13 @@ export default function Expressions({ values }) {
     opacity: 0.1,
   };
 
-  const barAnimatedStyle = (value) => ({
+  const barAnimatedStyle = (value, key) => ({
     position: "absolute",
     top: "0",
     left: "0",
     height: "100%",
     borderRadius: "9999px",
-    backgroundColor: "var(--bg)",
+    backgroundColor: isExpressionColor(key) ? expressionColors[key] : "#66B5A3", // Use expression color or fallback
     width: `${R.pipe(value, R.clamp({ min: 0, max: 1 }), (value) => `${value * 100}%`)}`,
   });
 
@@ -93,15 +93,10 @@ export default function Expressions({ values }) {
             <div style={keyTextStyle}>{key}</div>
             <div style={valueTextStyle}>{value?.toFixed(2)}</div>
           </div>
-          <div
-            style={{
-              ...barWrapperStyle,
-              backgroundColor: isExpressionColor(key) ? expressionColors[key] : "var(--bg)",
-            }}
-          >
+          <div style={{ ...barWrapperStyle, backgroundColor: "#e0e0e0" }}>
             <div style={barBaseStyle} />
             <motion.div
-              style={barAnimatedStyle(value)}
+              style={barAnimatedStyle(value, key)}
               initial={{ width: 0 }}
               animate={{
                 width: `${R.pipe(
@@ -119,5 +114,5 @@ export default function Expressions({ values }) {
 }
 
 Expressions.propTypes = {
-  values: PropTypes.arrayOf(PropTypes.any).isRequired,
+  values: PropTypes.objectOf(PropTypes.number).isRequired, // Changed to objectOf(number) for better accuracy
 };

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Routes, Route, Navigate, useLocation, useNavigate } from "react-router-dom";
 import { ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -20,6 +20,7 @@ export default function App() {
   const { patientLoader } = useSelector((state) => state.patient);
   const { familyLoader } = useSelector((state) => state.family);
   const { callLoader } = useSelector((state) => state.call);
+  const [callReceive, setCallReceive] = useState(null);
   const [controller] = useSoftUIController();
   const { direction } = controller;
   const { pathname } = useLocation();
@@ -92,9 +93,38 @@ export default function App() {
         "scheduled_call_id",
         JSON.stringify(notificationMessages?.[notificationMessages?.length - 1]?.scheduled_id)
       );
+      setCallReceive(null);
     }
   }, [notificationMessages]);
-console.log('first')
+  useEffect(() => {
+    if (
+      userInfo?.role === "care_home" &&
+      ![
+        "/patients",
+        "/create-patients",
+        "/update-patient/",
+        "/call-calendar",
+        "/profile",
+        "/dashboard",
+      ]?.some((path) => pathname?.includes(path))
+    ) {
+      navigate("/dashboard");
+    } else if (
+      userInfo?.role === "family_member" &&
+      !["/call-history", "/media-instruction", "/training-logs", "/dashboard"]?.some((path) =>
+        pathname?.includes(path)
+      )
+    ) {
+      navigate("/dashboard");
+    } else if (
+      userInfo?.role === "patient" &&
+      !["/call-calendar", "/photo-gallery", "/call-calendar", "/dashboard"]?.some((path) =>
+        pathname?.includes(path)
+      )
+    ) {
+      navigate("/dashboard");
+    }
+  }, [pathname, userInfo, navigate]);
   return (
     <ThemeProvider theme={theme}>
       {/* {(authLoader || patientLoader || callLoader || familyLoader) && (
@@ -112,11 +142,9 @@ console.log('first')
         />
       </Routes>{" "}
       {userInfo &&
-        userInfo?.role == "patient"
-        &&
-        notificationMessages?.[notificationMessages?.length - 1]?.message == "Receive call"
-        ? (
-        <Calling />
+      userInfo?.role == "patient" &&
+      notificationMessages?.[notificationMessages?.length - 1]?.message == "Receive call" ? (
+        <Calling {...{ setCallReceive, callReceive }} />
       ) : null}
     </ThemeProvider>
   );
