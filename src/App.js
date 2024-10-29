@@ -117,7 +117,7 @@ export default function App() {
     ) {
       navigate("/dashboard");
     } else if (
-      userInfo?.role === "family_member" &&
+      userInfo?.role === "patient" &&
       !["/call-calendar", "/photo-gallery", "/call-calendar", "/dashboard"]?.some((path) =>
         pathname?.includes(path)
       )
