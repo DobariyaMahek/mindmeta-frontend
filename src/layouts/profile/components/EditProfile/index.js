@@ -30,19 +30,18 @@ const EditProfile = ({ profileData, setProfileData, onSave, onCancel }) => {
         if (!value) error = "Address is required.";
         break;
       case "phone_number":
-        const selectedCountry = CountryPhoneNumberDigit?.find(
-          (item) => item?.code?.toLowerCase() === countryCode?.toLowerCase()
-        );
-        const maxPhoneLength = selectedCountry ? selectedCountry?.phoneNumberLength : null;
-        if (!value) {
-          error = "Phone number is required.";
-        } else if (
-          maxPhoneLength &&
-          value?.length <
-            selectedCountry?.phoneNumberLength +
-              selectedCountry?.countryCode?.replace("+", "")?.length
+        const selectedCountry = CountryPhoneNumberDigit?.find((item) => {
+          if (item?.code?.toLowerCase() === countryCode?.toLowerCase()) {
+            return item;
+          }
+        });
+        console.log(value, selectedCountry?.countryCode);
+        if (
+          !value ||
+          `${value}` === selectedCountry?.countryCode?.replace("+", "") ||
+          selectedCountry?.countryCode?.replace("+", "")?.length === value?.length
         ) {
-          error = `Phone number must be a maximum of ${maxPhoneLength} digits.`;
+          error = "Phone number is required.";
         }
         break;
       case "email":
@@ -72,7 +71,7 @@ const EditProfile = ({ profileData, setProfileData, onSave, onCancel }) => {
 
   const handlePhoneChange = (value, country) => {
     const countryCode = country?.countryCode;
-    setProfileData({ ...profileData, phone_number: value, countryCode: countryCode });
+    setProfileData({ ...profileData, phone_number: `${value}`, countryCode: countryCode });
     setErrors((prevErrors) => ({
       ...prevErrors,
       phone_number: validateField("phone_number", value, countryCode),
@@ -82,6 +81,7 @@ const EditProfile = ({ profileData, setProfileData, onSave, onCancel }) => {
   const handleSave = () => {
     const validationErrors = Object.keys(profileData)?.reduce((acc, key) => {
       const countryCode = profileData?.countryCode;
+      console.log(profileData, key);
       const error = validateField(key, profileData[key], countryCode);
       if (error) acc[key] = error;
       return acc;

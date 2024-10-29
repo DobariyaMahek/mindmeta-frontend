@@ -107,7 +107,7 @@ export const PROFILE_FIELD = {
   address: "",
   administrator_name: "",
   phone_number: "",
-  countryCode: "in",
+  countryCode: "us",
   // Add more fields as needed
 };
 
