@@ -26,7 +26,7 @@ import SoftTypography from "components/SoftTypography";
 import { Notifications } from "@mui/icons-material";
 import moment from "moment";
 
-function DashboardNavbar({ absolute = false, light = false, isMini = false }) {
+function DashboardNavbar({ absolute = false, light = true, isMini = false }) {
   const [newMessage, setNewMessage] = useState(false);
   const [controller, dispatch] = useSoftUIController();
   const { miniSidenav, transparentNavbar, fixedNavbar, openConfigurator } = controller;

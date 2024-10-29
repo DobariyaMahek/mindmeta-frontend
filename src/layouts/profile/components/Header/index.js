@@ -93,7 +93,7 @@ function Header({ setEdit, edit }) {
       <Card
         sx={{
           backdropFilter: `saturate(200%) blur(30px)`,
-          backgroundColor: ({ functions: { rgba }, palette: { white } }) => rgba(white.main, 0.8),
+          backgroundColor: ({ functions: { rgba }, palette: { dark } }) => rgba(dark.main, 0.8),
           boxShadow: ({ boxShadows: { navbarBoxShadow } }) => navbarBoxShadow,
           position: "relative",
           mt: -8,
@@ -114,7 +114,7 @@ function Header({ setEdit, edit }) {
           </Grid>
           <Grid item>
             <SoftBox height="100%" mt={0.5} lineHeight={1}>
-              <SoftTypography variant="h5" fontWeight="medium">
+              <SoftTypography variant="h5" fontWeight="medium" color="light">
                 Alex Thompson
               </SoftTypography>
               <SoftTypography variant="button" color="text" fontWeight="medium">
@@ -130,8 +130,9 @@ function Header({ setEdit, edit }) {
                   onClick={() => {
                     setEdit(true);
                   }}
+                  color="light"
                 >
-                  <Edit color="#fff" />
+                  <Edit color="light" />
                 </Icon>
               </Tooltip>
             </Grid>

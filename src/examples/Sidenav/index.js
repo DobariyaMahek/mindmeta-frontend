@@ -134,7 +134,12 @@ function Sidenav({ color = "primary", brand = "", brandName, routes, ...rest }) 
   );
 
   return (
-    <SidenavRoot {...rest} variant="permanent" ownerState={{ transparentSidenav, miniSidenav }}>
+    <SidenavRoot
+      {...rest}
+      variant="permanent"
+      ownerState={{ transparentSidenav, miniSidenav }}
+      sx={{ ".MuiDrawer-paper": { background: "var(--box-color)" } }}
+    >
       <SoftBox pt={3} pb={1} px={4} textAlign="center">
         <SoftBox
           display={{ xs: "block", xl: "none" }}
@@ -157,10 +162,10 @@ function Sidenav({ color = "primary", brand = "", brandName, routes, ...rest }) 
             flexDirection="column"
             sx={(theme) => sidenavLogoLabel(theme, { miniSidenav })}
           >
-            <SoftTypography fontSize="0.875rem" variant="button" fontWeight="medium">
+            <SoftTypography fontSize="0.875rem" variant="button" fontWeight="medium" color='light'>
               {brandName}
             </SoftTypography>{" "}
-            <SoftTypography fontSize="12px" variant="button" fontWeight="medium" color="secondary">
+            <SoftTypography fontSize="12px" variant="button" fontWeight="medium" color="light">
               {capitalizeValue(session?.role?.replace("_", " "))} -{"   "}
               {session?.role == "patient"
                 ? session?.user_info?.first_name + " " + session?.user_info?.last_name
@@ -177,7 +182,7 @@ function Sidenav({ color = "primary", brand = "", brandName, routes, ...rest }) 
         <SoftBox mt={2}>
           <SoftButton
             variant="gradient"
-            color={color}
+            color={"primary"}
             fullWidth
             onClick={() => {
               setOpen(true);

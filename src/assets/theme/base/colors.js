@@ -21,7 +21,7 @@ Coded by www.creative-tim.com
 
 const colors = {
   background: {
-    default: "#f8f9fa",
+    default: "var(--background-color)",
   },
 
   text: {
@@ -45,8 +45,8 @@ const colors = {
   },
 
   primary: {
-    main: "#66b5a3",
-    focus: "#66b5a3",
+    main: "#e8078d",
+    focus: "#e8078d",
   },
 
   secondary: {
@@ -55,7 +55,7 @@ const colors = {
   },
 
   info: {
-    main:'#66B5A3',
+    main: "#66B5A3",
     focus: "#3acaeb",
   },
 
@@ -75,13 +75,13 @@ const colors = {
   },
 
   light: {
-    main: "#e9ecef",
-    focus: "#e9ecef",
+    main: "#fff",
+    focus: "#fff",
   },
 
   dark: {
-    main: "#344767",
-    focus: "#344767",
+    main: "#241631",
+    focus: "#241631",
   },
 
   grey: {
@@ -108,8 +108,8 @@ const colors = {
     },
 
     info: {
-      main:'#66B5A3',
-      state:'#66B5A3',
+      main: "#362645",
+      state: "#241631",
     },
 
     success: {
@@ -293,10 +293,10 @@ const colors = {
   },
 
   inputColors: {
-    borderColor: { main: "#d2d6da", focus: "#66b5a3" },
-    boxShadow: "#66b5a3",
+    borderColor: { main: "#d2d6da", focus: "#E8078D" },
+    boxShadow: "#E8078D",
     error: "#fd5c70",
-    success: "#66d432",
+    success: "#E8078D",
   },
 
   sliderColors: {

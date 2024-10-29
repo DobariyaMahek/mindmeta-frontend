@@ -16,14 +16,14 @@ function collapseItem(theme, ownerState) {
   const { palette, transitions, breakpoints, boxShadows, borders, functions } = theme;
   const { active, transparentSidenav } = ownerState;
 
-  const { dark, white, text, transparent } = palette;
+  const { light, white, text, transparent } = palette;
   const { xxl } = boxShadows;
   const { borderRadius } = borders;
   const { pxToRem } = functions;
 
   return {
     background: active && transparentSidenav ? white.main : transparent.main,
-    color: active ? dark.main : text.main,
+    color: active ? light.main : light.main,
     display: "flex",
     alignItems: "center",
     width: "100%",
