@@ -165,6 +165,8 @@ function Patient() {
             onClick={() => {
               setSelectedPatient(item);
               setOpenChat(true);
+              setSelectedDate(new Date());
+              getChatData(moment(new Date()).format("YYYY-MM-DD"));
             }}
             fontSize="1px"
             style={{ fontSize: "18px" }}
@@ -394,6 +396,7 @@ function Patient() {
               peekNextMonth
               showMonthDropdown
               showYearDropdown
+              maxDate={new Date()}
               dropdownMode="select"
               dateFormat="dd-MM-yyyy"
               onKeyDown={(e) => e.preventDefault()}
