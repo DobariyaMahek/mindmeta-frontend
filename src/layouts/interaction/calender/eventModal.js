@@ -15,9 +15,11 @@ import SoftBox from "components/SoftBox";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { CALL_DURATION } from "helper/constant";
+import colors from "assets/theme/base/colors";
 const EventModal = ({ open, handleClose, handleSave }) => {
   const [controller] = useSoftUIController();
   const { sidenavColor } = controller;
+  const { dark, primary } = colors;
   const [formData, setFormData] = useState({
     title: "",
     description: "",
@@ -141,15 +143,16 @@ const EventModal = ({ open, handleClose, handleSave }) => {
       <Box
         sx={{
           position: "absolute",
-          top: "40%",
+          top: "50%",
           left: "50%",
           transform: "translate(-50%, -50%)",
           width: 500,
-          bgcolor: "background.paper",
-          borderRadius: 2,
+          bgcolor: dark.main,
+          borderRadius: 3,
           boxShadow: 24,
           p: 2,
           outline: "none",
+          boxShadow: "0px 4px 20px rgba(0, 0, 0, 0.7)", // Dark-themed box shadow
         }}
       >
         {" "}
@@ -160,7 +163,7 @@ const EventModal = ({ open, handleClose, handleSave }) => {
             alignItems: "center",
           }}
         >
-          <Typography id="logout-modal-title" variant="h6" component="h2" gutterBottom>
+          <Typography id="logout-modal-title" variant="h6" component="h2" gutterBottom color="#fff">
             Schedule call
           </Typography>
           <Icon
@@ -177,7 +180,7 @@ const EventModal = ({ open, handleClose, handleSave }) => {
               setErrors({});
             }}
             sx={{
-              color: "text.secondary",
+              color: "#fff",
               cursor: "pointer",
             }}
           >
@@ -221,14 +224,59 @@ const EventModal = ({ open, handleClose, handleSave }) => {
             styles={{
               control: (base, state) => ({
                 ...base,
+                fontFamily: "Exo 2",
+                fontSize: "0.875rem !important",
+                fontWeight: "400 !important",
+                color: "#ffffff !important",
+                width: "100%",
+                backgroundColor: "#110c17 !important",
+                borderColor: errors.patient ? "red" : "#544a5d",
                 cursor: "pointer",
-                borderColor: errors.patient ? "red" : "lightGrey",
                 "&:hover": {
-                  borderColor: errors.patient ? "red" : "lightGrey",
+                  borderColor: errors.patient ? "red" : "#544a5d",
                 },
+              }),
+              singleValue: (base) => ({
+                ...base,
+                color: "#ffffff !important", // Ensures the selected text is white
+              }),
+              placeholder: (base) => ({
+                ...base,
+             fontFamily: "Exo 2", 
+                color: "#908f92",
+                fontSize: "13px",
+                padding: "0 3px",
+              }),
+              dropdownIndicator: (base) => ({
+                ...base,
+                color: "#ffffff !important", // Dropdown indicator color
+              }),
+              menu: (base) => ({
+                ...base,
+                backgroundColor: "#110c17 !important", // Dropdown menu background color
+              }),
+              option: (base, state) => ({
+                ...base,
+                fontFamily: "Exo 2 !important",
+                fontSize: "0.875rem !important",
+                fontWeight: "400 !important",
+                color: state.isSelected ? "#ffffff" : "#ffffff", // Option text color
+                backgroundColor: state.isSelected ? "#544a5d" : "#110c17", // Background color for selected and unselected options
                 "&:hover": {
-                  borderColor: errors.patient ? "red" : "lightGrey",
+                  backgroundColor: "#544a5d", // Hover background color
                 },
+              }),
+              noOptionsMessage: (base) => ({
+                ...base,
+             fontFamily: "Exo 2", 
+                fontSize: "0.8rem", // Customize font size for "No Options" text
+                color: "#ffffff",
+              }),
+              loadingMessage: (base) => ({
+                ...base,
+             fontFamily: "Exo 2", 
+                fontSize: "0.8rem", // Customize font size for "Loading..." text
+                color: "#ffffff",
               }),
             }}
           />
@@ -266,7 +314,6 @@ const EventModal = ({ open, handleClose, handleSave }) => {
                 dropdownMode="select"
                 onKeyDown={(e) => e.preventDefault()} // Prevent keyboard input
                 customInput={<input style={{ cursor: "pointer" }} />}
-                
               />
               <span className="error"> {errors.callTime && errors.callTime}</span>
             </SoftBox>

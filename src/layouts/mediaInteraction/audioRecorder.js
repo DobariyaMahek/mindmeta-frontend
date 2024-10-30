@@ -37,11 +37,7 @@ const AudioRecorder = ({ setMedia }) => {
         display: "flex",
         justifyContent: "start",
         alignItems: "center",
-        borderRadius: "16px",
-        padding: "0px 20px",
-        border: "0.0625rem solid #d2d6da",
         marginBottom: "10px",
-        width:'740px'
       }}
     >
       <Tooltip title={recording ? "Stop Recording" : "Start Recording"} placement="top">
@@ -60,7 +56,7 @@ const AudioRecorder = ({ setMedia }) => {
         record={recording}
         className="sound-wave"
         onStop={onStop}
-        strokeColor="#000"
+        strokeColor="#000" // White wave color
       />
     </SoftBox>
   );

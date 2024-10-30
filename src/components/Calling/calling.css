@@ -120,7 +120,7 @@
 
 .phoneNumber {
   width: 100%;
-  font-family: "Open Sans Condensed", sans-serif;
+font-family: "Exo 2", sans-serif;
   font-size: 30px;
   text-align: center;
   transform: translateY(150px);
@@ -207,7 +207,7 @@
   bottom: 20px;
   left: 50%;
   transform: translateX(-50%);
-  font-family: "Open Sans Condensed", sans-serif;
+font-family: "Exo 2", sans-serif;
   color: #fff;
   opacity: 0.4;
 }

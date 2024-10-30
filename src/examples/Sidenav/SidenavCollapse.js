@@ -48,7 +48,7 @@ function SidenavCollapse({
             sx={(theme) => collapseText(theme, { miniSidenav, transparentSidenav, active })}
           />
           {collapse && (
-            <Icon sx={{ position: "absolute", right: 10 }}>
+            <Icon sx={{ position: "absolute", right: 10, color: "var(--text-light-color)" }}>
               {isOpen ? <ExpandLess /> : <ExpandMore />}
             </Icon>
           )}
@@ -64,7 +64,7 @@ function SidenavCollapse({
                     <SoftBox display="flex" alignItems="center">
                       <Icon fontSize="10px" sx={{ fontSize: "10px" }} className="iconSize">
                         <FiberManualRecord
-                          sx={{ fontSize: "10px", color: isActive ? "#66b5a3" : "" }}
+                          sx={{ fontSize: "10px", color: isActive ? "var(--text-main-color)" : "var(--text-light-color)" }}
                         />
                       </Icon>
                       <SoftTypography
@@ -72,7 +72,7 @@ function SidenavCollapse({
                         fontWeight="regular"
                         py={1}
                         pl={1}
-                        sx={{ fontSize: "13px", color: isActive ? "#66b5a3" : "" }}
+                        sx={{ fontSize: "13px", color: isActive ? "var(--text-main-color)" : "var(--text-light-color)" }}
                       >
                         {name}
                       </SoftTypography>

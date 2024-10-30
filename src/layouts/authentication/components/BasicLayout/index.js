@@ -25,7 +25,7 @@ import SoftTypography from "components/SoftTypography";
 
 // Mind Meta AI React examples
 import PageLayout from "examples/LayoutContainers/PageLayout";
-
+import curved0 from "assets/images/curved-images/curved0.jpg";
 function BasicLayout({ title = "", description = "", image, children }) {
   return (
     <PageLayout>
@@ -38,15 +38,14 @@ function BasicLayout({ title = "", description = "", image, children }) {
         pt={6}
         pb={28}
         sx={{
-          backgroundImage: ({ functions: { linearGradient, rgba }, palette: { gradients } }) =>
-            image &&
+          backgroundImage: ({ functions: { rgba, linearGradient }, palette: { gradients } }) =>
             `${linearGradient(
-              rgba(gradients.dark.main, 0.6),
-              rgba(gradients.dark.state, 0.6)
-            )}, url(${image})`,
+              rgba(gradients.info.main, 0.6),
+              rgba(gradients.info.state, 0.6)
+            )}, url(${curved0})`,
           backgroundSize: "cover",
-          backgroundPosition: "center",
-          backgroundRepeat: "no-repeat",
+          backgroundPosition: "50%",
+          overflow: "hidden",
         }}
       >
         <Grid container spacing={3} justifyContent="center" sx={{ textAlign: "center" }}>

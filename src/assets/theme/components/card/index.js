@@ -21,7 +21,7 @@ import boxShadows from "assets/theme/base/boxShadows";
 // Mind Meta AI React Helper Function
 import rgba from "assets/theme/functions/rgba";
 
-const { black, white } = colors;
+const { dark, white } = colors;
 const { borderWidth, borderRadius } = borders;
 const { xxl } = boxShadows;
 
@@ -33,9 +33,9 @@ const card = {
       position: "relative",
       minWidth: 0,
       wordWrap: "break-word",
-      backgroundColor: white.main,
+      backgroundColor: dark.main,
       backgroundClip: "border-box",
-      border: `${borderWidth[0]} solid ${rgba(black.main, 0.125)}`,
+      border: `${borderWidth[0]} solid ${rgba(white.main, 0.125)}`,
       borderRadius: borderRadius.xl,
       boxShadow: xxl,
       overflow: "inherit",

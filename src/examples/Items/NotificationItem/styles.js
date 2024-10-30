@@ -1,7 +1,7 @@
 function menuItem(theme) {
   const { palette, borders, transitions } = theme;
 
-  const { secondary, light } = palette;
+  const { secondary } = palette;
   const { borderRadius } = borders;
 
   return {
@@ -22,7 +22,7 @@ function menuItem(theme) {
     },
 
     "&:hover": {
-      backgroundColor: light.main,
+      backgroundColor: "#110c17",
     },
   };
 }

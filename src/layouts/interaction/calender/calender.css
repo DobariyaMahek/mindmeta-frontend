@@ -1,23 +1,31 @@
 /* Custom text color for Calender items */
 .rbc-show-more {
-  color: #66b5a3 !important;
+  color: #e8078d !important;
   cursor: auto;
+  background-color: transparent;
 }
 
 .rbc-agenda-view table.rbc-agenda-table tbody > tr > td,
 .rbc-label {
   font-size: 14px;
   border: 1px solid #ddd !important;
-  background-color: #fff;
-  color: #000 !important;
+  background-color: #241631;
+  color: #fff !important;
 }
 .rbc-agenda-view table.rbc-agenda-table thead > tr > th,
 .rbc-header {
   font-size: 15px;
   border: 1px solid #ddd !important;
+  color: #fff;
 }
 .rbc-today {
-  background-color: #66b5a333;
+  background-color: #e8078d33;
+}
+.rbc-date-cell {
+  color: #fff;
+}
+.rbc-off-range-bg {
+  background-color: rgba(95, 94, 94, 0.678);
 }
 
 .rbc-agenda-empty {
@@ -27,5 +35,5 @@
   align-items: center;
   font-size: 18px;
   font-weight: 500;
-  color: #66b5a3;
+  color: #e8078d;
 }

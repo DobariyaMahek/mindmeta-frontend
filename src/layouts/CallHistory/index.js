@@ -24,14 +24,10 @@ function CallHistory() {
   return (
     <DashboardLayout>
       <SoftBox py={3}>
-        <Grid container spacing={3}>
-          <Grid item xs={3}>
-            <SidebarCallHistory {...{ setHistoryState, singleHistory, callHistory }} />
-          </Grid>
-          <Grid item xs={9}>
-            <CallHistoryDetails {...{ singleHistory, callHistory }} />
-          </Grid>
-        </Grid>
+        <div className="call-grid">
+          <SidebarCallHistory {...{ setHistoryState, singleHistory, callHistory }} />
+          <CallHistoryDetails {...{ singleHistory, callHistory }} />
+        </div>
       </SoftBox>
     </DashboardLayout>
   );

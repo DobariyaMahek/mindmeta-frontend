@@ -27,10 +27,10 @@ export default function PhotoGallerySidebar({ setHistoryState, singleHistory, ca
         padding: 1,
       }}
     >
-      <Typography variant="h6" align="center" gutterBottom>
+      <Typography variant="h6" align="center" color={'#fff'} gutterBottom>
         Photo Gallery
       </Typography>
-      <Divider />
+      <Divider light/>
 
       <Box sx={{ padding: 1 }}>
         {callHistory?.length ? (
@@ -42,14 +42,15 @@ export default function PhotoGallerySidebar({ setHistoryState, singleHistory, ca
                   display: "flex",
                   alignItems: "center",
                   padding: 1,
-                  backgroundColor: singleHistory?.id === obj?.id ? "#66b5a32e" : "transparent",
+                  backgroundColor: singleHistory?.id === obj?.id ? "#e8078d2e" : "transparent",
                   cursor: "pointer",
-                  color: singleHistory?.id !== obj?.id ? "gray" : "#66B5A3",
+                  color: singleHistory?.id !== obj?.id ? "#fff" : "#e8078d",
+                  borderRadius:3,
                   "&:hover": {
-                    backgroundColor: "#66b5a32e",
-                    color: "#66B5A3",
+                    backgroundColor: "#e8078d2e",
+                    color: "#e8078d",
                     "& .MuiSvgIcon-root": {
-                      color: "#66B5A3", // Change icon color when hovering over the Box
+                      color: "#e8078d", // Change icon color when hovering over the Box
                     },
                   },
                   marginBottom: "5px",
@@ -61,7 +62,7 @@ export default function PhotoGallerySidebar({ setHistoryState, singleHistory, ca
               >
                 <IconButton
                   sx={{
-                    color: singleHistory?.id !== obj?.id ? "secondary.main" : "info.main",
+                    color: singleHistory?.id !== obj?.id ? "light.main" : "info.main",
                   }}
                 >
                   <Call fontSize="small" />

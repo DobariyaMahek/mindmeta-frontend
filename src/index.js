@@ -7,6 +7,7 @@ import { SoftUIControllerProvider } from "context";
 import { Provider } from "react-redux";
 import store from "./redux/index";
 import { WebSocketProvider } from "api/WebSocketProvider";
+import './index.css'
 const TOAST_LIMIT = 1;
 
 function ToastLimitEffect() {

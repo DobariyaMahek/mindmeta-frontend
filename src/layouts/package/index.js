@@ -32,10 +32,10 @@ function Package() {
                 }}
               >
                 <CardContent>
-                  <SoftTypography variant="h5" fontWeight="bold" mb={2} color="#66b5a3">
+                  <SoftTypography variant="h5" fontWeight="bold" mb={2} color="#e8078d">
                     Basic Plan
                   </SoftTypography>
-                  <Typography variant="h4" fontWeight="bold" color="#66b5a3" gutterBottom>
+                  <Typography variant="h4" fontWeight="bold" color="#e8078d" gutterBottom>
                     $19{" "}
                     <Typography variant="body2" component="span" color="textSecondary">
                       / month
@@ -53,14 +53,14 @@ function Package() {
                   </Typography>
                   <Box textAlign="start">
                     <Typography variant="body2" color="textSecondary" mb={2}>
-                      <Typography color={"#66b5a3"} component={"span"}>
+                      <Typography color={"#e8078d"} component={"span"}>
                         {" "}
                         •
                       </Typography>{" "}
                       5 days a week of scheduled check-ins
                     </Typography>
                     <Typography variant="body2" color="textSecondary" mb={2}>
-                      <Typography color={"#66b5a3"} component={"span"}>
+                      <Typography color={"#e8078d"} component={"span"}>
                         {" "}
                         •
                       </Typography>{" "}
@@ -94,10 +94,10 @@ function Package() {
                 }}
               >
                 <CardContent>
-                  <SoftTypography variant="h5" fontWeight="bold" mb={2} color="#66b5a3">
+                  <SoftTypography variant="h5" fontWeight="bold" mb={2} color="#e8078d">
                     Advanced Plan
                   </SoftTypography>
-                  <Typography variant="h4" fontWeight="bold" color="#66b5a3" gutterBottom>
+                  <Typography variant="h4" fontWeight="bold" color="#e8078d" gutterBottom>
                     $59{" "}
                     <Typography variant="body2" component="span" color="textSecondary">
                       / month
@@ -115,14 +115,14 @@ function Package() {
                   </Typography>
                   <Box textAlign="start">
                     <Typography variant="body2" color="textSecondary" mb={2}>
-                      <Typography color={"#66b5a3"} component={"span"}>
+                      <Typography color={"#e8078d"} component={"span"}>
                         {" "}
                         •
                       </Typography>{" "}
                       Daily calls
                     </Typography>
                     <Typography variant="body2" color="textSecondary" mb={2}>
-                      <Typography color={"#66b5a3"} component={"span"}>
+                      <Typography color={"#e8078d"} component={"span"}>
                         {" "}
                         •
                       </Typography>{" "}

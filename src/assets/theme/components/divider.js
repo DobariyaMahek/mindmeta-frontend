@@ -49,7 +49,7 @@ const divider = {
     },
 
     light: {
-      backgroundColor: transparent.main,
+      backgroundColor: white.main,
       backgroundImage: `linear-gradient(to right, ${rgba(white.main, 0)}, ${rgba(
         white.main,
         0.5

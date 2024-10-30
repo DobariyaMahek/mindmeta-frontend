@@ -37,7 +37,7 @@ export default function Expressions({ values }) {
     alignItems: "center",
     width: "100%",
     paddingBottom: "0.25rem",
-    fontFamily: "monospace",
+    fontFamily: "Exo 2",
   };
 
   const keyTextStyle = {
@@ -45,14 +45,14 @@ export default function Expressions({ values }) {
     // overflow: "hidden",
     // textOverflow: "ellipsis",
     fontWeight: "500",
-    color: "#000",
+    color: "#fff",
     flexGrow: 1, // Allow label to grow
   };
 
   const valueTextStyle = {
-    fontFamily: "Arial",
+    fontFamily: "Exo 2",
     opacity: 0.5,
-    color: "#000",
+    color: "#fff",
     paddingLeft: "0.5rem", // Space between label and value
     flexShrink: 0, // Prevent the value from shrinking
   };
@@ -81,7 +81,7 @@ export default function Expressions({ values }) {
     left: "0",
     height: "100%",
     borderRadius: "9999px",
-    backgroundColor: isExpressionColor(key) ? expressionColors[key] : "#66B5A3", // Use expression color or fallback
+    backgroundColor: isExpressionColor(key) ? expressionColors[key] : "#e8078d", // Use expression color or fallback
     width: `${R.pipe(value, R.clamp({ min: 0, max: 1 }), (value) => `${value * 100}%`)}`,
   });
 

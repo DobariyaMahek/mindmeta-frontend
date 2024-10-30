@@ -239,7 +239,7 @@ function TrainingLogs() {
             </SoftBox>
           </Card>
         </SoftBox>
-        {trainingLogsCount > pageSize && (
+        {trainingLogsCount > pageSize && !familyLoader && (
           <Grid container spacing={3} marginTop="20px">
             <Grid xs={12} display="flex" justifyContent="end">
               <Pagination
@@ -248,6 +248,15 @@ function TrainingLogs() {
                 onChange={handlePageChange} // Handle page change
                 color="primary"
                 shape="rounded"
+                sx={{
+                  "& .MuiPaginationItem-root": {
+                    color: "#ffffff", // Text color for pagination items
+                  },
+                  "& .MuiPaginationItem-root.Mui-selected": {
+                    backgroundColor: "primary.main", // Primary color for selected page
+                    color: "#ffffff", // White text color for selected page
+                  },
+                }}
               />
             </Grid>
           </Grid>

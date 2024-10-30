@@ -112,7 +112,7 @@ function ForgotPassword() {
             </SoftBox>
 
             <SoftBox mb={1} mt={4}>
-              <SoftButton variant="gradient" color="dark" fullWidth onClick={handleSubmit}>
+              <SoftButton variant="gradient" color="primary" fullWidth onClick={handleSubmit}>
                 Send
               </SoftButton>
             </SoftBox>

@@ -67,7 +67,7 @@ function SoftUIControllerProvider({ children }) {
   const initialState = {
     miniSidenav: false,
     transparentSidenav: false,
-    sidenavColor: "info",
+    sidenavColor: "primary",
     transparentNavbar: true,
     fixedNavbar: true,
     openConfigurator: false,

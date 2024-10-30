@@ -81,55 +81,48 @@ const MediaDetails = ({ singleHistory, callHistory }) => {
       {singleHistory?.id ? (
         <Box>
           <Card variant="outlined" sx={{ padding: 2, mb: 2 }}>
-            <Box display="flex" justifyContent="space-between" alignItems="center" marginBottom={2}>
+            <Box display="flex" justifyContent="space-between" alignItems="center">
               <SoftBox display="flex" alignItems="center">
-                <Typography variant="h6">Call Details</Typography>
+                <Typography variant="h6" color="#fff">
+                  Call Details
+                </Typography>
               </SoftBox>
             </Box>
-            <SoftBox>
-              <Grid container spacing={1}>
-                <Grid item xs={1}>
+            <Divider light />
+            <SoftBox color="#fff">
+              <div className="text-grid" >
                   <Typography fontSize="14px" fontWeight={"bold"}>
                     Title
                   </Typography>
-                </Grid>
-                <Grid item xs={11}>
                   <Typography fontSize="14px">
                     : &nbsp;
                     {singleHistory?.call_scheduled_title}
                   </Typography>
-                </Grid>
-              </Grid>
-              <Grid container spacing={1}>
-                <Grid item xs={1}>
+              </div>
+              <div className="text-grid" >
                   <Typography fontSize="14px" fontWeight={"bold"}>
                     Start Time
                   </Typography>
-                </Grid>
-                <Grid item xs={11}>
                   <Typography fontSize="14px">
                     : &nbsp;
                     {singleHistory?.start_time ? functionGetTime(singleHistory?.start_time) : "-"}
                   </Typography>
-                </Grid>
-              </Grid>
-              <Grid container spacing={1}>
-                <Grid item xs={1}>
+              </div>
+              <div className="text-grid" >
                   <Typography fontSize="14px" fontWeight={"bold"}>
                     End Time
                   </Typography>
-                </Grid>
-                <Grid item xs={11}>
                   <Typography fontSize="14px">
                     : &nbsp;
                     {singleHistory?.end_time ? functionGetTime(singleHistory?.end_time) : "-"}
                   </Typography>
-                </Grid>
-              </Grid>
+              </div>
             </SoftBox>
           </Card>
           <Card variant="outlined" sx={{ padding: 2 }}>
-            <Typography variant="h6">Media</Typography>
+            <Typography variant="h6" color="#fff">
+              Media
+            </Typography>
             <Divider sx={{ mb: 2 }} />
             {Object.keys(aggregatedMedia).length > 0 && !familyLoader ? (
               <Box
@@ -140,7 +133,7 @@ const MediaDetails = ({ singleHistory, callHistory }) => {
               >
                 {Object.values(aggregatedMedia).map((media, index) => (
                   <Box key={index}>
-                    <Typography variant="h6">
+                    <Typography variant="h6" color="#fff">
                       {media?.file_type?.charAt(0)?.toUpperCase() + media?.file_type?.slice(1)}
                     </Typography>
                     {renderMediaPreview(media, media.file_type, index)}
@@ -148,7 +141,7 @@ const MediaDetails = ({ singleHistory, callHistory }) => {
                 ))}
               </Box>
             ) : (
-              <Typography variant="body2" align="center">
+              <Typography variant="body2" align="center" color="#fff">
                 {familyLoader
                   ? "Please wait while we load your media..."
                   : "No Media Records Found"}
