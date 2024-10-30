@@ -224,7 +224,7 @@ const EventModal = ({ open, handleClose, handleSave }) => {
             styles={{
               control: (base, state) => ({
                 ...base,
-                fontFamily: "Roboto, Helvetica, Arial, sans-serif !important",
+                fontFamily: "Exo 2",
                 fontSize: "0.875rem !important",
                 fontWeight: "400 !important",
                 color: "#ffffff !important",
@@ -242,7 +242,7 @@ const EventModal = ({ open, handleClose, handleSave }) => {
               }),
               placeholder: (base) => ({
                 ...base,
-                fontFamily: "Roboto, Helvetica, Arial, sans-serif",
+             fontFamily: "Exo 2", 
                 color: "#908f92",
                 fontSize: "13px",
                 padding: "0 3px",
@@ -257,7 +257,7 @@ const EventModal = ({ open, handleClose, handleSave }) => {
               }),
               option: (base, state) => ({
                 ...base,
-                fontFamily: "Roboto, Helvetica, Arial, sans-serif !important",
+                fontFamily: "Exo 2 !important",
                 fontSize: "0.875rem !important",
                 fontWeight: "400 !important",
                 color: state.isSelected ? "#ffffff" : "#ffffff", // Option text color
@@ -268,13 +268,13 @@ const EventModal = ({ open, handleClose, handleSave }) => {
               }),
               noOptionsMessage: (base) => ({
                 ...base,
-                fontFamily: "Roboto, Helvetica, Arial, sans-serif",
+             fontFamily: "Exo 2", 
                 fontSize: "0.8rem", // Customize font size for "No Options" text
                 color: "#ffffff",
               }),
               loadingMessage: (base) => ({
                 ...base,
-                fontFamily: "Roboto, Helvetica, Arial, sans-serif",
+             fontFamily: "Exo 2", 
                 fontSize: "0.8rem", // Customize font size for "Loading..." text
                 color: "#ffffff",
               }),

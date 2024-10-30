@@ -142,65 +142,74 @@ function Sidenav({ color = "primary", brand = "", brandName, routes, ...rest }) 
       ownerState={{ transparentSidenav, miniSidenav }}
       sx={{ ".MuiDrawer-paper": { background: "var(--box-color)" } }}
     >
-      <SoftBox pt={3} pb={1} px={4} textAlign="center">
-        <SoftBox
-          display={{ xs: "block", xl: "none" }}
-          position="absolute"
-          top={0}
-          right={0}
-          p={1.625}
-          onClick={closeSidenav}
-          sx={{ cursor: "pointer" }}
-        >
-          <SoftTypography variant="h6" color="secondary">
-            <Icon sx={{ fontWeight: "bold" }}>close</Icon>
-          </SoftTypography>
-        </SoftBox>
-        <SoftBox component={NavLink} to="/" display="flex" alignItems="center">
-          {brand && (
-            <SoftBox
-              component="img"
-              src={"https://mindmeta.co.uk/wp-content/uploads/2023/08/Mind-Meta-Logo-icon.svg"}
-              alt="Mind Meta Logo"
-              width="2.5rem"
-            />
-          )}
+      <div className="class-relative">
+        <SoftBox pt={3} pb={1} px={4} textAlign="center">
           <SoftBox
-            width={!brandName && "100%"}
-            display="flex"
-            flexDirection="column"
-            sx={(theme) => sidenavLogoLabel(theme, { miniSidenav })}
+            display={{ xs: "block", xl: "none" }}
+            position="absolute"
+            top={0}
+            right={0}
+            p={1.625}
+            onClick={closeSidenav}
+            sx={{ cursor: "pointer" }}
           >
-            <SoftTypography fontSize="0.875rem" variant="button" fontWeight="medium" color="light">
-              {brandName}
-            </SoftTypography>{" "}
-            <SoftTypography fontSize="12px" variant="button" fontWeight="medium" color="light">
-              {capitalizeValue(session?.role?.replace("_", " "))} -{"   "}
-              {session?.role == "patient"
-                ? session?.user_info?.first_name + " " + session?.user_info?.last_name
-                : session?.role == "family_member"
-                ? session?.user_info?.name
-                : "Admin"}
+            <SoftTypography variant="h6" color="secondary">
+              <Icon sx={{ fontWeight: "bold" }}>close</Icon>
             </SoftTypography>
           </SoftBox>
+          <SoftBox component={NavLink} to="/" display="flex" alignItems="center">
+            {brand && (
+              <SoftBox
+                component="img"
+                src={"https://mindmeta.co.uk/wp-content/uploads/2023/08/Mind-Meta-Logo-icon.svg"}
+                alt="Mind Meta Logo"
+                width="2.5rem"
+              />
+            )}
+            <SoftBox
+              width={!brandName && "100%"}
+              display="flex"
+              flexDirection="column"
+              sx={(theme) => sidenavLogoLabel(theme, { miniSidenav })}
+            >
+              <SoftTypography
+                fontSize="0.875rem"
+                variant="button"
+                fontWeight="medium"
+                color="light"
+              >
+                {brandName}
+              </SoftTypography>{" "}
+              <SoftTypography fontSize="12px" variant="button" fontWeight="medium" color="light">
+                {capitalizeValue(session?.role?.replace("_", " "))} -{"   "}
+                {session?.role == "patient"
+                  ? session?.user_info?.first_name + " " + session?.user_info?.last_name
+                  : session?.role == "family_member"
+                  ? session?.user_info?.name
+                  : "Admin"}
+              </SoftTypography>
+            </SoftBox>
+          </SoftBox>
         </SoftBox>
-      </SoftBox>
-      <Divider />
-      <List>{renderRoutes}</List>
-      <SoftBox pt={2} my={2} mx={2} mt="auto">
-        <SoftBox mt={2}>
-          <SoftButton
-            variant="gradient"
-            color={"primary"}
-            fullWidth
-            onClick={() => {
-              setOpen(true);
-            }}
-          >
-            Logout
-          </SoftButton>
-        </SoftBox>
-      </SoftBox>
+        <Divider />
+        <List>{renderRoutes}</List>
+        <div className="logout-button-alignment">
+          <SoftBox pt={2} my={2} mx={2}>
+            <SoftBox mt={2}>
+              <SoftButton
+                variant="gradient"
+                color={"primary"}
+                fullWidth
+                onClick={() => {
+                  setOpen(true);
+                }}
+              >
+                Logout
+              </SoftButton>
+            </SoftBox>
+          </SoftBox>
+        </div>
+      </div>
       <Modal
         open={open}
         onClose={() => setOpen(false)}
@@ -233,7 +242,13 @@ function Sidenav({ color = "primary", brand = "", brandName, routes, ...rest }) 
               padding: "10px 10px 5px 10px",
             }}
           >
-            <Typography id="logout-modal-title" variant="h6" component="h2" gutterBottom color={'#fff'}>
+            <Typography
+              id="logout-modal-title"
+              variant="h6"
+              component="h2"
+              gutterBottom
+              color={"#fff"}
+            >
               Log Out
             </Typography>
             <Icon

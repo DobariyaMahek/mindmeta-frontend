@@ -137,72 +137,45 @@ function Header({ setEdit, edit, newData }) {
           </Grid>
         </Grid>
         <SoftBox mt={1}>
-          <Grid container spacing={1}>
-            <Grid item xs={1.2}>
-              <SoftTypography variant="button" fontWeight="bold">
-                Care home name
-              </SoftTypography>
-            </Grid>
-            <Grid item color={"#fff"}>
-              : &nbsp;
-            </Grid>
-            <Grid item xs={10}>
-              <SoftTypography variant="button" color="text" fontWeight="medium">
-                {newData?.carehome_name || "-"}
-              </SoftTypography>{" "}
-            </Grid>
-          </Grid>
-          <Grid container spacing={1}>
-            <Grid item xs={1.2}>
-              <SoftTypography variant="button" fontWeight="bold">
-                Administrator name
-              </SoftTypography>
-            </Grid>
-            <Grid item color={"#fff"}>
-              : &nbsp;
-            </Grid>
-            <Grid item xs={10}>
-              <SoftTypography variant="button" color="text" fontWeight="medium">
-                {newData?.administrator_name || "-"}
-              </SoftTypography>{" "}
-            </Grid>
-          </Grid>
-          <Grid container spacing={1}>
-            <Grid item xs={1.2}>
-              <SoftTypography variant="button" fontWeight="bold">
-                Phone Number
-              </SoftTypography>
-            </Grid>
-            <Grid item color={"#fff"}>
-              : &nbsp;
-            </Grid>
-            <Grid item xs={10}>
-              <SoftTypography variant="button" color="text" fontWeight="medium">
-                {newData?.phone_number && "+"}
-                {newData?.phone_number || "-"}
-              </SoftTypography>{" "}
-            </Grid>
-          </Grid>
-          <Grid container spacing={1}>
-            <Grid item xs={1.2}>
-              <SoftTypography variant="button" fontWeight="bold">
-                Address
-              </SoftTypography>
-            </Grid>
-            <Grid item color={"#fff"}>
-              : &nbsp;
-            </Grid>
-            <Grid item xs={10} lineHeight={"25px"}>
-              <SoftTypography
-                variant="button"
-                color="text"
-                fontWeight="medium"
-                dangerouslySetInnerHTML={{
-                  __html: newData?.address.split(",").join(",<br>") || "-",
-                }} // Renders <br /> as line breaks
-              />
-            </Grid>
-          </Grid>
+          <div className="text-grid">
+            <SoftTypography variant="button" fontWeight="bold">
+              Care home name
+            </SoftTypography>
+            <SoftTypography variant="button" color="text" fontWeight="medium">
+              : {newData?.carehome_name || "-"}
+            </SoftTypography>{" "}
+          </div>
+          <div className="text-grid">
+            <SoftTypography variant="button" fontWeight="bold">
+              Administrator name
+            </SoftTypography>
+            <SoftTypography variant="button" color="text" fontWeight="medium">
+              : {newData?.administrator_name || "-"}
+            </SoftTypography>{" "}
+          </div>
+          <div className="text-grid">
+            <SoftTypography variant="button" fontWeight="bold">
+              Phone Number
+            </SoftTypography>
+            <SoftTypography variant="button" color="text" fontWeight="medium">
+              : {newData?.phone_number && "+"}
+              {newData?.phone_number || "-"}
+            </SoftTypography>{" "}
+          </div>
+          <div className="text-grid">
+            <SoftTypography variant="button" fontWeight="bold">
+              Address
+            </SoftTypography>
+
+            <SoftTypography
+              variant="button"
+              color="text"
+              fontWeight="medium"
+              dangerouslySetInnerHTML={{
+                __html: newData?.address.split(",").join(",<br>") || "-",
+              }} // Renders <br /> as line breaks
+            />
+          </div>
         </SoftBox>
       </Card>
     </SoftBox>

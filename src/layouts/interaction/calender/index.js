@@ -167,110 +167,76 @@ function CalendarComponent() {
     return (
       <SoftBox sx={{ cursor: "auto" }}>
         {/* Patient Name Row */}
-        <Grid container spacing={1}>
+        <div className="text-grid">
           {/* Key: Patient Name */}
           {currentView === "agenda" && (
-            <Grid item xs={1}>
-              {" "}
-              {/* 3 columns for key */}
-              <Typography color={"#fff"} fontSize="14px" fontWeight={"bold"}>
-                Patient Name
-              </Typography>
-            </Grid>
-          )}
-          {currentView === "agenda" && (
-            <Grid item color={"#fff"}>
-              : &nbsp;
-            </Grid>
-          )}
-          {/* Value: Darsh Dubai */}
-          <Grid item xs={currentView === "agenda" ? 10 : 8.5}>
-            {" "}
-            {/* 9 columns for value */}
-            <Typography color={"#fff"} fontSize="14px">
-              {event?.patient?.label}
+            <Typography color={"#fff"} fontSize="14px" fontWeight={"bold"}>
+              Patient Name
             </Typography>
-          </Grid>
-          {currentView !== "agenda" && (
-            <Grid item xs={1} textAlign={"end"}>
-              <Typography color={"#fff"} fontSize="12px">
-                {format(new Date(event.start), "hh:mm a")}
-              </Typography>
-            </Grid>
           )}
-        </Grid>
+          {/* Value: Darsh Dubai */} {/* 9 columns for value */}
+          <Typography color={"#fff"} fontSize="14px">
+            {currentView === "agenda" ? ":" : ""} {event?.patient?.label}
+          </Typography>
+          {currentView !== "agenda" && (
+            <Typography color={"#fff"} fontSize="12px">
+              {format(new Date(event.start), "hh:mm a")}
+            </Typography>
+          )}
+        </div>
 
         {/* Title Row */}
-        <Grid container spacing={1}>
+        <div className="text-grid">
           {/* Key: Title */}
           {currentView === "agenda" && (
-            <Grid item xs={1}>
-              <Typography color={"#fff"} fontSize="14px" fontWeight={"bold"}>
-                Title
-              </Typography>
-            </Grid>
-          )}
-          {currentView === "agenda" && (
-            <Grid item color={"#fff"}>
-              : &nbsp;
-            </Grid>
+            <Typography color={"#fff"} fontSize="14px" fontWeight={"bold"}>
+              Title
+            </Typography>
           )}
           {/* Value: Free Check-up */}
-          <Grid item xs={currentView === "agenda" ? 10 : 12}>
-            <Typography color={"#fff"} fontSize="13px">
-              {event?.title}
-            </Typography>
-          </Grid>
-        </Grid>
+          <Typography color={"#fff"} fontSize="13px">
+            {currentView === "agenda" ? ":" : ""} {event?.title}
+          </Typography>
+        </div>
 
         {currentView === "agenda" && (
           <>
-            <Grid container spacing={1}>
+            <div className="text-grid">
               {/* Key: Description */}
-              <Grid item xs={1}>
-                <Typography color={"#fff"} fontSize="14px" fontWeight={"bold"}>
-                  Description
-                </Typography>
-              </Grid>
-              <Grid item color={"#fff"}>
-                : &nbsp;
-              </Grid>
+              <Typography color={"#fff"} fontSize="14px" fontWeight={"bold"}>
+                Description
+              </Typography>
+
               {/* Value: Hypertension Description */}
-              <Grid item xs={10}>
-                <Typography color="#fff" fontSize="13px" display={"inline"}>
-                  {displayDescription}
+              <Typography color="#fff" fontSize="13px" display={"inline"}>
+                : {displayDescription}
+              </Typography>
+              {isLongDescription && (
+                <Typography
+                  onClick={() => toggleReadMore(event.id)}
+                  color={"#fff"}
+                  fontSize={"12px"}
+                  fontWeight={"bold"}
+                  sx={{ cursor: "pointer" }}
+                  display={"inline"}
+                >
+                  {isExpanded ? "Read Less" : "Read More"}
                 </Typography>
-                {isLongDescription && (
-                  <Typography
-                    onClick={() => toggleReadMore(event.id)}
-                    color={"#fff"}
-                    fontSize={"12px"}
-                    fontWeight={"bold"}
-                    sx={{ cursor: "pointer" }}
-                    display={"inline"}
-                  >
-                    {isExpanded ? "Read Less" : "Read More"}
-                  </Typography>
-                )}
-              </Grid>
-            </Grid>
-            <Grid container spacing={1}>
+              )}
+            </div>
+            <div className="text-grid">
               {/* Key: Description */}
               <Grid item xs={1}>
                 <Typography color={"#fff"} fontSize="14px" fontWeight={"bold"}>
                   Call Duration
                 </Typography>
               </Grid>
-              <Grid item color={"#fff"}>
-                : &nbsp;
-              </Grid>
-              {/* Value: Hypertension Description */}
               <Grid item xs={10}>
                 <Typography color={"#fff"} fontSize="13px">
-                  {event?.call_duration} minute
+                  : {event?.call_duration} minute
                 </Typography>
               </Grid>
-            </Grid>
+            </div>
           </>
         )}
       </SoftBox>
@@ -282,99 +248,88 @@ function CalendarComponent() {
       <SoftBox pt={3}>
         <SoftBox>
           <Card>
+            <Box
+              sx={{
+                color: "#fff",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                // width: 260,
+                borderRadius: 1,
+              }}
+            >
+              <IconButton aria-label="Previous" color="light" onClick={onPrevClick}>
+                <ArrowLeft />
+              </IconButton>
+              <Typography variant="h6 " className="date-text-style" color="#fff">
+                {dateText}
+              </Typography>
+              <IconButton aria-label="Next" color="light" onClick={onNextClick}>
+                <ArrowRight />
+              </IconButton>
+            </Box>
             <div style={{ height: "auto", padding: "10px" }}>
-              <Grid container justifyContent="center" alignItems="center" mb={2}>
-                <Grid item xs={2}>
-                  <Box sx={{ position: "relative", zIndex: 5 }}>
-                    <DatePicker
-                      selected={selectedDate}
-                      onChange={(date) => {
-                        setSelectedDate(date);
-                        setExpandedDescriptions({});
-                      }}
-                      customInput={<input style={{ cursor: "pointer" }} />}
-                      className={"input"}
-                      peekNextMonth
-                      showMonthDropdown
-                      showYearDropdown
-                      dropdownMode="select"
-                      dateFormat="dd-MM-yyyy"
-                      onKeyDown={(e) => e.preventDefault()} // Prevent keyboard input
-                    />
-                  </Box>
-                </Grid>
-                <Grid
-                  item
-                  xs={7}
-                  container
-                  justifyContent="flex-end"
-                  alignItems="center"
+              <div className="calander-header-alignment">
+                <Box sx={{ position: "relative", zIndex: 5 }}>
+                  <DatePicker
+                    selected={selectedDate}
+                    onChange={(date) => {
+                      setSelectedDate(date);
+                      setExpandedDescriptions({});
+                    }}
+                    customInput={<input style={{ cursor: "pointer" }} />}
+                    className={"input"}
+                    peekNextMonth
+                    showMonthDropdown
+                    showYearDropdown
+                    dropdownMode="select"
+                    dateFormat="dd-MM-yyyy"
+                    onKeyDown={(e) => e.preventDefault()} // Prevent keyboard input
+                  />
+                </Box>
+                <div>
+                  <SoftBox sx={{ display: "flex" }}>
+                    <div className="two-content-alignment">
+                      <SoftBox display="flex" justifyContent="end" alignItems="center">
+                        {userInfo?.role == "care_home" && (
+                          <SoftButton
+                            variant="gradient"
+                            color="primary"
+                            sx={{
+                              marginRight: "10px",
+                            }}
+                            onClick={handleScheduleCall}
+                          >
+                            <Add /> Schedule Call
+                          </SoftButton>
+                        )}
 
-                  // spacing={2}
-                >
-                  <Grid item xs={3} sx={{ display: "flex", justifyContent: "flex-end" }}>
-                    <SoftButton variant="outlined" color="info" onClick={onTodayClick}>
-                      Today
-                    </SoftButton>
-                  </Grid>
-                  <Grid item container xs={7} alignItems="center">
-                    <SoftBox sx={{ display: "flex" }}>
-                      <IconButton aria-label="Previous" color="light" onClick={onPrevClick}>
-                        <ArrowLeft />
-                      </IconButton>
-                      <Box
-                        sx={{
-                          color: "#fff",
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "center",
-                          // width: 260,
-                          borderRadius: 1,
-                        }}
-                      >
-                        <Typography variant="h6" color="#fff">
-                          {dateText}
-                        </Typography>
-                      </Box>
-                      <IconButton aria-label="Next" color="light" onClick={onNextClick}>
-                        <ArrowRight />
-                      </IconButton>
-                    </SoftBox>
-                  </Grid>
-                </Grid>
-                <Grid item xs={3}>
-                  <SoftBox display="flex" justifyContent="end" alignItems="center">
-                    {userInfo?.role == "care_home" && (
-                      <SoftButton
-                        variant="gradient"
-                        color="primary"
-                        sx={{
-                          marginRight: "10px",
-                        }}
-                        onClick={handleScheduleCall}
-                      >
-                        <Add sx={{ marginLeft: "5px" }} /> Schedule Call
-                      </SoftButton>
-                    )}
-
-                    <ButtonGroup variant="contained">
-                      {VIEW_OPTIONS.map(({ id, label }) => (
-                        <SoftButton
-                          key={id}
-                          onClick={() => {
-                            setCurrentView(id);
-                            id != currentView && setExpandedDescriptions({});
-                          }}
-                          variant="outlined"
-                          color="info"
-                          sx={id === currentView ? { color: "#e8078d" } : { color: "#fff" }}
-                        >
-                          {label}
-                        </SoftButton>
-                      ))}
-                    </ButtonGroup>
+                        <ButtonGroup variant="contained">
+                          {VIEW_OPTIONS.map(({ id, label }) => (
+                            <SoftButton
+                              key={id}
+                              onClick={() => {
+                                setCurrentView(id);
+                                id != currentView && setExpandedDescriptions({});
+                              }}
+                              variant="outlined"
+                              color="info"
+                              sx={id === currentView ? { color: "#e8078d" } : { color: "#fff" }}
+                            >
+                              {label}
+                            </SoftButton>
+                          ))}
+                        </ButtonGroup>
+                      </SoftBox>
+                    </div>
                   </SoftBox>
-                </Grid>
+                </div>
+                <SoftButton variant="outlined" color="info" onClick={onTodayClick}>
+                  Today
+                </SoftButton>
+              </div>
+              <Grid container justifyContent="center" alignItems="center" mb={2}>
+                <Grid item xs={3}></Grid>
               </Grid>
 
               <Calendar

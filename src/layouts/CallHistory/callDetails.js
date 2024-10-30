@@ -1,12 +1,12 @@
 import React, { Fragment, useEffect, useRef, useState } from "react";
 import { Box, Typography, Card, Divider, Grid, Icon, Tooltip, Modal } from "@mui/material";
+import { makeStyles } from "@material-ui/core/styles";
 import SoftBox from "components/SoftBox";
 import { functionGetTime } from "helper/constant";
 import { useSelector, useDispatch } from "react-redux";
 import moment from "moment";
 import PropTypes from "prop-types";
 import { getDateLabel } from "helper/constant";
-import { useStyles } from "layouts/interaction/chatbot";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { GetCallDetails } from "../../redux/ApiSlice/familySlice";
 import Expressions from "layouts/Call/Expressions";
@@ -15,9 +15,86 @@ import SoftTypography from "components/SoftTypography";
 import CallEmotionChart from "./CallEmotionChart";
 import { isEmpty } from "helper/constant";
 import { GetCallChartData } from "../../redux/ApiSlice/patientSlice";
+import colors from "assets/theme/base/colors";
+const useStyles = makeStyles((theme) => ({
+  chatSection: {
+    width: "100%",
+    height: "84.6vh",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  chatContainer: {
+    width: "100%",
+    height: "100%",
+    borderRadius: "8px",
+    overflow: "hidden",
+    backgroundColor: "#ffffff",
+    display: "flex",
+    flexDirection: "column",
+    [theme.breakpoints.down("md")]: {
+      width: "95%",
+    },
+  },
+  chatMessage: {
+    flex: 1,
+    padding: theme.spacing(2),
+    paddingTop: 0,
+    overflowY: "auto",
+    borderBottom: `1px solid #e8078d`,
+  },
+  chatInput: {
+    display: "flex",
+    width: "200px",
+    alignItems: "center",
+    padding: theme.spacing(1),
+  },
+  inputField: {
+    flex: 1,
+    padding: theme.spacing(1),
+    fontSize: "16px",
+    width: "100% !important",
+  },
+  sendButton: {
+    backgroundColor: "#e8078d",
+    color: "white",
+    border: "none",
+    padding: theme.spacing(1),
+    cursor: "pointer",
+    fontSize: "16px",
+    marginLeft: theme.spacing(1),
+    "&:hover": {
+      backgroundColor: "#4a8d81",
+    },
+  },
+  scrollToBottomButton: {
+    position: "absolute",
+    bottom: theme.spacing(8),
+    right: theme.spacing(2),
+    cursor: "pointer",
+  },
+  stickyHeader: {
+    position: "sticky",
+    top: 0,
+    backgroundColor: "#ffff",
+    zIndex: 10,
+    padding: 0,
+    textAlign: "center",
+    backgroundColor: "#241631",
+  },
+  stickyHeaderText: {
+    fontSize: "12px",
+    fontWeight: 500,
+    padding: 0,
+    cursor: "pointer",
+    color: "#fff",
+    background: "transparent",
+  },
+}));
 
 const CallHistoryDetails = ({ singleHistory, callHistory }) => {
   const dispatch = useDispatch();
+  const { dark } = colors;
   const { callDetails, familyLoader, callDetailsPageCount } = useSelector((state) => state.family);
   const [page, setPage] = useState(1); // For pagination
   const [hasMore, setHasMore] = useState(true); // To check if more data is available
@@ -79,59 +156,62 @@ const CallHistoryDetails = ({ singleHistory, callHistory }) => {
               </SoftBox>{" "}
               <Tooltip title="Overview" placement="top">
                 <Icon
-                  sx={{ cursor: "pointer" }}
+                  sx={{
+                    cursor: "pointer",
+                    animation: "pulse 1.5s infinite ease-in-out",
+                    "@keyframes pulse": {
+                      "0%": {
+                        transform: "scale(1)",
+                        color: "#fff",
+                      },
+                      "50%": {
+                        transform: "scale(1.2)", // Scale up
+                        color: "#ff4081", // Bright color for effect
+                      },
+                      "100%": {
+                        transform: "scale(1)",
+                        color: "#fff",
+                      },
+                    },
+                  }}
                   onClick={() => {
                     setOpenChat(true);
                     handleFetchData(singleHistory?.id);
                   }}
                 >
-                  <EqualizerOutlined color="#fff" />
+                  <EqualizerOutlined />
                 </Icon>
               </Tooltip>
             </Box>
             <Divider light />
             <SoftBox color="#fff">
-              <Grid container spacing={1}>
-                <Grid item xs={1}>
-                  <Typography fontSize="14px" fontWeight={"bold"}>
-                    Title
-                  </Typography>
-                </Grid>
-                <Grid item xs={11}>
-                  <Typography fontSize="14px">
-                    : &nbsp;
-                    {singleHistory?.call_scheduled_title}
-                  </Typography>
-                </Grid>
-              </Grid>
-
-              <Grid container spacing={1}>
-                <Grid item xs={1}>
-                  <Typography fontSize="14px" fontWeight={"bold"}>
-                    Start Time
-                  </Typography>
-                </Grid>
-                <Grid item xs={11}>
-                  <Typography fontSize="14px">
-                    : &nbsp;
-                    {singleHistory?.start_time ? functionGetTime(singleHistory?.start_time) : "-"}
-                  </Typography>
-                </Grid>
-              </Grid>
-
-              <Grid container spacing={1}>
-                <Grid item xs={1}>
-                  <Typography fontSize="14px" fontWeight={"bold"}>
-                    End Time
-                  </Typography>
-                </Grid>
-                <Grid item xs={11}>
-                  <Typography fontSize="14px">
-                    : &nbsp;
-                    {singleHistory?.end_time ? functionGetTime(singleHistory?.end_time) : "-"}
-                  </Typography>
-                </Grid>
-              </Grid>
+              <div className="text-grid">
+                <Typography fontSize="14px" fontWeight={"bold"}>
+                  Title
+                </Typography>
+                <Typography fontSize="14px">
+                  : &nbsp;
+                  {singleHistory?.call_scheduled_title}
+                </Typography>
+              </div>
+              <div className="text-grid">
+                <Typography fontSize="14px" fontWeight={"bold"}>
+                  Start Time
+                </Typography>
+                <Typography fontSize="14px">
+                  : &nbsp;
+                  {singleHistory?.start_time ? functionGetTime(singleHistory?.start_time) : "-"}
+                </Typography>
+              </div>
+              <div className="text-grid">
+                <Typography fontSize="14px" fontWeight={"bold"}>
+                  End Time
+                </Typography>
+                <Typography fontSize="14px">
+                  : &nbsp;
+                  {singleHistory?.end_time ? functionGetTime(singleHistory?.end_time) : "-"}
+                </Typography>
+              </div>
             </SoftBox>
           </Card>
 
@@ -153,10 +233,7 @@ const CallHistoryDetails = ({ singleHistory, callHistory }) => {
                   {groupedMessages &&
                     Object.keys(groupedMessages).map((dateLabel, index) => (
                       <Fragment key={index}>
-                        <SoftBox
-                          className={classes.stickyHeader}
-                          sx={{ backgroundColor: "#110c17" }}
-                        >
+                        <SoftBox className={classes.stickyHeader}>
                           <Typography
                             variant="p"
                             onClick={() => {
@@ -247,7 +324,7 @@ const CallHistoryDetails = ({ singleHistory, callHistory }) => {
                 </InfiniteScroll>
               </Box>
             ) : (
-              <Typography variant="body2" align="center">
+              <Typography variant="body2" align="center" color="#fff">
                 {familyLoader
                   ? "Please wait while we load your messages..."
                   : "No Transcript Records Found"}
@@ -286,11 +363,11 @@ const CallHistoryDetails = ({ singleHistory, callHistory }) => {
             top: "50%",
             left: "50%",
             transform: "translate(-50%, -50%)",
-            width: "70rem",
-            bgcolor: "background.paper",
+            width: { xs: "90%", sm: "80%", md: "70%", lg: "60%", xl: "50%" }, // Responsive width
+            bgcolor: dark.main,
             borderRadius: 2,
             boxShadow: 24,
-            p: 4,
+            p: { xs: 2, sm: 3, md: 4 }, // Responsive padding
             outline: "none",
           }}
         >
@@ -301,7 +378,13 @@ const CallHistoryDetails = ({ singleHistory, callHistory }) => {
               alignItems: "center",
             }}
           >
-            <Typography id="logout-modal-title" variant="h6" component="h2" gutterBottom>
+            <Typography
+              id="logout-modal-title"
+              variant="h6"
+              component="h2"
+              gutterBottom
+              color="#fff"
+            >
               Overview
             </Typography>
             <Icon
@@ -311,7 +394,7 @@ const CallHistoryDetails = ({ singleHistory, callHistory }) => {
               }}
               sx={{ cursor: "pointer" }}
             >
-              <Close />
+              <Close sx={{ color: "#fff" }} />
             </Icon>
           </SoftBox>
 
@@ -321,7 +404,7 @@ const CallHistoryDetails = ({ singleHistory, callHistory }) => {
             display="flex"
             alignItems="center"
             justifyContent="center"
-            flex="column"
+            flexDirection="column"
           >
             {chartLoader ? (
               <SoftTypography variant="button" color="text">
@@ -332,7 +415,15 @@ const CallHistoryDetails = ({ singleHistory, callHistory }) => {
                 No record found for this call
               </SoftTypography>
             ) : !isEmpty(chartData) && Object.keys(chartData).length > 0 ? (
-              <CallEmotionChart data={chartData} />
+              <Box
+                sx={{
+                  maxHeight: "400px", // Set the max height as needed
+                  overflowY: "auto", // Vertical scrollbar
+                  width: "100%", // Ensure it takes the full width
+                }}
+              >
+                <CallEmotionChart data={chartData} />
+              </Box>
             ) : (
               ""
             )}

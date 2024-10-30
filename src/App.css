@@ -1,16 +1,17 @@
 body {
   margin: 0;
   padding: 0;
+  font-family: "Exo 2", sans-serif;
 }
 * {
   box-sizing: border-box;
 }
 input,
 button {
-  font-family: Roboto, Helvetica, Arial, sans-serif;
+  font-family: "Exo 2", sans-serif;
 }
 ::placeholder {
-  font-family: Roboto, Helvetica, Arial, sans-serif !important;
+  font-family: "Exo 2", sans-serif !important;
   color: #908f92 !important;
   font-size: 13px !important;
 }
@@ -23,13 +24,13 @@ a {
 }
 textarea {
   display: block !important;
-  font-family: Roboto, Helvetica, Arial, sans-serif !important;
+  font-family: "Exo 2", sans-serif !important;
   padding: 10px !important;
 }
 
 input,
 select {
-  font-family: Roboto, Helvetica, Arial, sans-serif !important;
+  font-family: "Exo 2", sans-serif !important;
   font-size: 0.875rem !important;
   font-weight: 400 !important;
   color: #ffffff !important;
@@ -161,4 +162,58 @@ label {
 .iconSize {
   font-size: 10px !important;
   padding-right: 20px !important;
+}
+canvas {
+  width: 300px;
+}
+
+.logout-button-alignment {
+  position: absolute;
+  bottom: 0px;
+  width: 100%;
+}
+
+.class-relative {
+  position: relative;
+  height: 100%;
+}
+
+.call-grid {
+  display: grid;
+  grid-template-columns: 450px 1fr;
+  gap: 30px;
+}
+
+.text-grid {
+  display: grid;
+  grid-template-columns: 120px 1fr;
+  gap: 10px;
+  /* padding: 0 0 10px 0; */
+}
+
+.calander-header-alignment {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.two-content-alignment {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: nowrap;
+}
+
+@media (max-width: 1024px) {
+  .call-grid {
+    grid-template-columns: 300px 1fr;
+    gap: 20px;
+  }
+  .calander-header-alignment {
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+  .date-text-style {
+    /* font-size: 18px !important; */
+  }
 }

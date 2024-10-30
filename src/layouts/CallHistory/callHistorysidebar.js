@@ -15,7 +15,7 @@ export default function SidebarCallHistory({ setHistoryState, singleHistory, cal
     <Card
       sx={{
         width: " 100%",
-        height: 810,
+        height: '86vh',
         overflow: "auto",
         padding: 1,
       }}
@@ -90,7 +90,12 @@ export default function SidebarCallHistory({ setHistoryState, singleHistory, cal
             );
           })
         ) : (
-          <Typography variant="body2" align="center" sx={{ marginTop: 1, marginBottom: 1 }}>
+          <Typography
+            variant="body2"
+            align="center"
+            color="#fff"
+            sx={{ marginTop: 1, marginBottom: 1 }}
+          >
             No Records Found
           </Typography>
         )}

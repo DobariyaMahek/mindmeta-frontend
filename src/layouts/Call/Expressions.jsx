@@ -37,7 +37,7 @@ export default function Expressions({ values }) {
     alignItems: "center",
     width: "100%",
     paddingBottom: "0.25rem",
-    fontFamily: "monospace",
+    fontFamily: "Exo 2",
   };
 
   const keyTextStyle = {
@@ -45,14 +45,14 @@ export default function Expressions({ values }) {
     // overflow: "hidden",
     // textOverflow: "ellipsis",
     fontWeight: "500",
-    color: "#000",
+    color: "#fff",
     flexGrow: 1, // Allow label to grow
   };
 
   const valueTextStyle = {
-    fontFamily: "Arial",
+    fontFamily: "Exo 2",
     opacity: 0.5,
-    color: "#000",
+    color: "#fff",
     paddingLeft: "0.5rem", // Space between label and value
     flexShrink: 0, // Prevent the value from shrinking
   };

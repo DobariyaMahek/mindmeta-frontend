@@ -90,45 +90,33 @@ const MediaDetails = ({ singleHistory, callHistory }) => {
             </Box>
             <Divider light />
             <SoftBox color="#fff">
-              <Grid container spacing={1}>
-                <Grid item xs={1}>
+              <div className="text-grid" >
                   <Typography fontSize="14px" fontWeight={"bold"}>
                     Title
                   </Typography>
-                </Grid>
-                <Grid item xs={11}>
                   <Typography fontSize="14px">
                     : &nbsp;
                     {singleHistory?.call_scheduled_title}
                   </Typography>
-                </Grid>
-              </Grid>
-              <Grid container spacing={1}>
-                <Grid item xs={1}>
+              </div>
+              <div className="text-grid" >
                   <Typography fontSize="14px" fontWeight={"bold"}>
                     Start Time
                   </Typography>
-                </Grid>
-                <Grid item xs={11}>
                   <Typography fontSize="14px">
                     : &nbsp;
                     {singleHistory?.start_time ? functionGetTime(singleHistory?.start_time) : "-"}
                   </Typography>
-                </Grid>
-              </Grid>
-              <Grid container spacing={1}>
-                <Grid item xs={1}>
+              </div>
+              <div className="text-grid" >
                   <Typography fontSize="14px" fontWeight={"bold"}>
                     End Time
                   </Typography>
-                </Grid>
-                <Grid item xs={11}>
                   <Typography fontSize="14px">
                     : &nbsp;
                     {singleHistory?.end_time ? functionGetTime(singleHistory?.end_time) : "-"}
                   </Typography>
-                </Grid>
-              </Grid>
+              </div>
             </SoftBox>
           </Card>
           <Card variant="outlined" sx={{ padding: 2 }}>

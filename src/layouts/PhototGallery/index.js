@@ -26,14 +26,10 @@ function PhotoGallery() {
   return (
     <DashboardLayout>
       <SoftBox py={3}>
-        <Grid container spacing={3}>
-          <Grid item xs={3}>
+        <div className="call-grid">
             <PhotoGallerySidebar {...{ setHistoryState, singleHistory, callHistory }} />
-          </Grid>
-          <Grid item xs={9}>
             <MediaDetails {...{ singleHistory, callHistory }} />
-          </Grid>
-        </Grid>
+        </div>
       </SoftBox>
     </DashboardLayout>
   );

@@ -61,6 +61,7 @@ import { Line } from "react-chartjs-2";
 import DatePicker from "react-datepicker";
 import EmotionChart from "./EmotionChart";
 import { isEmpty } from "helper/constant";
+import colors from "assets/theme/base/colors";
 
 // Function component
 function Function({ job, org }) {
@@ -96,6 +97,8 @@ function Patient() {
   const [currentPage, setCurrentPage] = useState(1); // Current page
   const [pageSize] = useState(10); // Page limit
   const [selectedDate, setSelectedDate] = useState(null); // For date selection
+  const { dark, primary } = colors;
+
   const currentRows = patientInfo.map((item, index) => ({
     sr: (
       <SoftTypography variant="caption" color="light" fontWeight="medium">
@@ -368,14 +371,13 @@ function Patient() {
             top: "50%",
             left: "50%",
             transform: "translate(-50%, -50%)",
-            width: "70rem",
-            minHeight: "20rem",
-            bgcolor: "background.paper",
+            width: { xs: "90%", sm: "80%", md: "70%", lg: "60%", xl: "50%" }, // Responsive width
+            bgcolor: dark.main,
             borderRadius: 2,
             boxShadow: 24,
-            p: 4,
-            textAlign: "center",
+            p: { xs: 2, sm: 3, md: 4 }, // Responsive padding
             outline: "none",
+            textAlign: "center",
           }}
         >
           <SoftBox
@@ -385,11 +387,21 @@ function Patient() {
               alignItems: "center",
             }}
           >
-            <Typography id="logout-modal-title" variant="h6" component="h2" gutterBottom>
+            <Typography
+              id="logout-modal-title"
+              variant="h6"
+              component="h2"
+              color="#fff"
+              gutterBottom
+            >
               Patient Overview
             </Typography>
             <Icon aria-label="close" onClick={handleCloseChat} sx={{ cursor: "pointer" }}>
-              <Close />
+              <Close
+                sx={{
+                  color: "#fff",
+                }}
+              />
             </Icon>
           </SoftBox>
           <SoftBox width={"400px"} textAlign="start">
