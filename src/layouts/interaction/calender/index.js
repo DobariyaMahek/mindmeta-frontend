@@ -210,7 +210,6 @@ function CalendarComponent() {
               {/* Value: Hypertension Description */}
               <Typography color="#fff" fontSize="13px" display={"inline"}>
                 : {displayDescription}
-              </Typography>
               {isLongDescription && (
                 <Typography
                   onClick={() => toggleReadMore(event.id)}
@@ -223,6 +222,7 @@ function CalendarComponent() {
                   {isExpanded ? "Read Less" : "Read More"}
                 </Typography>
               )}
+              </Typography>
             </div>
             <div className="text-grid">
               {/* Key: Description */}

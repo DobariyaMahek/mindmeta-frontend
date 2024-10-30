@@ -27,10 +27,10 @@ export default function PhotoGallerySidebar({ setHistoryState, singleHistory, ca
         padding: 1,
       }}
     >
-      <Typography variant="h6" align="center" color={'#fff'} gutterBottom>
+      <Typography variant="h6" align="center" color={"#fff"} gutterBottom>
         Photo Gallery
       </Typography>
-      <Divider light/>
+      <Divider light />
 
       <Box sx={{ padding: 1 }}>
         {callHistory?.length ? (
@@ -45,7 +45,7 @@ export default function PhotoGallerySidebar({ setHistoryState, singleHistory, ca
                   backgroundColor: singleHistory?.id === obj?.id ? "#e8078d2e" : "transparent",
                   cursor: "pointer",
                   color: singleHistory?.id !== obj?.id ? "#fff" : "#e8078d",
-                  borderRadius:3,
+                  borderRadius: 3,
                   "&:hover": {
                     backgroundColor: "#e8078d2e",
                     color: "#e8078d",
@@ -91,7 +91,12 @@ export default function PhotoGallerySidebar({ setHistoryState, singleHistory, ca
             );
           })
         ) : (
-          <Typography variant="body2" align="center" sx={{ marginTop: 1, marginBottom: 1 }}>
+          <Typography
+            variant="body2"
+            align="center"
+            color="#fff"
+            sx={{ marginTop: 1, marginBottom: 1 }}
+          >
             No Records Found
           </Typography>
         )}

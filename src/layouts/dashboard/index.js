@@ -127,90 +127,95 @@ function Dashboard() {
                           <SoftTypography variant="h5" pt={1} fontWeight="bold" gutterBottom>
                             Patient Information
                           </SoftTypography>
-                          <Grid mt={4} mb={2}>
+                          <div className="text-grid">
                             <SoftTypography
                               variant="h6"
                               color="text"
                               fontSize={"14px"}
                               marginBottom="10px"
                             >
-                              {/* It&apos;s {moment(new Date()).format("ddd MMM DD YYYY")} Today */}
-                              Name :{" "}
-                              <SoftTypography
-                                variant="p"
-                                sx={{ color: "gray", fontSize: "14px", Padding: "0" }}
-                              >
-                                {" "}
-                                {patientInfo?.first_name || ""} {patientInfo?.last_name || ""}
-                              </SoftTypography>
+                              Name
                             </SoftTypography>
                             <SoftTypography
-                              variant="h6"
-                              color="text"
-                              fontSize={"14px"}
-                              marginBottom="10px"
+                              variant="p"
+                              sx={{ color: "#fff", fontSize: "14px", Padding: "0" }}
                             >
-                              {/* It&apos;s {moment(new Date()).format("ddd MMM DD YYYY")} Today */}
-                              Birthdate :
-                              <SoftTypography
-                                variant="p"
-                                sx={{ color: "gray", fontSize: "14px", Padding: "0" }}
-                              >
-                                {" "}
-                                {moment
-                                  ?.utc(new Date(patientInfo?.birthdate))
-                                  ?.format("DD MMM, YYYY") || ""}
-                              </SoftTypography>
-                            </SoftTypography>{" "}
+                              {" "}
+                              : {patientInfo?.first_name || ""} {patientInfo?.last_name || ""}
+                            </SoftTypography>
+                          </div>{" "}
+                          <div className="text-grid">
                             <SoftTypography
                               variant="h6"
                               color="text"
                               fontSize={"14px"}
                               marginBottom="10px"
                             >
-                              {/* It&apos;s {moment(new Date()).format("ddd MMM DD YYYY")} Today */}
-                              Status :
-                              <SoftTypography
-                                variant="p"
-                                sx={{ color: "gray", fontSize: "14px", Padding: "0" }}
-                              >
-                                {" "}
-                                Active
-                              </SoftTypography>
-                            </SoftTypography>{" "}
-                            <SoftTypography
-                              variant="h6"
-                              color="text"
-                              fontSize={"14px"}
-                              marginBottom="10px"
-                            >
-                              {/* It&apos;s {moment(new Date()).format("ddd MMM DD YYYY")} Today */}
-                              Email :
-                              <SoftTypography
-                                variant="p"
-                                sx={{ color: "gray", fontSize: "14px", Padding: "0" }}
-                              >
-                                {" "}
-                                {patientInfo?.email || ""}
-                              </SoftTypography>
+                              Birthdate
                             </SoftTypography>
                             <SoftTypography
+                              variant="p"
+                              sx={{ color: "#fff", fontSize: "14px", Padding: "0" }}
+                            >
+                              {" "}
+                              :{" "}
+                              {moment
+                                ?.utc(new Date(patientInfo?.birthdate))
+                                ?.format("DD MMM, YYYY") || ""}
+                            </SoftTypography>
+                          </div>{" "}
+                          <div className="text-grid">
+                            <SoftTypography
                               variant="h6"
                               color="text"
                               fontSize={"14px"}
                               marginBottom="10px"
                             >
-                              {/* It&apos;s {moment(new Date()).format("ddd MMM DD YYYY")} Today */}
-                              Medical History :
-                              <SoftTypography
-                                variant="p"
-                                sx={{ color: "gray", fontSize: "14px", Padding: "0" }}
-                              >
-                                {" "}
-                                {patientInfo?.medical_history || ""}
-                              </SoftTypography>
+                              Status
                             </SoftTypography>
-                          </Grid>{" "}
+                            <SoftTypography
+                              variant="p"
+                              sx={{ color: "#fff", fontSize: "14px", Padding: "0" }}
+                            >
+                              {" "}
+                              : Active
+                            </SoftTypography>
+                          </div>{" "}
+                          <div className="text-grid">
+                            <SoftTypography
+                              variant="h6"
+                              color="text"
+                              fontSize={"14px"}
+                              marginBottom="10px"
+                            >
+                              Email
+                            </SoftTypography>
+                            <SoftTypography
+                              variant="p"
+                              sx={{ color: "#fff", fontSize: "14px", Padding: "0" }}
+                            >
+                              {" "}
+                              : {patientInfo?.email || ""}
+                            </SoftTypography>
+                          </div>{" "}
+                          <div className="text-grid">
+                            <SoftTypography
+                              variant="h6"
+                              color="text"
+                              fontSize={"14px"}
+                              marginBottom="10px"
+                            >
+                              Medical History
+                            </SoftTypography>
+                            <SoftTypography
+                              variant="p"
+                              sx={{ color: "#fff", fontSize: "14px", Padding: "0" }}
+                            >
+                              {" "}
+                              : {patientInfo?.medical_history || ""}
+                            </SoftTypography>
+                          </div>
+                          
                         </SoftBox>
                       </Grid>
                     </Grid>

@@ -342,7 +342,7 @@ const CallHistoryDetails = ({ singleHistory, callHistory }) => {
             justifyContent: "center",
           }}
         >
-          <Typography variant="body2" align="center">
+          <Typography variant="body2" align="center" color="#fff">
             {!callHistory?.length
               ? "No Call History Available"
               : "Please select a call from the list to see the details."}
