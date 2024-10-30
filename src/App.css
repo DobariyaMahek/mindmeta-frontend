@@ -97,6 +97,15 @@ input:focus {
 .animate-dot {
   animation: pulse 1s infinite;
 }
+.react-datepicker,
+.react-datepicker__header,
+h2.react-datepicker__current-month,
+.react-datepicker__day-name,
+.react-datepicker__day,
+.react-datepicker__time-name {
+  background-color: #110c17 !important;
+  color: #fff !important;
+}
 .react-datepicker-wrapper {
   display: block;
   width: 100%;

@@ -15,13 +15,14 @@ import moment from "moment";
 import { TRAINING_LOGS_COLUMNS } from "helper/constant";
 import { getTrainingLogs } from "../../redux/ApiSlice/familySlice";
 import { LazyLoadImage } from "react-lazy-load-image-component";
+import colors from "assets/theme/base/colors";
 
 function TrainingLogs() {
   document.title = "Mind Meta AI | Training";
   const { trainingLogsCount, familyTrainingLogs, familyLoader } = useSelector(
     (state) => state.family
   );
-
+  const { dark } = colors;
   const [open, setOpen] = useState(false);
   const [selectedLogs, setSelectedLogs] = useState(null);
   const navigate = useNavigate();
@@ -276,7 +277,7 @@ function TrainingLogs() {
             left: "50%",
             transform: "translate(-50%, -50%)",
             width: 900,
-            bgcolor: "#ffffff",
+            bgcolor: dark.main,
             borderRadius: 3,
             boxShadow: 24,
             textAlign: "center",
@@ -284,14 +285,14 @@ function TrainingLogs() {
           }}
         >
           <SoftBox display="flex" justifyContent="space-between" alignItems="center" px={4} py={2}>
-            <Typography id="confirm-modal-title" variant="h5" fontWeight="bold" color="dark">
+            <Typography id="confirm-modal-title" variant="h5" fontWeight="bold" color="#fff">
               View Training Details
             </Typography>
             <Icon
               aria-label="close"
               onClick={handleClose}
               sx={{
-                color: "text.secondary",
+                color: "#fff",
                 cursor: "pointer",
                 transition: "color 0.2s",
               }}
@@ -301,7 +302,7 @@ function TrainingLogs() {
           </SoftBox>
 
           <SoftBox textAlign="start" sx={{ maxHeight: 600, overflow: "auto", p: 4 }}>
-            <Typography variant="h6" color="dark">
+            <Typography variant="h6" color="#fff">
               Media
             </Typography>
             {renderMediaPreview(selectedLogs?.file_url, selectedLogs?.file_type)}
@@ -310,11 +311,11 @@ function TrainingLogs() {
               {/* Tags Section */}
               <Grid container spacing={1} mt={1}>
                 <Grid item xs={1.5}>
-                  <Typography variant="h6" color="dark">
+                  <Typography variant="h6" color="#fff">
                     Tags
                   </Typography>
                 </Grid>
-                <Grid item>: </Grid>
+                <Grid item  color="#fff">: </Grid>
                 <Grid item xs={10}>
                   {(typeof selectedLogs?.tags === "string"
                     ? [selectedLogs?.tags]
@@ -349,13 +350,13 @@ function TrainingLogs() {
               {/* Description Section */}
               <Grid container spacing={1} mt={1}>
                 <Grid item xs={1.5}>
-                  <Typography variant="h6" color="dark">
+                  <Typography variant="h6" color="#fff">
                     Description
                   </Typography>
                 </Grid>
-                <Grid item>: </Grid>
+                <Grid item  color="#fff">: </Grid>
                 <Grid item xs={10}>
-                  <Typography fontSize="14px" color="text.secondary">
+                  <Typography fontSize="14px"  color="#fff">
                     {showFullDescription
                       ? selectedLogs?.description
                       : getTruncatedText(selectedLogs?.description || "", textLimit)}{" "}
@@ -378,13 +379,13 @@ function TrainingLogs() {
               {/* Instruction Section */}
               <Grid container spacing={1} mt={1}>
                 <Grid item xs={1.5}>
-                  <Typography variant="h6" color="dark">
+                  <Typography variant="h6" color="#fff">
                     Instruction
                   </Typography>
                 </Grid>
-                <Grid item>: </Grid>
+                <Grid item  color="#fff">: </Grid>
                 <Grid item xs={10}>
-                  <Typography fontSize="14px" color="text.secondary">
+                  <Typography fontSize="14px"  color="#fff">
                     {showFullInstruction
                       ? selectedLogs?.instruction
                       : getTruncatedText(selectedLogs?.instruction || "", textLimit)}{" "}
