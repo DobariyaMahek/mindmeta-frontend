@@ -90,32 +90,32 @@ const MediaDetails = ({ singleHistory, callHistory }) => {
             </Box>
             <Divider light />
             <SoftBox color="#fff">
-              <div className="text-grid" >
-                  <Typography fontSize="14px" fontWeight={"bold"}>
-                    Title
-                  </Typography>
-                  <Typography fontSize="14px">
-                    : &nbsp;
-                    {singleHistory?.call_scheduled_title}
-                  </Typography>
+              <div className="text-grid">
+                <Typography fontSize="14px" fontWeight={"bold"}>
+                  Title
+                </Typography>
+                <Typography fontSize="14px">
+                  : &nbsp;
+                  {singleHistory?.call_scheduled_title}
+                </Typography>
               </div>
-              <div className="text-grid" >
-                  <Typography fontSize="14px" fontWeight={"bold"}>
-                    Start Time
-                  </Typography>
-                  <Typography fontSize="14px">
-                    : &nbsp;
-                    {singleHistory?.start_time ? functionGetTime(singleHistory?.start_time) : "-"}
-                  </Typography>
+              <div className="text-grid">
+                <Typography fontSize="14px" fontWeight={"bold"}>
+                  Start Time
+                </Typography>
+                <Typography fontSize="14px">
+                  : &nbsp;
+                  {singleHistory?.start_time ? functionGetTime(singleHistory?.start_time) : "-"}
+                </Typography>
               </div>
-              <div className="text-grid" >
-                  <Typography fontSize="14px" fontWeight={"bold"}>
-                    End Time
-                  </Typography>
-                  <Typography fontSize="14px">
-                    : &nbsp;
-                    {singleHistory?.end_time ? functionGetTime(singleHistory?.end_time) : "-"}
-                  </Typography>
+              <div className="text-grid">
+                <Typography fontSize="14px" fontWeight={"bold"}>
+                  End Time
+                </Typography>
+                <Typography fontSize="14px">
+                  : &nbsp;
+                  {singleHistory?.end_time ? functionGetTime(singleHistory?.end_time) : "-"}
+                </Typography>
               </div>
             </SoftBox>
           </Card>
@@ -159,7 +159,7 @@ const MediaDetails = ({ singleHistory, callHistory }) => {
             justifyContent: "center",
           }}
         >
-          <Typography variant="body2" align="center">
+          <Typography variant="body2" align="center" color="#fff">
             {!callHistory?.length
               ? "No Photo Gallery Available"
               : "Please select a call from the list to see the details."}

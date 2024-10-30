@@ -45,7 +45,7 @@ function Table({ columns, rows, text, loader }) {
         pr={align === "right" ? pr : 3}
         textAlign={align}
         fontSize={size.xxs}
-        fontWeight={900}
+        fontWeight={700}
         color={light.main}
         opacity={0.7}
         borderBottom={`${borderWidth[1]} solid ${secondary.main}`}

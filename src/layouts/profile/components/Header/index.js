@@ -137,7 +137,7 @@ function Header({ setEdit, edit, newData }) {
           </Grid>
         </Grid>
         <SoftBox mt={1}>
-          <div className="text-grid">
+          <div className="profile-text-grid">
             <SoftTypography variant="button" fontWeight="bold">
               Care home name
             </SoftTypography>
@@ -145,7 +145,7 @@ function Header({ setEdit, edit, newData }) {
               : {newData?.carehome_name || "-"}
             </SoftTypography>{" "}
           </div>
-          <div className="text-grid">
+          <div className="profile-text-grid">
             <SoftTypography variant="button" fontWeight="bold">
               Administrator name
             </SoftTypography>
@@ -153,7 +153,7 @@ function Header({ setEdit, edit, newData }) {
               : {newData?.administrator_name || "-"}
             </SoftTypography>{" "}
           </div>
-          <div className="text-grid">
+          <div className="profile-text-grid">
             <SoftTypography variant="button" fontWeight="bold">
               Phone Number
             </SoftTypography>
@@ -162,19 +162,21 @@ function Header({ setEdit, edit, newData }) {
               {newData?.phone_number || "-"}
             </SoftTypography>{" "}
           </div>
-          <div className="text-grid">
+          <div className="profile-text-grid">
             <SoftTypography variant="button" fontWeight="bold">
               Address
             </SoftTypography>
-
-            <SoftTypography
-              variant="button"
-              color="text"
-              fontWeight="medium"
-              dangerouslySetInnerHTML={{
-                __html: newData?.address.split(",").join(",<br>") || "-",
-              }} // Renders <br /> as line breaks
-            />
+            <SoftTypography>
+              :
+              <SoftTypography
+                variant="button"
+                color="text"
+                fontWeight="medium"
+                dangerouslySetInnerHTML={{
+                  __html: newData?.address.split(",").join(",<br>") || "-",
+                }} // Renders <br /> as line breaks
+              />
+            </SoftTypography>
           </div>
         </SoftBox>
       </Card>
