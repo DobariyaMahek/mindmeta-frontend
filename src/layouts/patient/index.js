@@ -258,6 +258,7 @@ function Patient() {
                       transform: "translateY(-50%)",
                       zIndex: 1,
                       cursor: "pointer",
+                      color:'#fff'
                     }}
                     fontSize="1px"
                   >
@@ -424,17 +425,17 @@ function Patient() {
               onKeyDown={(e) => e.preventDefault()}
             />
           </SoftBox>
-          <SoftBox height="100%" marginTop="40px">
+          <SoftBox height="100%" marginTop="40px" color="#fff">
             {!selectedDate ? (
-              <SoftTypography variant="button" color="text">
+              <SoftTypography variant="button" >
                 Please select a date to view the overview.
               </SoftTypography>
             ) : chartLoader ? (
-              <SoftTypography variant="button" color="text">
+              <SoftTypography variant="button" >
                 Loading data...
               </SoftTypography>
             ) : isEmpty(patientChartData) || Object.keys(patientChartData).length === 0 ? (
-              <SoftTypography variant="button" color="text">
+              <SoftTypography variant="button" >
                 No overview available for the chosen date. Please select a different date
               </SoftTypography>
             ) : !isEmpty(patientChartData) && Object.keys(patientChartData).length > 0 ? (

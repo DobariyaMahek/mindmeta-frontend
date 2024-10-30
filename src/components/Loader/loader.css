@@ -98,7 +98,7 @@
 .loader {
   width: 45px;
   aspect-ratio: 1;
-  --_g: no-repeat radial-gradient(farthest-side, #6667b59d 94%, #0000);
+  --_g: no-repeat radial-gradient(farthest-side, #a55485 94%, #0000);
   background: var(--_g) 0 0, var(--_g) 100% 0, var(--_g) 100% 100%, var(--_g) 0 100%;
   background-size: 40% 40%;
   animation: l38 0.5s infinite;
