@@ -98,27 +98,27 @@ function Patient() {
   const [selectedDate, setSelectedDate] = useState(null); // For date selection
   const currentRows = patientInfo.map((item, index) => ({
     sr: (
-      <SoftTypography variant="caption" color="secondary" fontWeight="medium">
+      <SoftTypography variant="caption" color="light" fontWeight="medium">
         {index + 1 + (currentPage - 1) * pageSize} {/* Adjust row number based on currentPage */}
       </SoftTypography>
     ),
     "patient name": (
-      <SoftTypography variant="caption" color="secondary" fontWeight="medium">
+      <SoftTypography variant="caption" color="light" fontWeight="medium">
         {item?.first_name} {item?.last_name}
       </SoftTypography>
     ),
     email: (
-      <SoftTypography variant="caption" color="secondary" fontWeight="medium">
+      <SoftTypography variant="caption" color="light" fontWeight="medium">
         {item?.email}
       </SoftTypography>
     ),
     birthDate: (
-      <SoftTypography variant="caption" color="secondary" fontWeight="medium">
+      <SoftTypography variant="caption" color="light" fontWeight="medium">
         {moment?.utc(item?.birthdate).format("DD MMM YYYY")}
       </SoftTypography>
     ),
     "created date": (
-      <SoftTypography variant="caption" color="secondary" fontWeight="medium">
+      <SoftTypography variant="caption" color="light" fontWeight="medium">
         {moment?.utc(item?.created_at).format("DD MMM YYYY")}
       </SoftTypography>
     ),
@@ -126,7 +126,7 @@ function Patient() {
       <SoftBadge
         variant="gradient"
         badgeContent={item.is_active === true ? "Active" : "Inactive"}
-        color={item.is_active === true ? "info" : "secondary"}
+        color={item.is_active === true ? "primary" : "secondary"}
         size="xs"
         container
       />
@@ -226,7 +226,9 @@ function Patient() {
         <SoftBox>
           <Card>
             <SoftBox display="flex" justifyContent="space-between" alignItems="center" p={3}>
-              <SoftTypography variant="h6">Patient List</SoftTypography>
+              <SoftTypography variant="h6" color="light">
+                Patient List
+              </SoftTypography>
               <div style={{ position: "relative" }}>
                 <SoftInput
                   placeholder="Search by name or email"
@@ -280,7 +282,7 @@ function Patient() {
             </SoftBox>
           </Card>
         </SoftBox>
-        {totalPatients > pageSize && (
+        {totalPatients > pageSize && !patientLoader && (
           <Grid container spacing={3} marginTop="20px">
             <Grid xs={12} display="flex" justifyContent="end">
               <Pagination
@@ -288,8 +290,16 @@ function Patient() {
                 page={currentPage} // Current page
                 onChange={handlePageChange} // Handle page change
                 color="primary"
-                // variant="outlined"
                 shape="rounded"
+                sx={{
+                  "& .MuiPaginationItem-root": {
+                    color: "#ffffff", // Text color for pagination items
+                  },
+                  "& .MuiPaginationItem-root.Mui-selected": {
+                    backgroundColor: "primary.main", // Primary color for selected page
+                    color: "#ffffff", // White text color for selected page
+                  },
+                }}
               />
             </Grid>
           </Grid>

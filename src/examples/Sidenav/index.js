@@ -17,6 +17,7 @@ import { Close } from "@mui/icons-material";
 import { useWebSocketContext } from "api/WebSocketProvider";
 import { getSession } from "helper/authHelper";
 import { capitalizeValue } from "helper/constant";
+import colors from "assets/theme/base/colors";
 
 function Sidenav({ color = "primary", brand = "", brandName, routes, ...rest }) {
   const [controller, dispatch] = useSoftUIController();
@@ -27,6 +28,7 @@ function Sidenav({ color = "primary", brand = "", brandName, routes, ...rest }) 
   const collapseName = pathname.split("/").slice(1)[0];
   const [open, setOpen] = useState(false);
   const session = getSession();
+  const { dark, primary } = colors;
 
   const { notificationSocketRef, chatSocketRef } = useWebSocketContext();
 
@@ -155,14 +157,21 @@ function Sidenav({ color = "primary", brand = "", brandName, routes, ...rest }) 
           </SoftTypography>
         </SoftBox>
         <SoftBox component={NavLink} to="/" display="flex" alignItems="center">
-          {brand && <SoftBox component="img" src={brand} alt="Soft UI Logo" width="2rem" />}
+          {brand && (
+            <SoftBox
+              component="img"
+              src={"https://mindmeta.co.uk/wp-content/uploads/2023/08/Mind-Meta-Logo-icon.svg"}
+              alt="Mind Meta Logo"
+              width="2.5rem"
+            />
+          )}
           <SoftBox
             width={!brandName && "100%"}
             display="flex"
             flexDirection="column"
             sx={(theme) => sidenavLogoLabel(theme, { miniSidenav })}
           >
-            <SoftTypography fontSize="0.875rem" variant="button" fontWeight="medium" color='light'>
+            <SoftTypography fontSize="0.875rem" variant="button" fontWeight="medium" color="light">
               {brandName}
             </SoftTypography>{" "}
             <SoftTypography fontSize="12px" variant="button" fontWeight="medium" color="light">
@@ -205,13 +214,15 @@ function Sidenav({ color = "primary", brand = "", brandName, routes, ...rest }) 
             top: "50%",
             left: "50%",
             transform: "translate(-50%, -50%)",
-            width: 400,
-            bgcolor: "background.paper",
-            borderRadius: 2,
+            width: 500,
+            bgcolor: dark.main,
+            borderRadius: 3,
             boxShadow: 24,
             p: 1,
-            textAlign: "start",
+            pt: 2,
+            pb: 2,
             outline: "none",
+            boxShadow: "0px 4px 20px rgba(0, 0, 0, 0.7)", // Dark-themed box shadow
           }}
         >
           <SoftBox
@@ -222,14 +233,14 @@ function Sidenav({ color = "primary", brand = "", brandName, routes, ...rest }) 
               padding: "10px 10px 5px 10px",
             }}
           >
-            <Typography id="logout-modal-title" variant="h6" component="h2" gutterBottom>
+            <Typography id="logout-modal-title" variant="h6" component="h2" gutterBottom color={'#fff'}>
               Log Out
             </Typography>
             <Icon
               aria-label="close"
               onClick={() => setOpen(false)}
               sx={{
-                color: "text.secondary",
+                color: "#fff",
               }}
             >
               <Close />
@@ -237,13 +248,7 @@ function Sidenav({ color = "primary", brand = "", brandName, routes, ...rest }) 
           </SoftBox>
 
           <hr />
-          <Typography
-            id="logout-modal-description"
-            variant="body2"
-            color="text.secondary"
-            mb={3}
-            m={2}
-          >
+          <Typography id="logout-modal-description" variant="body2" color="#fff" mb={3} m={2}>
             Are you sure you want to log out?
           </Typography>
 

@@ -81,7 +81,7 @@ export default function Expressions({ values }) {
     left: "0",
     height: "100%",
     borderRadius: "9999px",
-    backgroundColor: isExpressionColor(key) ? expressionColors[key] : "#66B5A3", // Use expression color or fallback
+    backgroundColor: isExpressionColor(key) ? expressionColors[key] : "#e8078d", // Use expression color or fallback
     width: `${R.pipe(value, R.clamp({ min: 0, max: 1 }), (value) => `${value * 100}%`)}`,
   });
 

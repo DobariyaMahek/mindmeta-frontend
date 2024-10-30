@@ -141,7 +141,7 @@ function CalendarComponent() {
 
   const eventPropGetter = () => ({
     style: {
-      backgroundColor: "#66b5a3",
+      backgroundColor: "#e8078d",
       color: "white",
       borderRadius: "5px",
       padding: "5px",
@@ -173,27 +173,27 @@ function CalendarComponent() {
             <Grid item xs={1}>
               {" "}
               {/* 3 columns for key */}
-              <Typography
-                color={currentView === "agenda" ? "#000" : "#fff"}
-                fontSize="14px"
-                fontWeight={"bold"}
-              >
+              <Typography color={"#fff"} fontSize="14px" fontWeight={"bold"}>
                 Patient Name
               </Typography>
             </Grid>
           )}
-          {currentView === "agenda" && <Grid item>: &nbsp;</Grid>}
+          {currentView === "agenda" && (
+            <Grid item color={"#fff"}>
+              : &nbsp;
+            </Grid>
+          )}
           {/* Value: Darsh Dubai */}
           <Grid item xs={currentView === "agenda" ? 10 : 8.5}>
             {" "}
             {/* 9 columns for value */}
-            <Typography color={currentView === "agenda" ? "#000" : "#fff"} fontSize="14px">
+            <Typography color={"#fff"} fontSize="14px">
               {event?.patient?.label}
             </Typography>
           </Grid>
           {currentView !== "agenda" && (
             <Grid item xs={1} textAlign={"end"}>
-              <Typography color={currentView === "agenda" ? "#000" : "#fff"} fontSize="12px">
+              <Typography color={"#fff"} fontSize="12px">
                 {format(new Date(event.start), "hh:mm a")}
               </Typography>
             </Grid>
@@ -205,19 +205,19 @@ function CalendarComponent() {
           {/* Key: Title */}
           {currentView === "agenda" && (
             <Grid item xs={1}>
-              <Typography
-                color={currentView === "agenda" ? "#000" : "#fff"}
-                fontSize="14px"
-                fontWeight={"bold"}
-              >
-                Title:
+              <Typography color={"#fff"} fontSize="14px" fontWeight={"bold"}>
+                Title
               </Typography>
             </Grid>
           )}
-          {currentView === "agenda" && <Grid item>: &nbsp;</Grid>}
+          {currentView === "agenda" && (
+            <Grid item color={"#fff"}>
+              : &nbsp;
+            </Grid>
+          )}
           {/* Value: Free Check-up */}
           <Grid item xs={currentView === "agenda" ? 10 : 12}>
-            <Typography color={currentView === "agenda" ? "#000" : "#fff"} fontSize="13px">
+            <Typography color={"#fff"} fontSize="13px">
               {event?.title}
             </Typography>
           </Grid>
@@ -228,24 +228,22 @@ function CalendarComponent() {
             <Grid container spacing={1}>
               {/* Key: Description */}
               <Grid item xs={1}>
-                <Typography
-                  color={currentView === "agenda" ? "#000" : "#fff"}
-                  fontSize="14px"
-                  fontWeight={"bold"}
-                >
+                <Typography color={"#fff"} fontSize="14px" fontWeight={"bold"}>
                   Description
                 </Typography>
               </Grid>
-              <Grid item>: &nbsp;</Grid>
+              <Grid item color={"#fff"}>
+                : &nbsp;
+              </Grid>
               {/* Value: Hypertension Description */}
               <Grid item xs={10}>
-                <Typography color="#000" fontSize="13px" display={"inline"}>
+                <Typography color="#fff" fontSize="13px" display={"inline"}>
                   {displayDescription}
                 </Typography>
                 {isLongDescription && (
                   <Typography
                     onClick={() => toggleReadMore(event.id)}
-                    color={"#000"}
+                    color={"#fff"}
                     fontSize={"12px"}
                     fontWeight={"bold"}
                     sx={{ cursor: "pointer" }}
@@ -259,18 +257,16 @@ function CalendarComponent() {
             <Grid container spacing={1}>
               {/* Key: Description */}
               <Grid item xs={1}>
-                <Typography
-                  color={currentView === "agenda" ? "#000" : "#fff"}
-                  fontSize="14px"
-                  fontWeight={"bold"}
-                >
+                <Typography color={"#fff"} fontSize="14px" fontWeight={"bold"}>
                   Call Duration
                 </Typography>
               </Grid>
-              <Grid item>: &nbsp;</Grid>
+              <Grid item color={"#fff"}>
+                : &nbsp;
+              </Grid>
               {/* Value: Hypertension Description */}
               <Grid item xs={10}>
-                <Typography color={"#000"} fontSize="13px">
+                <Typography color={"#fff"} fontSize="13px">
                   {event?.call_duration} minute
                 </Typography>
               </Grid>
@@ -323,12 +319,12 @@ function CalendarComponent() {
                   </Grid>
                   <Grid item container xs={7} alignItems="center">
                     <SoftBox sx={{ display: "flex" }}>
-                      <IconButton aria-label="Previous" onClick={onPrevClick}>
+                      <IconButton aria-label="Previous" color="light" onClick={onPrevClick}>
                         <ArrowLeft />
                       </IconButton>
                       <Box
                         sx={{
-                          color: "black",
+                          color: "#fff",
                           display: "flex",
                           alignItems: "center",
                           justifyContent: "center",
@@ -336,9 +332,11 @@ function CalendarComponent() {
                           borderRadius: 1,
                         }}
                       >
-                        <Typography variant="h6">{dateText}</Typography>
+                        <Typography variant="h6" color="#fff">
+                          {dateText}
+                        </Typography>
                       </Box>
-                      <IconButton aria-label="Next" onClick={onNextClick}>
+                      <IconButton aria-label="Next" color="light" onClick={onNextClick}>
                         <ArrowRight />
                       </IconButton>
                     </SoftBox>
@@ -349,7 +347,7 @@ function CalendarComponent() {
                     {userInfo?.role == "care_home" && (
                       <SoftButton
                         variant="gradient"
-                        color="info"
+                        color="primary"
                         sx={{
                           marginRight: "10px",
                         }}
@@ -369,7 +367,7 @@ function CalendarComponent() {
                           }}
                           variant="outlined"
                           color="info"
-                          sx={id === currentView ? { color: "#66B5A3" } : { color: "#000" }}
+                          sx={id === currentView ? { color: "#e8078d" } : { color: "#fff" }}
                         >
                           {label}
                         </SoftButton>

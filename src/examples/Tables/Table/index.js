@@ -15,7 +15,7 @@ import { position } from "stylis";
 import zIndex from "@mui/material/styles/zIndex";
 
 function Table({ columns, rows, text, loader }) {
-  const { light } = colors;
+  const { secondary, light } = colors;
   const { size, fontWeightBold } = typography;
   const { borderWidth } = borders;
 
@@ -46,9 +46,9 @@ function Table({ columns, rows, text, loader }) {
         textAlign={align}
         fontSize={size.xxs}
         fontWeight={900}
-        color="black"
+        color={light.main}
         opacity={0.7}
-        borderBottom={`${borderWidth[1]} solid ${light.main}`}
+        borderBottom={`${borderWidth[1]} solid ${secondary.main}`}
         sx={{
           background: "#d3d3d363",
         }}
@@ -72,7 +72,7 @@ function Table({ columns, rows, text, loader }) {
                 key={uuidv4()}
                 component="td"
                 p={1}
-                borderBottom={row.hasBorder ? `${borderWidth[1]} solid ${light.main}` : null}
+                borderBottom={row.hasBorder ? `${borderWidth[1]} solid ${secondary.main}` : null}
               >
                 <SoftBox display="flex" alignItems="center" px={1}>
                   <SoftBox mr={2}>
@@ -100,12 +100,12 @@ function Table({ columns, rows, text, loader }) {
                 component="td"
                 p={1.7}
                 textAlign={align}
-                borderBottom={row.hasBorder ? `${borderWidth[1]} solid ${light.main}` : null}
+                borderBottom={row.hasBorder ? `${borderWidth[1]} solid ${secondary.main}` : null}
               >
                 <SoftTypography
                   variant="button"
                   fontWeight="regular"
-                  color="secondary"
+                  color="light"
                   sx={{ display: "inline-block", width: "max-content" }}
                 >
                   {row[name]}
@@ -123,7 +123,7 @@ function Table({ columns, rows, text, loader }) {
       <TableRow>
         <SoftBox component="td" colSpan={columns.length} textAlign="center" p={4}>
           <Box display="flex" justifyContent="center" alignItems="center" width="100%">
-            <Typography variant="h6" color="#66b5a3" fontSize="14px">
+            <Typography variant="h6" color='primary' fontSize="14px">
               {loader ? `Loading ${text} data, please wait...` : `No ${text} records found`}
             </Typography>
           </Box>
@@ -153,7 +153,7 @@ function Table({ columns, rows, text, loader }) {
 Table.defaultProps = {
   columns: [],
   rows: [{}],
-  text:''
+  text: "",
 };
 
 // Typechecking props for the Table

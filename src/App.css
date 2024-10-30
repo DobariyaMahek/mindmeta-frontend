@@ -9,12 +9,12 @@ input,
 button {
   font-family: Roboto, Helvetica, Arial, sans-serif;
 }
-::placeholder,
-.css-1jqq78o-placeholder {
+::placeholder {
   font-family: Roboto, Helvetica, Arial, sans-serif !important;
-  color: lightgray !important;
+  color: #908f92 !important;
   font-size: 13px !important;
 }
+
 img {
   width: 100%;
 }
@@ -28,28 +28,28 @@ textarea {
 }
 
 input,
-.css-qbdosj-Input,
 select {
   font-family: Roboto, Helvetica, Arial, sans-serif !important;
   font-size: 0.875rem !important;
   font-weight: 400 !important;
-  color: #495057 !important;
+  color: #ffffff !important;
   width: 100%;
+  background-color: #110c17 !important;
+  border-color: #544a5d !important;
 }
+
+/* Style for autofilled input fields */
+input:-webkit-autofill,
+select:-webkit-autofill,
+textarea:-webkit-autofill {
+  -webkit-text-fill-color: #ffffff !important; /* Text color for autofill */
+  -webkit-box-shadow: 0 0 0px 1000px #110c17 inset !important; /* Background color for autofill */
+}
+
 input:focus {
   outline: none !important;
 }
 
-.css-1dimb5e-singleValue {
-  font-family: Roboto, Helvetica, Arial, sans-serif !important;
-  font-size: 0.875rem !important;
-  font-weight: 400 !important;
-  color: #495057 !important;
-}
-.css-1nmdiq5-menu {
-  font-size: 13px !important;
-  font-weight: 400 !important;
-}
 @keyframes fadeInOut {
   0% {
     opacity: 0;
@@ -106,25 +106,26 @@ input:focus {
   font-size: 0.875rem !important;
   font-weight: 400 !important;
   line-height: 1.4 !important;
-  color: #495057 !important;
-  background-color: #ffffff !important;
-  border: 0.0625rem solid #d2d6da;
+  color: #fff !important;
+  background-color: #110c17 !important;
+  border: 0.0625rem solid #544a5d;
   appearance: none !important;
   border-radius: 0.5rem;
 }
 
 .react-datepicker__day--selected,
 .react-datepicker__time-list-item--selected {
-  background-color: #66b5a3 !important;
+  background-color: #e8078d !important;
 }
 .react-datepicker__day--keyboard-selected {
-  background-color: #66b5a362 !important;
+  background-color: #e8078d62 !important;
 }
 .input.errorInput {
   border: 0.0625rem solid red;
 }
 label {
   font-size: 12px;
+  color: #ffffff;
   span {
     color: red;
   }

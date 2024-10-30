@@ -94,6 +94,7 @@ function Header({ setEdit, edit, newData }) {
         sx={{
           backdropFilter: `saturate(200%) blur(30px)`,
           backgroundColor: ({ functions: { rgba }, palette: { dark } }) => rgba(dark.main, 0.8),
+          backgroundColor: ({ functions: { rgba }, palette: { dark } }) => rgba(dark.main, 0.8),
           boxShadow: ({ boxShadows: { navbarBoxShadow } }) => navbarBoxShadow,
           position: "relative",
           mt: -8,
@@ -103,7 +104,7 @@ function Header({ setEdit, edit, newData }) {
         }}
       >
         <Grid container spacing={3} alignItems="center">
-          <Grid item>
+          <Grid item color={"#fff"}>
             <SoftBox display="flex" gap={2}>
               <SoftAvatar alt="profile-image" variant="rounded" bgColor="secondary">
                 {newData?.username?.charAt(0)?.toUpperCase()}
@@ -142,7 +143,9 @@ function Header({ setEdit, edit, newData }) {
                 Care home name
               </SoftTypography>
             </Grid>
-            <Grid item>: &nbsp;</Grid>
+            <Grid item color={"#fff"}>
+              : &nbsp;
+            </Grid>
             <Grid item xs={10}>
               <SoftTypography variant="button" color="text" fontWeight="medium">
                 {newData?.carehome_name || "-"}
@@ -155,7 +158,9 @@ function Header({ setEdit, edit, newData }) {
                 Administrator name
               </SoftTypography>
             </Grid>
-            <Grid item>: &nbsp;</Grid>
+            <Grid item color={"#fff"}>
+              : &nbsp;
+            </Grid>
             <Grid item xs={10}>
               <SoftTypography variant="button" color="text" fontWeight="medium">
                 {newData?.administrator_name || "-"}
@@ -168,7 +173,9 @@ function Header({ setEdit, edit, newData }) {
                 Phone Number
               </SoftTypography>
             </Grid>
-            <Grid item>: &nbsp;</Grid>
+            <Grid item color={"#fff"}>
+              : &nbsp;
+            </Grid>
             <Grid item xs={10}>
               <SoftTypography variant="button" color="text" fontWeight="medium">
                 {newData?.phone_number && "+"}
@@ -182,7 +189,9 @@ function Header({ setEdit, edit, newData }) {
                 Address
               </SoftTypography>
             </Grid>
-            <Grid item>: &nbsp;</Grid>
+            <Grid item color={"#fff"}>
+              : &nbsp;
+            </Grid>
             <Grid item xs={10} lineHeight={"25px"}>
               <SoftTypography
                 variant="button"

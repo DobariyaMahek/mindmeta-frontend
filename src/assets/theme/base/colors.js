@@ -22,6 +22,7 @@ Coded by www.creative-tim.com
 const colors = {
   background: {
     default: "var(--background-color)",
+    default: "var(--background-color)",
   },
 
   text: {
@@ -40,8 +41,8 @@ const colors = {
 
   black: {
     light: "#141414",
-    main: "#000000",
-    focus: "#000000",
+    main: "#110c17",
+    focus: "#110c17",
   },
 
   primary: {
@@ -55,7 +56,7 @@ const colors = {
   },
 
   info: {
-    main: "#66B5A3",
+    main: "#e8078d",
     focus: "#3acaeb",
   },
 

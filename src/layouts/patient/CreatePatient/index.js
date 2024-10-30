@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import Card from "@mui/material/Card";
 import Grid from "@mui/material/Grid";
 import SoftInput from "components/SoftInput";
@@ -22,6 +22,7 @@ import {
 import "./createPatient.css";
 import {
   Box,
+  Divider,
   FormControlLabel,
   Icon,
   Modal,
@@ -46,6 +47,8 @@ import {
 import moment from "moment";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import FamilyMemberModal from "./FamilyMemberModal";
+import ConfirmationModal from "./ConfirmationModal";
 function CreatePatient() {
   const [controller] = useSoftUIController();
   const { sidenavColor } = controller;
@@ -70,8 +73,8 @@ function CreatePatient() {
   const minDate = new Date(todays.getFullYear() - 150, 0, 1);
   const validateField = (fieldName, value, countryCode = "in", relation) => {
     let error = "";
-    const existingEmails = [...familyInfo.map((info) => info.email?.trim().toLowerCase())];
-    const patientEmails = [generalInfo.patientEmail?.trim().toLowerCase()];
+    // const existingEmails = [...familyInfo.map((info) => info.email?.trim().toLowerCase())];
+    // const patientEmails = [generalInfo.patientEmail?.trim().toLowerCase()];
     const valueDate = new Date(value);
     const todayDate = new Date();
     switch (fieldName) {
@@ -119,7 +122,6 @@ function CreatePatient() {
         // existingEmails.includes(patientEmailTrimmed) && !isUpdate
         //   ? "Email already exists"
         //   :
-
         break;
       case "email":
         const emailTrimmed = value?.trim().toLowerCase();
@@ -133,7 +135,6 @@ function CreatePatient() {
         //     familyMemberModalOpen?.isOpen
         //   ? "Email already exists"
         //   :
-
         break;
 
       default:
@@ -188,33 +189,6 @@ function CreatePatient() {
     setFamilyInfo([...familyInfo, updatedFamilyMember]);
     clearMember();
     toast.success("Family member added successfully");
-  };
-  const getFamilyInfo = () => {
-    dispatch(getPatientById({ id })).then((res) => {
-      if (res?.payload?.success) {
-        const data = res?.payload?.data;
-        const family =
-          data?.family_members &&
-          data?.family_members?.map((item) => {
-            return {
-              relation: relations?.find((el) => el?.value == item?.relation)?.value || "Other",
-              otherRelation: relations?.find((el) => el?.value == item?.relation)?.value
-                ? ""
-                : item?.relation,
-              name: item?.name,
-              email: item?.email,
-              birth_date: item?.birth_date,
-              gender: item?.gender || "Male",
-              id: item?.id,
-            };
-          });
-        setFamilyInfo(family || []);
-        setFamilyErrors({});
-      } else {
-        toast.error(res?.payload?.message);
-        navigate("/patients");
-      }
-    });
   };
   const saveFamilyMember = () => {
     const newFamilyErrors = {};
@@ -450,6 +424,7 @@ function CreatePatient() {
                 <SoftTypography variant="h6" gutterBottom>
                   General Information
                 </SoftTypography>
+                <Divider light />
                 <Grid container spacing={2}>
                   <Grid item xs={12} md={6}>
                     <label>
@@ -577,9 +552,51 @@ function CreatePatient() {
                         gap: "10px",
                       }}
                     >
-                      <FormControlLabel value="Male" control={<Radio />} label="Male" />
-                      <FormControlLabel value="Female" control={<Radio />} label="Female" />
-                      <FormControlLabel value="Other" control={<Radio />} label="Other" />
+                      <FormControlLabel
+                        value="Male"
+                        control={
+                          <Radio
+                            sx={{
+                              color: "#ffffff", // Default border color when unselected
+                              "&.Mui-checked": {
+                                color: "#e8078d", // Primary color when checked
+                              },
+                            }}
+                          />
+                        }
+                        label="Male"
+                        sx={{ "& .MuiFormControlLabel-label": { color: "#ffffff" } }}
+                      />
+                      <FormControlLabel
+                        value="Female"
+                        control={
+                          <Radio
+                            sx={{
+                              color: "#ffffff", // Default border color when unselected
+                              "&.Mui-checked": {
+                                color: "#e8078d", // Primary color when checked
+                              },
+                            }}
+                          />
+                        }
+                        label="Female"
+                        sx={{ "& .MuiFormControlLabel-label": { color: "#ffffff" } }}
+                      />
+                      <FormControlLabel
+                        value="Other"
+                        control={
+                          <Radio
+                            sx={{
+                              color: "#ffffff", // Default border color when unselected
+                              "&.Mui-checked": {
+                                color: "#e8078d", // Primary color when checked
+                              },
+                            }}
+                          />
+                        }
+                        label="Other"
+                        sx={{ "& .MuiFormControlLabel-label": { color: "#ffffff" } }}
+                      />
                     </RadioGroup>
                   </Grid>
                 </Grid>
@@ -589,7 +606,8 @@ function CreatePatient() {
               <SoftBox p={3}>
                 <SoftTypography variant="h6" gutterBottom>
                   Medical History
-                </SoftTypography>
+                </SoftTypography>{" "}
+                <Divider light />
                 <Grid container spacing={2}>
                   <Grid item xs={12}>
                     <label>
@@ -626,13 +644,8 @@ function CreatePatient() {
                     </SoftButton>
                   </Grid>
                 </Grid>
-                <Grid
-                  container
-                  sx={{
-                    borderTop: "0.0625rem solid #d2d6da",
-                    marginTop: "10px",
-                  }}
-                >
+                <Divider light />
+                <Grid container>
                   {familyInfo?.length && Array.isArray(familyInfo) ? (
                     familyInfo?.map((member, index) => (
                       <Grid
@@ -788,7 +801,7 @@ function CreatePatient() {
                           alignItems="center"
                           width="100%"
                         >
-                          <Typography variant="h6" color="#66b5a3" style={{ fontSize: "14px" }}>
+                          <Typography variant="h6" color="#e8078d" style={{ fontSize: "14px" }}>
                             To proceed, ensure the inclusion of at least one family member
                           </Typography>
                         </Box>
@@ -819,308 +832,19 @@ function CreatePatient() {
       </SoftBox>
 
       {/* Modal for Adding Family Member */}
-      <Modal
-        open={familyMemberModalOpen?.isOpen}
-        onClose={() => {
-          clearMember();
+      <FamilyMemberModal
+        {...{
+          familyMemberModalOpen,
+          currentFamilyMember,
+          setCurrentFamilyMember,
+          familyErrors,
+          setFamilyErrors,
+          clearMember,
+          saveFamilyMember,
         }}
-        aria-labelledby="add-family-member-modal"
-      >
-        <Box
-          sx={{
-            position: "absolute",
-            top: "50%",
-            left: "50%",
-            transform: "translate(-50%, -50%)",
-            width: 500,
-            bgcolor: "background.paper",
-            borderRadius: 1,
-            boxShadow: 24,
-            p: 1,
-            pt: 2,
-            pb: 2,
-            outline: "none",
-          }}
-        >
-          <Grid
-            item
-            sx={{
-              borderBottom: "0.0625rem solid #d2d6da",
-              paddingBottom: "10px",
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-              paddingLeft: "10px",
-            }}
-          >
-            <SoftTypography variant="h6" gutterBottom sx={{}}>
-              {familyMemberModalOpen?.isEdit ? "Edit" : "Add"} Family Member
-            </SoftTypography>{" "}
-            <Icon
-              onClick={() => {
-                clearMember();
-              }}
-              sx={{
-                cursor: "pointer",
-              }}
-            >
-              <Close size="10px" />
-            </Icon>{" "}
-          </Grid>
-          <Grid container spacing={2} px={2}>
-            {/* Relation Dropdown */}
-            <Grid item xs={12}>
-              <label>Relation</label>
-              <select
-                name="relation"
-                className="relation-dropdown"
-                value={currentFamilyMember.relation}
-                onChange={(e) => {
-                  const { name, value } = e.target;
-                  setCurrentFamilyMember((prev) => ({
-                    ...prev,
-                    [name]: value,
-                  }));
-                  setFamilyErrors({
-                    ...familyErrors,
-                    [name]: "",
-                  });
-                }}
-                style={{
-                  width: "100%",
-                  padding: "8px",
-                  border: familyErrors.relation ? "1px solid red" : "1px solid #ccc",
-                  cursor: "pointer",
-                }}
-              >
-                <option value="">Select Relation</option>
-                {relations &&
-                  relations?.map((item, i) => (
-                    <option value={item?.value} key={i}>
-                      {item?.label}
-                    </option>
-                  ))}
-              </select>
-              <span className="error">{familyErrors?.relation}</span>
-            </Grid>
-            {/* Other Relation Field */}
-            {currentFamilyMember.relation === "Other" && (
-              <Grid item xs={12}>
-                <label>Other Relation</label>
-                <SoftInput
-                  fullWidth
-                  label="Specify Relation"
-                  name="otherRelation"
-                  placeholder="Please enter other relation"
-                  value={currentFamilyMember.otherRelation}
-                  onChange={(e) => {
-                    const { name, value } = e.target;
-                    setCurrentFamilyMember((prev) => ({
-                      ...prev,
-                      [name]: capitalizeValue(value),
-                    }));
-                    const error = validateField(name, value);
-                    setFamilyErrors({
-                      ...familyErrors,
-                      [name]: error,
-                    });
-                  }}
-                  style={{ textTransform: "capitalize" }}
-                  error={Boolean(familyErrors.otherRelation)}
-                />
-                <span className="error">{familyErrors?.otherRelation}</span>
-              </Grid>
-            )}
-            {/* Name Input */}
-            <Grid item xs={12}>
-              <label>Name</label>
-              <SoftInput
-                fullWidth
-                label="Name"
-                placeholder="Please enter name"
-                name="name"
-                value={currentFamilyMember.name}
-                onChange={(e) => {
-                  const { name, value } = e.target;
-                  setCurrentFamilyMember((prev) => ({
-                    ...prev,
-                    [name]: capitalizeValue(value)?.trimStart(),
-                  }));
-                  const error = validateField(name, value?.trim());
-                  setFamilyErrors({
-                    ...familyErrors,
-                    [name]: error,
-                  });
-                }}
-                error={Boolean(familyErrors.name)}
-                style={{ textTransform: "capitalize" }}
-              />
-              <span className="error">{familyErrors?.name}</span>
-            </Grid>
-            <Grid item xs={12}>
-              <label>Date of Birth</label>
-              <DatePicker
-                selected={
-                  !isEmpty(currentFamilyMember?.birth_date) ? currentFamilyMember?.birth_date : ""
-                }
-                onChange={(date) => {
-                  const selectedDate = new Date(date);
-                  selectedDate.setHours(0, 0, 0, 0); // Set time to 00:00:00
-                  setCurrentFamilyMember((prev) => ({
-                    ...prev,
-                    birth_date: selectedDate,
-                  }));
-                  const error = validateField("birth_date", selectedDate);
-                  setFamilyErrors({
-                    ...familyErrors,
-                    birth_date: error,
-                  });
-                }}
-                placeholderText="Please select date of birth"
-                peekNextMonth
-                showMonthDropdown
-                showYearDropdown
-                dropdownMode="select"
-                dateFormat="dd-MM-yyyy"
-                minDate={minDate}
-                maxDate={new Date()}
-                className={!familyErrors.birth_date ? "input" : "input errorInput"}
-                onKeyDown={(e) => e.preventDefault()} // Prevent keyboard input
-                customInput={<input style={{ cursor: "pointer" }} />}
-              />
-              {familyErrors.birth_date && <span className="error">{familyErrors.birth_date}</span>}
-            </Grid>
-            <Grid item xs={12}>
-              <label>Email</label>
-              <SoftInput
-                fullWidth
-                label="Email"
-                placeholder="Please enter email"
-                name="email"
-                value={currentFamilyMember.email}
-                onChange={(e) => {
-                  const { name, value } = e.target;
-                  setCurrentFamilyMember((prev) => ({
-                    ...prev,
-                    [name]: value?.trim()?.toLowerCase(),
-                  }));
-                  const error = validateField(name, value);
-                  setFamilyErrors({
-                    ...familyErrors,
-                    [name]: error,
-                  });
-                }}
-                error={Boolean(familyErrors.email)}
-                disabled={familyMemberModalOpen?.isEdit}
-              />
-              <span className="error">{familyErrors?.email}</span>
-            </Grid>
+      />
 
-            <Grid item xs={12}>
-              <label>Gender</label>
-              <RadioGroup
-                aria-label="gender"
-                name="gender"
-                value={currentFamilyMember.gender}
-                onChange={(e) => {
-                  const { name, value } = e.target;
-                  setCurrentFamilyMember((prev) => ({
-                    ...prev,
-                    [name]: value,
-                  }));
-                }}
-                sx={{
-                  display: "flex",
-                  flexDirection: "row",
-                  gap: "10px",
-                  paddingLeft: "10px",
-                }}
-              >
-                <FormControlLabel value="Male" control={<Radio />} label="Male" />
-                <FormControlLabel value="Female" control={<Radio />} label="Female" />
-                <FormControlLabel value="Other" control={<Radio />} label="Other" />
-              </RadioGroup>
-            </Grid>
-            {/* Save and Cancel Buttons */}
-            <Grid item xs={12} display="flex" justifyContent="end" gap="10px">
-              <SoftButton
-                variant="outlined"
-                color={"secondary"}
-                onClick={() => {
-                  clearMember();
-                }}
-              >
-                Cancel
-              </SoftButton>
-              <SoftButton
-                variant="gradient"
-                color={sidenavColor}
-                onClick={() => {
-                  saveFamilyMember();
-                }}
-              >
-                {familyMemberModalOpen?.isEdit ? "Update" : "Add"}
-              </SoftButton>
-            </Grid>
-          </Grid>
-        </Box>
-      </Modal>
-
-      <Modal
-        open={deleteConfirmation}
-        onClose={() => setDeleteConfirmation(false)}
-        aria-labelledby="confirm-modal-title"
-        aria-describedby="confirm-modal-description"
-        sx={{ outline: "none" }}
-      >
-        <Box
-          sx={{
-            position: "absolute",
-            top: "50%",
-            left: "50%",
-            transform: "translate(-50%, -50%)",
-            width: 500,
-            bgcolor: "background.paper",
-            borderRadius: 2,
-            boxShadow: 24,
-            p: 4,
-            textAlign: "center",
-            outline: "none",
-          }}
-        >
-          <Icon
-            aria-label="close"
-            onClick={() => setDeleteConfirmation(false)}
-            sx={{
-              position: "absolute",
-              top: 8,
-              right: 8,
-              color: "text.secondary",
-              cursor: "pointer",
-            }}
-          >
-            <Close />
-          </Icon>
-
-          <Typography id="confirm-modal-title" variant="h4" component="h2" gutterBottom>
-            Are you sure?
-          </Typography>
-          <Typography id="confirm-modal-description" variant="body2" color="text.secondary" mb={3}>
-            Do you really want to delete this member?
-          </Typography>
-          <SoftButton
-            variant="outlined"
-            color="secondary"
-            onClick={() => setDeleteConfirmation(false)}
-            sx={{ mr: 1 }}
-          >
-            Cancel
-          </SoftButton>
-          <SoftButton variant="gradient" color="error" onClick={deleteFamilyMember}>
-            Delete
-          </SoftButton>
-        </Box>
-      </Modal>
+      <ConfirmationModal {...{ deleteConfirmation, setDeleteConfirmation, deleteFamilyMember }} />
     </DashboardLayout>
   );
 }

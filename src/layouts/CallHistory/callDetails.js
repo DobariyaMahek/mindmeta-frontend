@@ -71,9 +71,11 @@ const CallHistoryDetails = ({ singleHistory, callHistory }) => {
       {singleHistory?.id ? (
         <Box>
           <Card variant="outlined" sx={{ padding: 2, mb: 2 }}>
-            <Box display="flex" justifyContent="space-between" alignItems="center" marginBottom={2}>
+            <Box display="flex" justifyContent="space-between" alignItems="center">
               <SoftBox display="flex" alignItems="center">
-                <Typography variant="h6">Call Details</Typography>
+                <Typography variant="h6" color="#fff">
+                  Call Details
+                </Typography>
               </SoftBox>{" "}
               <Tooltip title="Overview" placement="top">
                 <Icon
@@ -82,14 +84,13 @@ const CallHistoryDetails = ({ singleHistory, callHistory }) => {
                     setOpenChat(true);
                     handleFetchData(singleHistory?.id);
                   }}
-                  fontSize="1px"
-                  style={{ fontSize: "18px" }}
                 >
-                  <EqualizerOutlined />
+                  <EqualizerOutlined color="#fff" />
                 </Icon>
               </Tooltip>
             </Box>
-            <SoftBox>
+            <Divider light />
+            <SoftBox color="#fff">
               <Grid container spacing={1}>
                 <Grid item xs={1}>
                   <Typography fontSize="14px" fontWeight={"bold"}>
@@ -135,8 +136,10 @@ const CallHistoryDetails = ({ singleHistory, callHistory }) => {
           </Card>
 
           <Card variant="outlined" sx={{ padding: 2 }}>
-            <Typography variant="h6">Messages</Typography>
-            <Divider sx={{ mb: 2 }} />
+            <Typography variant="h6" color="#fff">
+              Messages
+            </Typography>
+            <Divider light />
             {callDetails?.length > 0 && !familyLoader ? (
               <Box sx={{ maxHeight: "555px", overflow: "auto" }} id="scrollableDiv">
                 <InfiniteScroll
@@ -150,7 +153,10 @@ const CallHistoryDetails = ({ singleHistory, callHistory }) => {
                   {groupedMessages &&
                     Object.keys(groupedMessages).map((dateLabel, index) => (
                       <Fragment key={index}>
-                        <SoftBox className={classes.stickyHeader} sx={{ backgroundColor: "#fff" }}>
+                        <SoftBox
+                          className={classes.stickyHeader}
+                          sx={{ backgroundColor: "#110c17" }}
+                        >
                           <Typography
                             variant="p"
                             onClick={() => {
@@ -176,8 +182,8 @@ const CallHistoryDetails = ({ singleHistory, callHistory }) => {
                             >
                               <Box
                                 sx={{
-                                  backgroundColor: msg.type === "bot" ? "#E9ECEF" : "#66b5a32e",
-                                  color: "gray",
+                                  backgroundColor: msg.type === "bot" ? "gray" : "#e8078d2e",
+                                  color: "#fff",
                                   borderRadius:
                                     msg.type === "bot"
                                       ? "0px 10px 10px 10px"
@@ -203,7 +209,7 @@ const CallHistoryDetails = ({ singleHistory, callHistory }) => {
                                       fontSize: "14px",
                                       fontWeight: "bold",
                                       textTransform: "capitalize",
-                                      color: "gray",
+                                      color: "#fff",
                                     }}
                                   >
                                     {msg.type}
@@ -213,18 +219,18 @@ const CallHistoryDetails = ({ singleHistory, callHistory }) => {
                                     sx={{
                                       fontSize: "12px",
                                       textTransform: "capitalize",
-                                      color: "gray",
+                                      color: "#fff",
                                       ml: "10px",
                                     }}
                                   >
                                     {moment.utc(msg?.created_at)?.local()?.format("hh:mm A")}
                                   </Typography>
                                 </SoftBox>
+                                {msg?.type !== "bot" && <Divider light />}
                                 <Typography
                                   variant="body1"
                                   sx={{
                                     fontSize: "14px",
-                                    borderTop: msg?.type == "bot" ? "none" : "1px solid #dee2e6",
                                   }}
                                 >
                                   {msg.message}
