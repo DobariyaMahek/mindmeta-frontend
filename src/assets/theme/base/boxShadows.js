@@ -25,7 +25,7 @@ import colors from "assets/theme/base/colors";
 // Mind Meta AI React Helper Functions
 import boxShadow from "assets/theme/functions/boxShadow";
 
-const { black, white, info, inputColors, tabs } = colors;
+const { black, dark, info, inputColors, tabs } = colors;
 
 const boxShadows = {
   xs: boxShadow([0, 2], [9, -5], black.main, 0.15),
@@ -45,7 +45,7 @@ const boxShadows = {
   xl: boxShadow([0, 23], [45, -11], black.light, 0.25),
   xxl: boxShadow([0, 20], [27, 0], black.main, 0.05),
   inset: boxShadow([0, 1], [2, 0], black.main, 0.075, "inset"),
-  navbarBoxShadow: `${boxShadow([0, 0], [1, 1], white.main, 0.9, "inset")}, ${boxShadow(
+  navbarBoxShadow: `${boxShadow([0, 0], [1, 1], dark.main, 0.9, "inset")}, ${boxShadow(
     [0, 20],
     [27, 0],
     black.main,

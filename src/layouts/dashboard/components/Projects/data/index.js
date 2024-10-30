@@ -55,7 +55,7 @@ export default function data() {
 
     rows: [
       {
-        companies: [logoXD, "Soft UI XD Version"],
+        companies: [logoXD, "Mind Meta XD Version"],
         members: (
           <SoftBox display="flex" py={1}>
             {avatars([

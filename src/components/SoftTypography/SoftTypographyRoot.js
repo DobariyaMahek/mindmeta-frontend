@@ -51,7 +51,7 @@ export default styled(Typography)(({ theme, ownerState }) => {
     textTransform,
     verticalAlign,
     textDecoration: "none",
-    color: color === "inherit" || !palette[color] ? "inherit" : palette[color].main,
+    color: palette["light"].main,
     fontWeight: fontWeights[fontWeight] && fontWeights[fontWeight],
     ...(textGradient && gradientStyles()),
   };

@@ -124,7 +124,7 @@ function MediaInteraction() {
           borderRadius: "10px",
           boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.1)",
           padding: "16px",
-          backgroundColor: "#ffffff",
+          backgroundColor: "#110c17",
           position: "relative", // For absolute positioning of delete icon
           transition: "transform 0.3s, box-shadow 0.3s",
           "&:hover": {
@@ -141,11 +141,12 @@ function MediaInteraction() {
             alignItems: "center",
             justifyContent: "center",
             width: "100%",
-            height: "180px",
+            height: type == "image" ? "180px" : "auto",
+            maxHeight: "180px",
             borderRadius: "8px",
             overflow: "hidden",
             marginBottom: "16px",
-            backgroundColor: "#f4f4f4", // Subtle background color for empty space
+            backgroundColor: "#110c17", // Subtle background color for empty space
             position: "relative", // For the hover effect on the image/video
             ...(type == "image" && {
               "&:hover .delete-icon": {
@@ -239,6 +240,7 @@ function MediaInteraction() {
                     onClick={() => removeMedia(type, index)}
                     sx={{
                       fontSize: "20px",
+                      color: "#fff",
                     }}
                   >
                     <Delete />{" "}
@@ -252,6 +254,9 @@ function MediaInteraction() {
                       downloadLink.download = file?.name || "audio-recording.wav"; // Set the file name
                       downloadLink.click();
                     }}
+                    sx={{
+                      color: "#fff",
+                    }}
                   >
                     <Download />
                   </IconButton>
@@ -259,7 +264,7 @@ function MediaInteraction() {
               </SoftBox>
             )}
           </SoftBox>
-          <Typography variant="caption" color="text.secondary">
+          <Typography variant="caption" color="#fff">
             Size: {fileSize} | Type: {file.type}
           </Typography>
         </SoftBox>
@@ -270,14 +275,14 @@ function MediaInteraction() {
   // Render the upload section for each type of media
   const renderUploadSection = (type) => (
     <>
-      <Grid item xs={12}>
+      <Grid item md={6} xs={12}>
         <Box
           sx={{
-            border: "2px dashed #90caf9",
+            border: "2px dashed gray",
             borderRadius: "16px",
-            padding: "20px",
+            padding: "10px",
             textAlign: "center",
-            backgroundColor: "#f1f5f9",
+            backgroundColor: "#110c17",
           }}
         >
           <IconButton
@@ -286,7 +291,7 @@ function MediaInteraction() {
             sx={{
               backgroundColor: "#e3f2fd",
               marginBottom: "10px",
-              "&:hover": { backgroundColor: "#bbdefb" },
+              "&:hover": { backgroundColor: "gray" },
             }}
           >
             {mediaTypes[type].icon}
@@ -298,10 +303,10 @@ function MediaInteraction() {
             />
           </IconButton>
 
-          <Typography variant="h6" color="textSecondary">
+          <Typography variant="h6" color="#fff">
             {mediaTypes[type].label}
           </Typography>
-          <Typography variant="caption" color="textSecondary">
+          <Typography variant="caption" color="#fff">
             Supports: {mediaTypes[type].accept.replace(/\*/g, "").toUpperCase()}
           </Typography>
 
@@ -309,6 +314,7 @@ function MediaInteraction() {
         </Box>
         {errors.media && <span className="error">{errors.media}</span>}
       </Grid>
+      {type == "audio" && <AudioRecorder setMedia={setMedia} />}
       <Grid container spacing={3} sx={{ marginTop: "5px", padding: "10px" }}>
         {media[type].map((file, index) => (
           <Grid item xs={12} sm={6} md={4} lg={3} key={index}>
@@ -389,7 +395,7 @@ function MediaInteraction() {
                       ))}
                   </select>
                 </Grid>
-                {fileType == "audio" && <AudioRecorder setMedia={setMedia} />}
+
                 <Grid container spacing={2}>
                   {fileType === "image" && renderUploadSection("image")}
                   {fileType === "audio" && renderUploadSection("audio")}

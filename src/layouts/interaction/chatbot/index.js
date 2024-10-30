@@ -38,7 +38,7 @@ export const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(2),
     paddingTop: 0,
     overflowY: "auto",
-    borderBottom: `1px solid #66b5a3`,
+    borderBottom: `1px solid #e8078d`,
   },
   chatInput: {
     display: "flex",
@@ -53,7 +53,7 @@ export const useStyles = makeStyles((theme) => ({
     width: "100% !important",
   },
   sendButton: {
-    backgroundColor: "#66b5a3",
+    backgroundColor: "#e8078d",
     color: "white",
     border: "none",
     padding: theme.spacing(1),
@@ -241,8 +241,8 @@ const ChatBot = () => {
                                 >
                                   <Box
                                     sx={{
-                                      backgroundColor: msg.type === "bot" ? "#E9ECEF" : "#66b5a32e",
-                                      color: msg.type === "bot" ? "gray" : "#66B5A3",
+                                      backgroundColor: msg.type === "bot" ? "#E9ECEF" : "#e8078d2e",
+                                      color: msg.type === "bot" ? "gray" : "#e8078d",
                                       borderRadius:
                                         msg.type === "bot"
                                           ? "0px 10px 10px 10px"
@@ -271,7 +271,7 @@ const ChatBot = () => {
                                           fontSize: "14px",
                                           fontWeight: "bold",
                                           textTransform: "capitalize",
-                                          color: msg.type === "bot" ? "gray" : "#66B5A3",
+                                          color: msg.type === "bot" ? "gray" : "#e8078d",
                                         }}
                                       >
                                         {msg.type}
@@ -281,7 +281,7 @@ const ChatBot = () => {
                                         sx={{
                                           fontSize: "12px",
                                           textTransform: "capitalize",
-                                          color: msg?.type === "bot" ? "gray" : "#66B5A3",
+                                          color: msg?.type === "bot" ? "gray" : "#e8078d",
                                           ml: "10px",
                                         }}
                                       >
@@ -347,7 +347,7 @@ const ChatBot = () => {
                       aria-label="send message"
                       size="medium"
                       style={{
-                        backgroundColor: "#66b5a3",
+                        backgroundColor: "#e8078d",
                         borderRadius: "50%",
                         color: "white",
                       }}

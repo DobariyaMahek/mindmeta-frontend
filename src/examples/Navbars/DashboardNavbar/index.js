@@ -26,7 +26,7 @@ import SoftTypography from "components/SoftTypography";
 import { Notifications } from "@mui/icons-material";
 import moment from "moment";
 
-function DashboardNavbar({ absolute = false, light = false, isMini = false }) {
+function DashboardNavbar({ absolute = false, light = true, isMini = false }) {
   const [newMessage, setNewMessage] = useState(false);
   const [controller, dispatch] = useSoftUIController();
   const { miniSidenav, transparentNavbar, fixedNavbar, openConfigurator } = controller;
@@ -114,6 +114,8 @@ function DashboardNavbar({ absolute = false, light = false, isMini = false }) {
         "& .MuiPaper-root": {
           top: "121px !important", // Adjust top position
           width: "380px", // Set the width
+          backgroundColor: "#241631 !important",
+          boxShadow: "0px 4px 20px rgba(0, 0, 0, 0.7)", // Dark-themed box shadow
         },
       }}
     >

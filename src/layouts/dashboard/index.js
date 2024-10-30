@@ -62,48 +62,46 @@ function Dashboard() {
           <SoftBox mb={3}>
             <Grid container spacing={3}>
               <Grid item xs={12} sm={6} xl={3}>
-                <Card>
-                  <SoftBox bgColor={"white"} variant="gradient">
-                    <SoftBox p={2}>
-                      <Grid container alignItems="center">
-                        <Grid item xs={8}>
-                          <SoftBox ml={0} lineHeight={1}>
-                            <SoftTypography
-                              variant="button"
-                              color={"dark"}
-                              opacity={0.7}
-                              textTransform="capitalize"
-                            >
-                              Active Patients
-                            </SoftTypography>
-                            <SoftTypography variant="h5" fontWeight="bold" color={"dark"}>
-                              0
-                            </SoftTypography>
-                          </SoftBox>
-                        </Grid>
-                        <Grid item xs={4}>
-                          <SoftBox
-                            variant="gradient"
-                            bgColor={"info"}
-                            color={"white"}
-                            width="3rem"
-                            height="3rem"
-                            marginLeft="auto"
-                            borderRadius="md"
-                            display="flex"
-                            justifyContent="center"
-                            alignItems="center"
-                            shadow="md"
+                <SoftBox bgColor={"info"} variant="gradient" borderRadius="10px">
+                  <SoftBox p={2}>
+                    <Grid container alignItems="center">
+                      <Grid item xs={8}>
+                        <SoftBox ml={0} lineHeight={1}>
+                          <SoftTypography
+                            variant="button"
+                            color={"light"}
+                            opacity={0.7}
+                            textTransform="capitalize"
                           >
-                            <Icon fontSize="small" color="inherit">
-                              <Group />
-                            </Icon>
-                          </SoftBox>
-                        </Grid>
+                            Active Patients
+                          </SoftTypography>
+                          <SoftTypography variant="h5" fontWeight="bold" color={"light"}>
+                            0
+                          </SoftTypography>
+                        </SoftBox>
                       </Grid>
-                    </SoftBox>
+                      <Grid item xs={4}>
+                        <SoftBox
+                          bgColor={"primary"}
+                          variant="gradient"
+                          color={"white"}
+                          width="3rem"
+                          height="3rem"
+                          marginLeft="auto"
+                          borderRadius="md"
+                          display="flex"
+                          justifyContent="center"
+                          alignItems="center"
+                          shadow="md"
+                        >
+                          <Icon fontSize="small" color="inherit">
+                            <Group />
+                          </Icon>
+                        </SoftBox>
+                      </Grid>
+                    </Grid>
                   </SoftBox>
-                </Card>
+                </SoftBox>
               </Grid>
             </Grid>
           </SoftBox>

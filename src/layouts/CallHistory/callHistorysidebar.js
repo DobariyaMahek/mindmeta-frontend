@@ -15,15 +15,15 @@ export default function SidebarCallHistory({ setHistoryState, singleHistory, cal
     <Card
       sx={{
         width: " 100%",
-        height: 810,
+        height: '86vh',
         overflow: "auto",
         padding: 1,
       }}
     >
-      <Typography variant="h6" align="center" gutterBottom>
+      <Typography variant="h6" align="center" gutterBottom color="#fff">
         Call History
       </Typography>
-      <Divider />
+      <Divider light />
 
       <Box sx={{ padding: 1 }}>
         {callHistory?.length ? (
@@ -35,14 +35,15 @@ export default function SidebarCallHistory({ setHistoryState, singleHistory, cal
                   display: "flex",
                   alignItems: "center",
                   padding: 1,
-                  backgroundColor: singleHistory?.id === obj?.id ? "#66b5a32e" : "transparent",
+                  backgroundColor: singleHistory?.id === obj?.id ? "#e8078d2e" : "transparent",
                   cursor: "pointer",
-                  color: singleHistory?.id !== obj?.id ? "gray" : "#66B5A3",
+                  color: singleHistory?.id !== obj?.id ? "#fff" : "#e8078d",
+                  borderRadius: 3,
                   "&:hover": {
-                    backgroundColor: "#66b5a32e",
-                    color: "#66B5A3",
+                    backgroundColor: "#e8078d2e",
+                    color: "#e8078d",
                     "& .MuiSvgIcon-root": {
-                      color: "#66B5A3", // Change icon color when hovering over the Box
+                      color: "#e8078d", // Change icon color when hovering over the Box
                     },
                   },
                   marginBottom: "5px",
@@ -57,7 +58,7 @@ export default function SidebarCallHistory({ setHistoryState, singleHistory, cal
               >
                 <IconButton
                   sx={{
-                    color: singleHistory?.id !== obj?.id ? "secondary.main" : "info.main",
+                    color: singleHistory?.id !== obj?.id ? "light.main" : "info.main",
                   }}
                 >
                   <Call fontSize="small" />
@@ -89,7 +90,12 @@ export default function SidebarCallHistory({ setHistoryState, singleHistory, cal
             );
           })
         ) : (
-          <Typography variant="body2" align="center" sx={{ marginTop: 1, marginBottom: 1 }}>
+          <Typography
+            variant="body2"
+            align="center"
+            color="#fff"
+            sx={{ marginTop: 1, marginBottom: 1 }}
+          >
             No Records Found
           </Typography>
         )}

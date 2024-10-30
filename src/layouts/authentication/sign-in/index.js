@@ -32,8 +32,8 @@ const validateField = (name, value) => {
         ? "Please enter a valid email"
         : "";
     case "password":
-      return !value?.trim() ? "Password is required" :''
-        // validatePassword(value);
+      return !value?.trim() ? "Password is required" : "";
+    // validatePassword(value);
     default:
       return "";
   }
@@ -227,7 +227,7 @@ function Index() {
               </SoftTypography>
             </SoftBox>
             <SoftBox mt={4} mb={1}>
-              <SoftButton variant="gradient" color="dark" fullWidth onClick={handleSubmit}>
+              <SoftButton variant="gradient" color="primary" fullWidth onClick={handleSubmit}>
                 Sign In
               </SoftButton>
             </SoftBox>

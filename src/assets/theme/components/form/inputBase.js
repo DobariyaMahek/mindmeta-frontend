@@ -21,7 +21,7 @@ import borders from "assets/theme/base/borders";
 // Mind Meta AI PRO helper functions
 import pxToRem from "assets/theme/functions/pxToRem";
 
-const { dark, white, grey, inputColors } = colors;
+const { dark, black, light, inputColors } = colors;
 const { size, fontWeightRegular } = typography;
 const { borderWidth, borderRadius } = borders;
 
@@ -36,8 +36,8 @@ const inputBase = {
       fontSize: `${size.sm} !important`,
       fontWeight: `${fontWeightRegular} !important`,
       lineHeight: "1.4 !important",
-      color: `${grey[700]} !important`,
-      backgroundColor: `${white.main} !important`,
+      color: `${light.main} !important`,
+      backgroundColor: `${black.main} !important`,
       backgroundClip: "padding-box !important",
       border: `${borderWidth[1]} solid ${inputColors.borderColor.main}`,
       appearance: "none !important",
@@ -51,7 +51,7 @@ const inputBase = {
       padding: "0 !important",
 
       "&::-webkit-input-placeholder": {
-        color: `${dark.main} !important`,
+        color: `${light.main} !important`,
       },
     },
   },

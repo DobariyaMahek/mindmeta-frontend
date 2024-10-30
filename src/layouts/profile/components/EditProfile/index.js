@@ -35,7 +35,6 @@ const EditProfile = ({ profileData, setProfileData, onSave, onCancel }) => {
             return item;
           }
         });
-        console.log(value, selectedCountry?.countryCode);
         if (
           !value ||
           `${value}` === selectedCountry?.countryCode?.replace("+", "") ||
@@ -81,7 +80,6 @@ const EditProfile = ({ profileData, setProfileData, onSave, onCancel }) => {
   const handleSave = () => {
     const validationErrors = Object.keys(profileData)?.reduce((acc, key) => {
       const countryCode = profileData?.countryCode;
-      console.log(profileData, key);
       const error = validateField(key, profileData[key], countryCode);
       if (error) acc[key] = error;
       return acc;

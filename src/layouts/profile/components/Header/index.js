@@ -93,7 +93,8 @@ function Header({ setEdit, edit, newData }) {
       <Card
         sx={{
           backdropFilter: `saturate(200%) blur(30px)`,
-          backgroundColor: ({ functions: { rgba }, palette: { white } }) => rgba(white.main, 0.8),
+          backgroundColor: ({ functions: { rgba }, palette: { dark } }) => rgba(dark.main, 0.8),
+          backgroundColor: ({ functions: { rgba }, palette: { dark } }) => rgba(dark.main, 0.8),
           boxShadow: ({ boxShadows: { navbarBoxShadow } }) => navbarBoxShadow,
           position: "relative",
           mt: -8,
@@ -103,7 +104,7 @@ function Header({ setEdit, edit, newData }) {
         }}
       >
         <Grid container spacing={3} alignItems="center">
-          <Grid item>
+          <Grid item color={"#fff"}>
             <SoftBox display="flex" gap={2}>
               <SoftAvatar alt="profile-image" variant="rounded" bgColor="secondary">
                 {newData?.username?.charAt(0)?.toUpperCase()}
@@ -127,72 +128,54 @@ function Header({ setEdit, edit, newData }) {
                   onClick={() => {
                     setEdit(true);
                   }}
+                  color="light"
                 >
-                  <Edit color="#fff" />
+                  <Edit color="light" />
                 </Icon>
               </Tooltip>
             )}
           </Grid>
         </Grid>
         <SoftBox mt={1}>
-          <Grid container spacing={1}>
-            <Grid item xs={1.2}>
-              <SoftTypography variant="button" fontWeight="bold">
-                Care home name
-              </SoftTypography>
-            </Grid>
-            <Grid item>: &nbsp;</Grid>
-            <Grid item xs={10}>
-              <SoftTypography variant="button" color="text" fontWeight="medium">
-                {newData?.carehome_name || "-"}
-              </SoftTypography>{" "}
-            </Grid>
-          </Grid>
-          <Grid container spacing={1}>
-            <Grid item xs={1.2}>
-              <SoftTypography variant="button" fontWeight="bold">
-                Administrator name
-              </SoftTypography>
-            </Grid>
-            <Grid item>: &nbsp;</Grid>
-            <Grid item xs={10}>
-              <SoftTypography variant="button" color="text" fontWeight="medium">
-                {newData?.administrator_name || "-"}
-              </SoftTypography>{" "}
-            </Grid>
-          </Grid>
-          <Grid container spacing={1}>
-            <Grid item xs={1.2}>
-              <SoftTypography variant="button" fontWeight="bold">
-                Phone Number
-              </SoftTypography>
-            </Grid>
-            <Grid item>: &nbsp;</Grid>
-            <Grid item xs={10}>
-              <SoftTypography variant="button" color="text" fontWeight="medium">
-                {newData?.phone_number && "+"}
-                {newData?.phone_number || "-"}
-              </SoftTypography>{" "}
-            </Grid>
-          </Grid>
-          <Grid container spacing={1}>
-            <Grid item xs={1.2}>
-              <SoftTypography variant="button" fontWeight="bold">
-                Address
-              </SoftTypography>
-            </Grid>
-            <Grid item>: &nbsp;</Grid>
-            <Grid item xs={10} lineHeight={"25px"}>
-              <SoftTypography
-                variant="button"
-                color="text"
-                fontWeight="medium"
-                dangerouslySetInnerHTML={{
-                  __html: newData?.address.split(",").join(",<br>") || "-",
-                }} // Renders <br /> as line breaks
-              />
-            </Grid>
-          </Grid>
+          <div className="text-grid">
+            <SoftTypography variant="button" fontWeight="bold">
+              Care home name
+            </SoftTypography>
+            <SoftTypography variant="button" color="text" fontWeight="medium">
+              : {newData?.carehome_name || "-"}
+            </SoftTypography>{" "}
+          </div>
+          <div className="text-grid">
+            <SoftTypography variant="button" fontWeight="bold">
+              Administrator name
+            </SoftTypography>
+            <SoftTypography variant="button" color="text" fontWeight="medium">
+              : {newData?.administrator_name || "-"}
+            </SoftTypography>{" "}
+          </div>
+          <div className="text-grid">
+            <SoftTypography variant="button" fontWeight="bold">
+              Phone Number
+            </SoftTypography>
+            <SoftTypography variant="button" color="text" fontWeight="medium">
+              : {newData?.phone_number && "+"}
+              {newData?.phone_number || "-"}
+            </SoftTypography>{" "}
+          </div>
+          <div className="text-grid">
+            <SoftTypography variant="button" fontWeight="bold">
+              Address
+            </SoftTypography>
+
+            <SoftTypography
+              variant="button"
+              color="text"
+              fontWeight="medium"
+              dangerouslySetInnerHTML={{
+                __html: newData?.address.split(",").join(",<br>") || "-",
+              }} // Renders <br /> as line breaks
+            />
+          </div>
         </SoftBox>
       </Card>
     </SoftBox>

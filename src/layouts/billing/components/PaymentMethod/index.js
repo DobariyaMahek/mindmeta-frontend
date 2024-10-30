@@ -40,7 +40,7 @@ function PaymentMethod() {
         <SoftTypography variant="h6" fontWeight="medium">
           Payment Method
         </SoftTypography>
-        <SoftButton variant="gradient" color="dark">
+        <SoftButton variant="gradient" color="primary">
           <Icon sx={{ fontWeight: "bold" }}>add</Icon>
           &nbsp;add new card
         </SoftButton>

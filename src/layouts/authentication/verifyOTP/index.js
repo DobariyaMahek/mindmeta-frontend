@@ -276,7 +276,7 @@ function VerifyOTP() {
             </SoftBox>
 
             <SoftBox mb={1} mt={2}>
-              <SoftButton variant="gradient" color="dark" fullWidth onClick={handleSubmit}>
+              <SoftButton variant="gradient" color="primary" fullWidth onClick={handleSubmit}>
                 Verify OTP
               </SoftButton>
             </SoftBox>
