@@ -3,8 +3,11 @@ import { Box, Icon, Modal, Typography } from "@mui/material";
 import SoftButton from "components/SoftButton";
 import React from "react";
 import PropTypes from "prop-types";
+import colors from "assets/theme/base/colors";
 
 const ConfirmationModal = ({ deleteConfirmation, setDeleteConfirmation, deleteFamilyMember }) => {
+  const { dark, primary } = colors;
+
   return (
     <Modal
       open={deleteConfirmation}
@@ -20,9 +23,9 @@ const ConfirmationModal = ({ deleteConfirmation, setDeleteConfirmation, deleteFa
           left: "50%",
           transform: "translate(-50%, -50%)",
           width: 500,
-          bgcolor: "background.paper",
+          bgcolor: dark.main,
           borderRadius: 2,
-          boxShadow: 24,
+          boxShadow: "0px 4px 20px rgba(0, 0, 0, 0.7)", // Dark-themed box shadow
           p: 4,
           textAlign: "center",
           outline: "none",
@@ -35,17 +38,17 @@ const ConfirmationModal = ({ deleteConfirmation, setDeleteConfirmation, deleteFa
             position: "absolute",
             top: 8,
             right: 8,
-            color: "text.secondary",
             cursor: "pointer",
+            color: "#fff",
           }}
         >
           <Close />
         </Icon>
 
-        <Typography id="confirm-modal-title" variant="h4" component="h2" gutterBottom>
+        <Typography id="confirm-modal-title" variant="h4" component="h2" gutterBottom color="#fff">
           Are you sure?
         </Typography>
-        <Typography id="confirm-modal-description" variant="body2" color="text.secondary" mb={3}>
+        <Typography id="confirm-modal-description" variant="body2" color="#fff" mb={3}>
           Do you really want to delete this member?
         </Typography>
         <SoftButton

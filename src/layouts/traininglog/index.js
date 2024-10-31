@@ -279,7 +279,7 @@ function TrainingLogs() {
             width: 900,
             bgcolor: dark.main,
             borderRadius: 3,
-            boxShadow: 24,
+            boxShadow: "0px 4px 20px rgba(0, 0, 0, 0.7)", // Dark-themed box shadow
             textAlign: "center",
             outline: "none",
           }}
@@ -309,14 +309,12 @@ function TrainingLogs() {
 
             <SoftBox>
               {/* Tags Section */}
-              <Grid container spacing={1} mt={1}>
-                <Grid item xs={1.5}>
-                  <Typography variant="h6" color="#fff">
-                    Tags
-                  </Typography>
-                </Grid>
-                <Grid item  color="#fff">: </Grid>
-                <Grid item xs={10}>
+              <div className="text-grid">
+                <Typography variant="h6" color="#fff">
+                  Tags
+                </Typography>
+                <SoftBox color="#fff">
+                  :&nbsp;
                   {(typeof selectedLogs?.tags === "string"
                     ? [selectedLogs?.tags]
                     : selectedLogs?.tags
@@ -344,25 +342,21 @@ function TrainingLogs() {
                       </SoftTypography>
                     </SoftBox>
                   ))}
-                </Grid>
-              </Grid>
-
-              {/* Description Section */}
-              <Grid container spacing={1} mt={1}>
-                <Grid item xs={1.5}>
-                  <Typography variant="h6" color="#fff">
-                    Description
-                  </Typography>
-                </Grid>
-                <Grid item  color="#fff">: </Grid>
-                <Grid item xs={10}>
-                  <Typography fontSize="14px"  color="#fff">
+                </SoftBox>
+              </div>
+              <div className="text-grid">
+                <Typography variant="h6" color="#fff">
+                  Description
+                </Typography>
+                <SoftBox color="#fff" display={"inline"}>
+                  : &nbsp;
+                  <Typography fontSize="14px" color="#fff" display={"inline"}>
                     {showFullDescription
                       ? selectedLogs?.description
                       : getTruncatedText(selectedLogs?.description || "", textLimit)}{" "}
                     {selectedLogs?.description?.length > textLimit && (
                       <Typography
-                        color={"#000"}
+                        color={"#fff"}
                         fontSize={"12px"}
                         fontWeight={"bold"}
                         sx={{ cursor: "pointer" }}
@@ -373,25 +367,21 @@ function TrainingLogs() {
                       </Typography>
                     )}
                   </Typography>
-                </Grid>
-              </Grid>
-
-              {/* Instruction Section */}
-              <Grid container spacing={1} mt={1}>
-                <Grid item xs={1.5}>
-                  <Typography variant="h6" color="#fff">
-                    Instruction
-                  </Typography>
-                </Grid>
-                <Grid item  color="#fff">: </Grid>
-                <Grid item xs={10}>
-                  <Typography fontSize="14px"  color="#fff">
+                </SoftBox>
+              </div>{" "}
+              <div className="text-grid">
+                <Typography variant="h6" color="#fff">
+                  Instruction
+                </Typography>
+                <SoftBox color="#fff" display={"inline"}>
+                  : &nbsp;
+                  <Typography fontSize="14px" color="#fff" display={"inline"}>
                     {showFullInstruction
                       ? selectedLogs?.instruction
                       : getTruncatedText(selectedLogs?.instruction || "", textLimit)}{" "}
                     {selectedLogs?.instruction?.length > textLimit && (
                       <Typography
-                        color={"#000"}
+                        color={"#fff"}
                         fontSize={"12px"}
                         fontWeight={"bold"}
                         sx={{ cursor: "pointer" }}
@@ -402,8 +392,8 @@ function TrainingLogs() {
                       </Typography>
                     )}
                   </Typography>
-                </Grid>
-              </Grid>
+                </SoftBox>
+              </div>
             </SoftBox>
           </SoftBox>
         </Box>

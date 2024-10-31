@@ -149,7 +149,6 @@ const EventModal = ({ open, handleClose, handleSave }) => {
           width: 500,
           bgcolor: dark.main,
           borderRadius: 3,
-          boxShadow: 24,
           p: 2,
           outline: "none",
           boxShadow: "0px 4px 20px rgba(0, 0, 0, 0.7)", // Dark-themed box shadow

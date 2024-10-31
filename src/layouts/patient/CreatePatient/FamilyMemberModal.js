@@ -44,12 +44,11 @@ const FamilyMemberModal = ({
           width: 500,
           bgcolor: dark.main,
           borderRadius: 3,
-          boxShadow: 24,
+          boxShadow: "0px 4px 20px rgba(0, 0, 0, 0.7)", // Dark-themed box shadow
           p: 1,
           pt: 2,
           pb: 2,
           outline: "none",
-          boxShadow: "0px 4px 20px rgba(0, 0, 0, 0.7)", // Dark-themed box shadow
         }}
       >
         <Grid
@@ -254,7 +253,7 @@ const FamilyMemberModal = ({
                     sx={{
                       color: "#ffffff", // Default border color when unselected
                       "&.Mui-checked": {
-                        color: '#e8078d', // Primary color when checked
+                        color: "#e8078d", // Primary color when checked
                       },
                     }}
                   />
@@ -269,7 +268,7 @@ const FamilyMemberModal = ({
                     sx={{
                       color: "#ffffff", // Default border color when unselected
                       "&.Mui-checked": {
-                        color: '#e8078d', // Primary color when checked
+                        color: "#e8078d", // Primary color when checked
                       },
                     }}
                   />
@@ -284,7 +283,7 @@ const FamilyMemberModal = ({
                     sx={{
                       color: "#ffffff", // Default border color when unselected
                       "&.Mui-checked": {
-                        color: '#e8078d', // Primary color when checked
+                        color: "#e8078d", // Primary color when checked
                       },
                     }}
                   />
