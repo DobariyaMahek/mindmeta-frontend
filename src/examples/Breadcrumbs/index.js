@@ -24,7 +24,7 @@ function Breadcrumbs({ title, route, light = false }) {
         {title === "update-patient" && (
           <Tooltip title="Back" placement="top">
             <Icon
-              sx={{ cursor: "pointer", marginRight: "10px" }}
+              sx={{ cursor: "pointer", marginRight: "10px", color: "#fff" }}
               onClick={() => {
                 navigate(-1);
               }}
