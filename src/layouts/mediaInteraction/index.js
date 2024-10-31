@@ -437,7 +437,7 @@ function MediaInteraction() {
                           </SoftTypography>
                           <Icon
                             onClick={() => setTags([...tags?.filter((_, i) => i !== index)])}
-                            sx={{ marginLeft: "6px", cursor: "pointer" }}
+                            sx={{ marginLeft: "6px", cursor: "pointer" ,color:'#fff'}}
                           >
                             <Close fontSize="small" />
                           </Icon>
