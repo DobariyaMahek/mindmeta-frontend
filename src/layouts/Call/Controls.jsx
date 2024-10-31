@@ -154,16 +154,12 @@ function Controls({ callReceive, setCallReceive }) {
                     padding: "0.5rem",
                   }}
                 >
-                  <Tooltip
-                    title={isMuted ? "Tap mic to unmute" : "Tap mic to mute"}
-                    placement="top"
-                  >
+  
                     {isMuted ? (
                       <MicOff style={{ width: "1rem", height: "1rem", color: "#ffffff" }} />
                     ) : (
                       <Mic style={{ width: "1rem", height: "1rem", color: "#ffffff" }} />
                     )}
-                  </Tooltip>
                 </Toggle>
 
                 <div
@@ -179,7 +175,7 @@ function Controls({ callReceive, setCallReceive }) {
                 </div>
 
                 {/* Timer Display */}
-                <div style={{ fontSize: "1rem", color: "#ffffff" }}>
+                <div style={{ width: "4rem", fontSize: "1rem", color: "#ffffff" }}>
                   {String(minutes).padStart(2, "0")}:{String(seconds).padStart(2, "0")}
                 </div>
 

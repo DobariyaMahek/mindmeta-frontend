@@ -802,7 +802,7 @@ function CreatePatient() {
                           alignItems="center"
                           width="100%"
                         >
-                          <Typography variant="h6" color="#e8078d" style={{ fontSize: "14px" }}>
+                          <Typography variant="h6" color="#fff" style={{ fontSize: "14px" }}>
                             To proceed, ensure the inclusion of at least one family member
                           </Typography>
                         </Box>

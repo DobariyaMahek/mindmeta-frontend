@@ -213,6 +213,7 @@ function TrainingLogs() {
                       transform: "translateY(-50%)",
                       zIndex: 1,
                       cursor: "pointer",
+                      color:'#fff'
                     }}
                     fontSize="1px"
                   >
