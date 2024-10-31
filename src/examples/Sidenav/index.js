@@ -161,7 +161,7 @@ function Sidenav({ color = "primary", brand = "", brandName, routes, ...rest }) 
             {brand && (
               <SoftBox
                 component="img"
-                src={"https://mindmeta.co.uk/wp-content/uploads/2023/08/Mind-Meta-Logo-icon.svg"}
+                src={brand}
                 alt="Mind Meta Logo"
                 width="2.5rem"
               />
