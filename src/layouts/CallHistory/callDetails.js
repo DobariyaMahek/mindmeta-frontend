@@ -16,6 +16,7 @@ import CallEmotionChart from "./CallEmotionChart";
 import { isEmpty } from "helper/constant";
 import { GetCallChartData } from "../../redux/ApiSlice/patientSlice";
 import colors from "assets/theme/base/colors";
+import EmotionChart from "layouts/patient/EmotionChart";
 const useStyles = makeStyles((theme) => ({
   chatSection: {
     width: "100%",
@@ -366,9 +367,10 @@ const CallHistoryDetails = ({ singleHistory, callHistory }) => {
             width: { xs: "90%", sm: "80%", md: "70%", lg: "60%", xl: "50%" }, // Responsive width
             bgcolor: dark.main,
             borderRadius: 2,
-            boxShadow: 24,
+            boxShadow: "0px 4px 20px rgba(0, 0, 0, 0.7)", // Dark-themed box shadow
             p: { xs: 2, sm: 3, md: 4 }, // Responsive padding
             outline: "none",
+            textAlign: "center",
           }}
         >
           <SoftBox
@@ -417,12 +419,12 @@ const CallHistoryDetails = ({ singleHistory, callHistory }) => {
             ) : !isEmpty(chartData) && Object.keys(chartData).length > 0 ? (
               <Box
                 sx={{
-                  maxHeight: "400px", // Set the max height as needed
-                  overflowY: "auto", // Vertical scrollbar
+                  // maxHeight: "400px", // Set the max height as needed
+                  // overflowY: "auto", // Vertical scrollbar
                   width: "100%", // Ensure it takes the full width
                 }}
               >
-                <CallEmotionChart data={chartData} />
+                <EmotionChart data={chartData} />
               </Box>
             ) : (
               ""

@@ -1,25 +1,21 @@
 import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { useVoice } from "@humeai/voice-react";
-import { Button } from "./ui/button";
 import { Mic, MicOff, Phone } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Toggle } from "./ui/toggle";
 import MicFFT from "./MicFFT";
 import SoftButton from "components/SoftButton";
-import { useNavigate } from "react-router-dom";
 import { useSoftUIController } from "context";
 import { createCallHistory } from "../../redux/ApiSlice/patientSlice";
-import toast from "react-hot-toast";
 import { getSession } from "helper/authHelper";
 import { useDispatch } from "react-redux";
-import { SOMETHING_WRONG } from "helper/constant";
+import { Tooltip } from "@mui/material";
 
 function Controls({ callReceive, setCallReceive }) {
-  const [controller, dispatch] = useSoftUIController();
+  const [controller] = useSoftUIController();
   const { miniSidenav } = controller;
-  const { disconnect, status, isMuted, unmute, mute, micFft, messages, connect } = useVoice();
-  const navigate = useNavigate();
+  const { disconnect, status, isMuted, unmute, mute, micFft, messages } = useVoice();
   const dispatchs = useDispatch();
   const session = getSession();
 
@@ -53,10 +49,10 @@ function Controls({ callReceive, setCallReceive }) {
 
   useEffect(() => {
     if (status.value === "connected" && callReceive) {
-      setIsTiming(true); // Start the timer when the call is connected
-    } else if (status.value == "error" && callReceive) {
-      setIsTiming(false); // Stop the timer when the call is disconnected
-      resetTimer(); // Reset the timer after the call ends
+      setIsTiming(true);
+    } else if (status.value === "error" && callReceive) {
+      setIsTiming(false);
+      resetTimer();
       handleDisconnect();
     }
   }, [status.value, callReceive]);
@@ -86,13 +82,13 @@ function Controls({ callReceive, setCallReceive }) {
   };
 
   useEffect(() => {
-    if (messages && messages[1]?.type == "chat_metadata") {
+    if (messages && messages[1]?.type === "chat_metadata") {
       localStorage.setItem("chat_metadata", JSON.stringify(messages[1]));
     }
   }, [messages]);
 
   return (
-    status.value == "connected" &&
+    status.value === "connected" &&
     callReceive && (
       <motion.div>
         <div
@@ -105,7 +101,7 @@ function Controls({ callReceive, setCallReceive }) {
             alignItems: "center",
             justifyContent: "center",
             padding: "1rem",
-            zIndex: "999999999999999999999999999999",
+            zIndex: "999999999",
           }}
         >
           <AnimatePresence>
@@ -129,14 +125,14 @@ function Controls({ callReceive, setCallReceive }) {
                   alignItems: "center",
                   gap: "1rem",
                   borderRadius: "0.5rem",
-                  border: "1px solid #4b5563", // border-gray-600 equivalent
-                  padding: "0.5rem 1rem",
+                  padding: "1rem",
                   textAlign: "center",
-                  fontSize: "0.875rem", // text-sm equivalent
-                  fontWeight: "500", // font-medium equivalent
-                  color: "#ffffff", // text-white
-                  boxShadow: "0 1px 2px rgba(0, 0, 0, 0.05)", // shadow-sm equivalent
-                  backgroundColor: "white",
+                  fontSize: "0.875rem",
+                  fontWeight: "500",
+                  color: "#ffffff",
+                  background: "linear-gradient(145deg, #5d5368, #454052)",
+                  boxShadow:
+                    "10px 10px 20px rgba(0, 0, 0, 0.7), -8px -8px 16px rgba(255, 255, 255, 0.1)",
                 }}
               >
                 <Toggle
@@ -148,16 +144,26 @@ function Controls({ callReceive, setCallReceive }) {
                       mute();
                     }
                   }}
+                  style={{
+                    background: isMuted
+                      ? "linear-gradient(145deg, #3f3a4a, #2e2b38)"
+                      : "linear-gradient(145deg, #5d5368, #454052)",
+                    borderRadius: "50%",
+                    boxShadow:
+                      "4px 4px 8px rgba(0, 0, 0, 0.4), -4px -4px 8px rgba(255, 255, 255, 0.1)",
+                    padding: "0.5rem",
+                  }}
                 >
-                  {isMuted ? (
-                    <MicOff
-                      style={{ width: "1rem", height: "1rem", color: "#1f2937", border: "none" }}
-                    />
-                  ) : (
-                    <Mic
-                      style={{ width: "1rem", height: "1rem", color: "#1f2937", border: "none" }}
-                    />
-                  )}
+                  <Tooltip
+                    title={isMuted ? "Tap mic to unmute" : "Tap mic to mute"}
+                    placement="top"
+                  >
+                    {isMuted ? (
+                      <MicOff style={{ width: "1rem", height: "1rem", color: "#ffffff" }} />
+                    ) : (
+                      <Mic style={{ width: "1rem", height: "1rem", color: "#ffffff" }} />
+                    )}
+                  </Tooltip>
                 </Toggle>
 
                 <div
@@ -166,14 +172,14 @@ function Controls({ callReceive, setCallReceive }) {
                     display: "grid",
                     height: "2rem",
                     width: "12rem",
-                    flexShrink: 0,
+                    color: "#ffffff",
                   }}
                 >
                   <MicFFT fft={micFft} className={"fill-current"} />
                 </div>
 
                 {/* Timer Display */}
-                <div style={{ fontSize: "1rem", color: "#1f2937" }}>
+                <div style={{ fontSize: "1rem", color: "#ffffff" }}>
                   {String(minutes).padStart(2, "0")}:{String(seconds).padStart(2, "0")}
                 </div>
 
@@ -184,21 +190,28 @@ function Controls({ callReceive, setCallReceive }) {
                     disconnect();
                     handleDisconnect();
                   }}
+                  style={{
+                    border: "2px solid #ef4444",
+                    color: "#ef4444",
+                    background: "transparent",
+                    padding: "0.5rem 1rem",
+                    borderRadius: "0.5rem",
+                    display: "flex",
+                    alignItems: "center",
+                    boxShadow:
+                      "4px 4px 8px rgba(0, 0, 0, 0.4), -4px -4px 8px rgba(255, 255, 255, 0.1)",
+                  }}
                 >
-                  <span>
-                    <Phone
-                      style={{
-                        width: "1rem",
-                        height: "1rem",
-                        color: "#ef4444",
-                        opacity: 0.5,
-                        marginRight: "10px",
-                      }}
-                      strokeWidth={2}
-                      stroke={"currentColor"}
-                    />
-                  </span>
-                  <span style={{ color: "#ef4444" }}>End Call</span>
+                  <Phone
+                    style={{
+                      width: "1rem",
+                      height: "1rem",
+                      color: "#ef4444",
+                      opacity: 0.8,
+                      marginRight: "10px",
+                    }}
+                  />
+                  <span>End Call</span>
                 </SoftButton>
               </motion.div>
             ) : null}
@@ -210,7 +223,7 @@ function Controls({ callReceive, setCallReceive }) {
 }
 
 Controls.propTypes = {
-  callReceive: PropTypes.func.isRequired, // Validate that callReceive is a required function
+  callReceive: PropTypes.func.isRequired,
   setCallReceive: PropTypes.func.isRequired,
 };
 

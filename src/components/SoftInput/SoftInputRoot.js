@@ -5,7 +5,7 @@ import { styled } from "@mui/material/styles";
 export default styled(InputBase)(({ theme, ownerState }) => {
   const { palette, boxShadows, functions, typography, borders } = theme;
   const { size, error, success, iconDirection, direction, disabled } = ownerState;
-
+console.log(`disabled`, disabled, `size`, size);
   const { inputColors, grey, white, transparent } = palette;
   const { inputBoxShadow } = boxShadows;
   const { pxToRem, boxShadow } = functions;
@@ -128,7 +128,10 @@ export default styled(InputBase)(({ theme, ownerState }) => {
   };
 
   return {
-    backgroundColor: white.main,
+    backgroundColor: disabled ? `#d3d3d330 !important` : white.main,
+    "& > input": {
+      backgroundColor: disabled ? `#d3d3d301 !important` : white.main,
+    },
     pointerEvents: disabled ? "none" : "auto",
     ...(size === "small" && smallStyles()),
     ...(size === "large" && largeStyles()),

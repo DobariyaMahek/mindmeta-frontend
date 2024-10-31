@@ -658,7 +658,6 @@ function CreatePatient() {
                         key={index}
                         style={{
                           position: "relative",
-
                           marginTop: "15px",
                         }}
                       >
@@ -679,6 +678,7 @@ function CreatePatient() {
                                 position: "absolute",
                                 top: 0,
                                 right: 22,
+                                color: "#fff",
                               }}
                               onClick={() => {
                                 setFamilyMemberModalOpen({
@@ -715,6 +715,7 @@ function CreatePatient() {
                                 position: "absolute",
                                 top: 0,
                                 right: 0,
+                                color: "#fff",
                               }}
                               onClick={() => {
                                 setDeleteMemberIndex({ index: index, memberId: member?.id || "" });

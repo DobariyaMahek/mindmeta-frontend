@@ -27,7 +27,6 @@ textarea {
   font-family: "Exo 2", sans-serif !important;
   padding: 10px !important;
 }
-
 input,
 select {
   font-family: "Exo 2", sans-serif !important;
@@ -102,13 +101,32 @@ input:focus {
 h2.react-datepicker__current-month,
 .react-datepicker__day-name,
 .react-datepicker__day,
-.react-datepicker__time-name {
+.react-datepicker__time-name,
+.react-datepicker__time-container
+  .react-datepicker__time
+  .react-datepicker__time-box
+  ul.react-datepicker__time-list,
+.react-datepicker-time__header {
   background-color: #110c17 !important;
+  color: #fff !important;
+}
+.react-datepicker__time-container
+  .react-datepicker__time
+  .react-datepicker__time-box
+  ul.react-datepicker__time-list
+  li.react-datepicker__time-list-item:hover {
+  background-color: #e8078d !important;
   color: #fff !important;
 }
 .react-datepicker-wrapper {
   display: block;
   width: 100%;
+}
+.react-datepicker__day--disabled,
+.react-datepicker__month-text--disabled,
+.react-datepicker__quarter-text--disabled,
+.react-datepicker__year-text--disabled {
+  background-color: #d3d3d330 !important;
 }
 .react-datepicker__input-container .input {
   letter-spacing: 0.00938em;

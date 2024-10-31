@@ -226,7 +226,6 @@ function Sidenav({ color = "primary", brand = "", brandName, routes, ...rest }) 
             width: 500,
             bgcolor: dark.main,
             borderRadius: 3,
-            boxShadow: 24,
             p: 1,
             pt: 2,
             pb: 2,
