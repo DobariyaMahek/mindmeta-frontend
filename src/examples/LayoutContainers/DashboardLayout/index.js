@@ -29,7 +29,7 @@ import { useSoftUIController, setLayout, setMiniSidenav, setOpenConfigurator } f
 import Calling from "components/Calling";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 import Sidenav from "examples/Sidenav";
-import brand from "assets/images/logo-ct.png";
+import brand from "assets/images/Mind-Meta-Logo-icon.svg";
 import useRoutes from "routes";
 function DashboardLayout({ children }) {
   const [controller, dispatch] = useSoftUIController();
