@@ -87,6 +87,7 @@ function Patient() {
   const { patientInfo, totalPatients, patientLoader, chartLoader, patientChartData } = useSelector(
     (state) => state.patient
   );
+
   const [open, setOpen] = useState(false);
   const [openChat, setOpenChat] = useState(false);
   const [selectedPatient, setSelectedPatient] = useState(null);
@@ -258,7 +259,7 @@ function Patient() {
                       transform: "translateY(-50%)",
                       zIndex: 1,
                       cursor: "pointer",
-                      color:'#fff'
+                      color: "#fff",
                     }}
                     fontSize="1px"
                   >
@@ -325,9 +326,9 @@ function Patient() {
             left: "50%",
             transform: "translate(-50%, -50%)",
             width: 500,
-            bgcolor: "background.paper",
+            bgcolor: dark.main,
             borderRadius: 2,
-            boxShadow: 24,
+            boxShadow: "0px 4px 20px rgba(0, 0, 0, 0.7)", // Dark-themed box shadow
             p: 4,
             textAlign: "center",
             outline: "none",
@@ -340,16 +341,22 @@ function Patient() {
               position: "absolute",
               top: 8,
               right: 8,
-              color: "text.secondary",
+              color: "#fff",
             }}
           >
             <Close />
           </Icon>
 
-          <Typography id="confirm-modal-title" variant="h4" component="h2" gutterBottom>
+          <Typography
+            id="confirm-modal-title"
+            variant="h4"
+            component="h2"
+            gutterBottom
+            color="#fff"
+          >
             Are you sure?
           </Typography>
-          <Typography id="confirm-modal-description" variant="body2" color="text.secondary" mb={3}>
+          <Typography id="confirm-modal-description" variant="body2" color="#fff" mb={3}>
             Do you really want to delete this record?
           </Typography>
           <SoftButton variant="outlined" color="secondary" onClick={handleClose} sx={{ mr: 1 }}>
@@ -375,7 +382,7 @@ function Patient() {
             width: { xs: "90%", sm: "80%", md: "70%", lg: "60%", xl: "50%" }, // Responsive width
             bgcolor: dark.main,
             borderRadius: 2,
-            boxShadow: 24,
+            boxShadow: "0px 4px 20px rgba(0, 0, 0, 0.7)", // Dark-themed box shadow
             p: { xs: 2, sm: 3, md: 4 }, // Responsive padding
             outline: "none",
             textAlign: "center",
@@ -427,15 +434,13 @@ function Patient() {
           </SoftBox>
           <SoftBox height="100%" marginTop="40px" color="#fff">
             {!selectedDate ? (
-              <SoftTypography variant="button" >
+              <SoftTypography variant="button">
                 Please select a date to view the overview.
               </SoftTypography>
             ) : chartLoader ? (
-              <SoftTypography variant="button" >
-                Loading data...
-              </SoftTypography>
+              <SoftTypography variant="button">Loading data...</SoftTypography>
             ) : isEmpty(patientChartData) || Object.keys(patientChartData).length === 0 ? (
-              <SoftTypography variant="button" >
+              <SoftTypography variant="button">
                 No overview available for the chosen date. Please select a different date
               </SoftTypography>
             ) : !isEmpty(patientChartData) && Object.keys(patientChartData).length > 0 ? (

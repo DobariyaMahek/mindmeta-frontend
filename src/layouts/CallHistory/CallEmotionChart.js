@@ -57,12 +57,12 @@ function CallEmotionChart({ data }) {
     scales: {
       x: {
         beginAtZero: true,
-        ticks: { maxRotation: 100, minRotation: 45, color: "#666" },
+        ticks: { maxRotation: 100, minRotation: 45, color: "#fff", fontFamily: "Exo 2" },
         grid: { display: false }, // Remove grid lines for x-axis
       },
       y: {
         beginAtZero: true,
-        ticks: { color: "#666" },
+        ticks: { color: "#fff" },
         grid: { color: "rgba(200, 200, 200, 0.3)", lineWidth: 0.5 }, // Light grid for y-axis
       },
     },
