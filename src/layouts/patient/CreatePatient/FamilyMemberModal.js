@@ -11,6 +11,7 @@ import { relations } from "helper/constant";
 import { isEmpty } from "helper/constant";
 import { useSoftUIController } from "context";
 import colors from "assets/theme/base/colors";
+import { capitalizeValue } from "helper/constant";
 const FamilyMemberModal = ({
   familyMemberModalOpen,
   currentFamilyMember,
@@ -18,7 +19,7 @@ const FamilyMemberModal = ({
   familyErrors,
   setFamilyErrors,
   clearMember,
-  saveFamilyMember,
+  saveFamilyMember,validateField
 }) => {
   const todays = new Date();
   const minDate = new Date(todays.getFullYear() - 150, 0, 1);
@@ -343,5 +344,6 @@ FamilyMemberModal.propTypes = {
   setFamilyErrors: PropTypes.func.isRequired,
   clearMember: PropTypes.func.isRequired,
   saveFamilyMember: PropTypes.func.isRequired,
+  validateField: PropTypes.func.isRequired,
 };
 export default FamilyMemberModal;

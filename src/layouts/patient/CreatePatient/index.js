@@ -841,6 +841,7 @@ function CreatePatient() {
           setFamilyErrors,
           clearMember,
           saveFamilyMember,
+          validateField,
         }}
       />
 
