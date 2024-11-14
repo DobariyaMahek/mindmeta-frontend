@@ -92,11 +92,7 @@ export const authHeaderForm = () => {
   }
 };
 
-export const setSession = (sessionObj, rememberMe) => {
-  if (sessionObj.userInfo && sessionObj.access_token) {
-    localStorage.setItem("authUser", JSON.stringify(sessionObj));
-  }
-};
+
 
 export const getSession = () => {
   if (typeof localStorage !== "undefined") {
@@ -129,9 +125,12 @@ export const checkToken = async () => {
 
     if (timeStamp <= expTime) {
       try {
-        const res = await axios.get(process.env.REACT_APP_API_URL + "auth/refresh-token", {
-          headers: refreshAuthHeader(),
-        });
+        const res = await axios.get(
+          import.meta.env.REACT_APP_API_URL + "auth/refresh-token",
+          {
+            headers: refreshAuthHeader(),
+          }
+        );
         if (res?.data?.success) {
           const info = JSON.parse(localStorage.getItem("authUser"));
           if (res && res.data && res.data.data) {
@@ -149,7 +148,7 @@ export const checkToken = async () => {
         if (error.response && error.response.status === 401) {
           toast.error(SESSION_EXPIRED);
           localStorage.clear();
-          window.location.href = "/authentication/sign-in";
+          window.location.href = "/login";
           return false;
         }
       }

@@ -1,10 +1,8 @@
 import axios from "axios";
-import { checkToken } from "helper/authHelper";
-import { authHeaderForm } from "helper/authHelper";
-import { authHeader } from "helper/authHelper";
-import { SESSION_EXPIRED } from "helper/constant";
 import toast from "react-hot-toast";
-const apiUrl = process.env.REACT_APP_API_URL;
+import { authHeader, authHeaderForm, checkToken } from "../helper/authHelper";
+import { SESSION_EXPIRED } from "../helper/constant";
+const apiUrl = import.meta.env.VITE_API_URL;
 const axiosApi = axios.create({
   baseURL: apiUrl,
 });
@@ -14,7 +12,7 @@ axiosApi.interceptors.response.use(
     if (error.response && error.response.status === 401) {
       toast.error(SESSION_EXPIRED);
       localStorage.clear();
-      window.location.href = "/authentication/sign-in";
+      window.location.href = "/login";
     }
     return Promise.reject(error);
   }

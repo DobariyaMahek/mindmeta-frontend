@@ -36,7 +36,7 @@ export const WebSocketProvider = ({ children }) => {
       chatSocketRef.current.close(); // Close the existing socket
     }
 
-    const url = `${process.env.REACT_APP_SOCKET_API_URL}/bots/ws/chat/${userInfo?.role}/${chatId}${
+    const url = `${import.meta.env.REACT_APP_SOCKET_API_URL}/bots/ws/chat/${userInfo?.role}/${chatId}${
       userInfo?.role === "care_home" ? `?care_home_id=${userId}` : ""
     }`;
     chatSocketRef.current = new WebSocket(url);
@@ -76,7 +76,7 @@ export const WebSocketProvider = ({ children }) => {
       }
 
       notificationSocketRef.current = new WebSocket(
-        `${process.env.REACT_APP_SOCKET_API_URL}/ws/notifications?token=${token}`
+        `${import.meta.env.REACT_APP_SOCKET_API_URL}/ws/notifications?token=${token}`
       );
 
       notificationSocketRef.current.onopen = () => {};
