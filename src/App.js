@@ -14,7 +14,7 @@ import { getSession } from "helper/authHelper";
 import { useWebSocketContext } from "api/WebSocketProvider";
 import { checkToken } from "helper/authHelper";
 import { jwtDecode } from "jwt-decode";
-import Loader from "components/loader";
+import Loader from "./components/loader";
 export default function App() {
   const { authLoader } = useSelector((state) => state.auth);
   const { patientLoader } = useSelector((state) => state.patient);
