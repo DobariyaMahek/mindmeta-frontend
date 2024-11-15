@@ -14,7 +14,8 @@ import { getSession } from "helper/authHelper";
 import { useWebSocketContext } from "api/WebSocketProvider";
 import { checkToken } from "helper/authHelper";
 import { jwtDecode } from "jwt-decode";
-import Loader from "./components/loader";
+// import Loader fro./components/AppLoader/Loaderder";
+import Loader from "./components/AppLoader/Loader";
 export default function App() {
   const { authLoader } = useSelector((state) => state.auth);
   const { patientLoader } = useSelector((state) => state.patient);
@@ -28,6 +29,7 @@ export default function App() {
   const routes = useRoutes();
   const navigate = useNavigate();
   const { notificationMessages } = useWebSocketContext();
+  
   useEffect(() => {
     if (userInfo) {
       const intervalId = setInterval(() => {
