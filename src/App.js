@@ -8,13 +8,13 @@ import PrivateRoute from "./PrivateRoute";
 import PublicRoute from "./PublicRoute";
 import "./App.css"; // Import your CSS file for animations
 import useRoutes from "routes";
-import Loader from "components/Loader";
 import { useSelector } from "react-redux";
 import Calling from "components/Calling";
 import { getSession } from "helper/authHelper";
 import { useWebSocketContext } from "api/WebSocketProvider";
 import { checkToken } from "helper/authHelper";
 import { jwtDecode } from "jwt-decode";
+import Loader from "components/loader";
 export default function App() {
   const { authLoader } = useSelector((state) => state.auth);
   const { patientLoader } = useSelector((state) => state.patient);
