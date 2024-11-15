@@ -63,7 +63,16 @@ export const PatientTypes = [
     label: "Local council referred patient without family",
   },
 ];
-
+export const VoiceTypes = [
+  { value: "ITO", label: "Ito" },
+  { value: "KORA", label: "Kora" },
+  { value: "DACHER", label: "Dacher" },
+  { value: "AURA", label: "Aura" },
+  { value: "FINN", label: "Finn" },
+  { value: "WHIMSY", label: "Whimsy" },
+  { value: "STELLA", label: "Stella" },
+  { value: "SUNNY", label: "Sunny" },
+];
 export const relations = [
   { value: "Father", label: "Father" },
   { value: "Mother", label: "Mother" },
@@ -82,6 +91,7 @@ export const GENERAL_INFO_PATIENT = {
   patientEmail: "",
   patientType: "NewPatient",
   gender: "Male",
+  hume_voice:'ITO'
 };
 
 export const FAMILY_MEMBER_INFO = {
