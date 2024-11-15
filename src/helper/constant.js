@@ -73,7 +73,82 @@ export const relations = [
   { value: "Spouse", label: "Spouse" },
   { value: "Other", label: "Other" },
 ];
-
+export const FAMILY_HEAD_LIST = [
+  {
+    id: "name",
+    numeric: true,
+    disablePadding: false,
+    label: "Name",
+  },
+  {
+    id: "email",
+    numeric: false,
+    disablePadding: false,
+    label: "Email",
+  },
+  {
+    id: "birthdate",
+    numeric: true,
+    disablePadding: false,
+    label: "Date of birth",
+  },
+  {
+    id: "relation",
+    numeric: true,
+    disablePadding: false,
+    label: "Relation",
+  },
+  {
+    id: "gender",
+    numeric: true,
+    disablePadding: false,
+    label: "Gender",
+  },
+  {
+    id: "actions",
+    numeric: true,
+    disablePadding: false,
+    label: "Actions",
+  },
+];
+export const PATIENT_HEAD_LIST = [
+  {
+    id: "name",
+    numeric: true,
+    disablePadding: false,
+    label: "Name",
+  },
+  {
+    id: "email",
+    numeric: false,
+    disablePadding: false,
+    label: "Email",
+  },
+  {
+    id: "birthdate",
+    numeric: true,
+    disablePadding: false,
+    label: "Date of birth",
+  },
+  {
+    id: "createAt",
+    numeric: true,
+    disablePadding: false,
+    label: "Created At",
+  },
+  {
+    id: "status",
+    numeric: true,
+    disablePadding: false,
+    label: "Status",
+  },
+  {
+    id: "actions",
+    numeric: true,
+    disablePadding: false,
+    label: "Actions",
+  },
+];
 //------------------------------------default value--------------------------------------//
 export const GENERAL_INFO_PATIENT = {
   lastName: "",
@@ -117,10 +192,13 @@ export const FILE_TYPE = ["image", "video", "audio"];
 export const validatePassword = (password) => {
   const errors = [];
   if (password.length < 8) errors.push(PASSWORD_VALIDATION_MESSAGES.minLength);
-  if (!/[A-Z]/.test(password)) errors.push(PASSWORD_VALIDATION_MESSAGES.uppercase);
-  if (!/[a-z]/.test(password)) errors.push(PASSWORD_VALIDATION_MESSAGES.lowercase);
+  if (!/[A-Z]/.test(password))
+    errors.push(PASSWORD_VALIDATION_MESSAGES.uppercase);
+  if (!/[a-z]/.test(password))
+    errors.push(PASSWORD_VALIDATION_MESSAGES.lowercase);
   if (!/[0-9]/.test(password)) errors.push(PASSWORD_VALIDATION_MESSAGES.digit);
-  if (!/[^A-Za-z0-9]/.test(password)) errors.push(PASSWORD_VALIDATION_MESSAGES.specialChar);
+  if (!/[^A-Za-z0-9]/.test(password))
+    errors.push(PASSWORD_VALIDATION_MESSAGES.specialChar);
 
   if (errors.length > 0) {
     return PASSWORD_VALIDATION_MESSAGES.summary;
@@ -174,12 +252,14 @@ export const SUCCESSFULLY_LOGIN = "You have successfully logged in.";
 export const DELETE_PATIENT = "Patient has been deleted successfully";
 export const UPDATE_PATIENT = "Patient and family members updated successfully";
 export const CREATE_PATIENT = "Patient and family members created successfully";
-export const ONE_FAMILY_REQUIRED = "At least one family member must be included.";
+export const ONE_FAMILY_REQUIRED =
+  "At least one family member must be included.";
 export const SESSION_EXPIRED = "Session expired. Sign in again.";
 
 export const apiKey = "9OgS1MSc6ydaxs7vHSXh7QrK6tH0JpCj1KDXAGQplMpQVrGz";
 export const configId = "1079d22e-679c-4880-aac1-a43349c1a70a";
-export const secretKey = "eUyU45kjzd03936AZUPc853brBQR3Qqw7AGXuVfe1HtR3YN1xF2QjN77cudc8xrA";
+export const secretKey =
+  "eUyU45kjzd03936AZUPc853brBQR3Qqw7AGXuVfe1HtR3YN1xF2QjN77cudc8xrA";
 
 export const VIEW_OPTIONS = [
   { id: "month", label: "Month" },

@@ -1,7 +1,9 @@
 export const USER_LIST = [{
   id: 'fkki_JgjwEOMmyizDsy6J',
-  role: 'Editor',
-  company: 'Google Inc',
+  status:'Active',
+  relation: 'Editor',
+  birthdate:new Date(),
+  gender:'Female',
   name: 'Zachary Gomez',
   username: 'zachary-gomez',
   email: 'zachary-gomez@gmail.com',
@@ -10,8 +12,10 @@ export const USER_LIST = [{
   phone: '(01) 4563 4556'
 }, {
   id: 'CEqmLNf9WjMv0C75NcFgf',
-  role: 'Subscriber',
-  company: 'Meta',
+  status:'Active',
+  relation: 'Subscriber',
+  birthdate:new Date(),
+  gender:'Female',
   name: 'Amanda Montgomery',
   email: 'montgomery@ya.com',
   username: 'amanda-montgomery',
@@ -20,8 +24,10 @@ export const USER_LIST = [{
   phone: '(01) 4563 4556'
 }, {
   id: 'WiiFzcbNyV507aeUu2rBp',
-  company: 'Amazon',
-  role: 'Administrator',
+  status:'Active',
+  birthdate:new Date(),
+  gender:'Female',
+  relation: 'Administrator',
   name: 'Lester Holland',
   username: 'lester-holland',
   email: 'lester75@gmail.com',
@@ -30,9 +36,11 @@ export const USER_LIST = [{
   phone: '(01) 4563 4556'
 }, {
   id: 'kblkUheZKBwyYXhpyXZRU',
-  role: 'Subscriber',
+  status:'Active',
+  relation: 'Subscriber',
   name: 'Max Allison',
-  company: 'Linkedin',
+  birthdate:new Date(),
+  gender:'Female',
   username: 'max-allison',
   email: 'max-allison@pochta.io',
   avatar: '/static/avatar/004-woman.svg',
@@ -40,8 +48,10 @@ export const USER_LIST = [{
   phone: '(01) 4563 4556'
 }, {
   id: 'hJdMmi-XW-bOZXOiIuW06',
-  company: 'Alibaba',
-  role: 'Administrator',
+  status:'Active',
+  birthdate:new Date(),
+  gender:'Female',
+  relation: 'Administrator',
   username: 'r.gregory',
   name: 'Richard Gregory',
   email: 'gregory@gmail.com',
@@ -50,8 +60,10 @@ export const USER_LIST = [{
   phone: '(01) 4563 4556'
 }, {
   id: '66CoRSh1eQDkN0oAygxSD',
-  role: 'Contributor',
-  company: 'Disney',
+  status:'Active',
+  relation: 'Contributor',
+  birthdate:new Date(),
+  gender:'Female',
   name: 'Clifford Caldwell',
   username: 'clifford-caldwell',
   email: 'clifford-c@gmail.com',
@@ -60,8 +72,10 @@ export const USER_LIST = [{
   phone: '(01) 4563 4556'
 }, {
   id: '9PaoctbP_SnUUdyh8JBiI',
-  company: 'Squarespace',
-  role: 'Subscriber',
+  status:'Active',
+  birthdate:new Date(),
+  gender:'Female',
+  relation: 'Subscriber',
   name: 'Lester Holland',
   username: 'zlester-holland',
   email: 'lester75@gmail.com',
@@ -70,18 +84,22 @@ export const USER_LIST = [{
   phone: '(01) 4563 4556'
 }, {
   id: '5tctW0dht060GOc7QnUCC',
-  role: 'Contributor',
+  status:'Active',
+  relation: 'Contributor',
   username: 'r.gregory',
   name: 'Richard Gregory',
-  company: 'Microsoft',
+  birthdate:new Date(),
+  gender:'Female',
   email: 'gregory@gmail.com',
   avatar: '/static/avatar/008-clown.svg',
   position: 'Subscriber',
   phone: '(01) 4563 4556'
 }, {
   id: '854JQyYIWVF03gPbc_L7c',
-  role: 'Contributor',
-  company: 'Wix',
+  status:'Active',
+  relation: 'Contributor',
+  birthdate:new Date(),
+  gender:'Female',
   name: 'Max Allison',
   username: 'max-allison',
   email: 'max-allison@pochta.io',
@@ -90,8 +108,10 @@ export const USER_LIST = [{
   phone: '(01) 4563 4556'
 }, {
   id: 'q6cBWeVZIGd2LUkcBMcQ6',
-  role: 'Editor',
-  company: 'Seek',
+  status:'Active',
+  relation: 'Editor',
+  birthdate:new Date(),
+  gender:'Female',
   name: 'Zachary Gomez',
   username: 'zachary-gomez',
   email: 'zachary-gomez@gmail.com',
@@ -100,8 +120,10 @@ export const USER_LIST = [{
   phone: '(01) 4563 4556'
 }, {
   id: 'ppgxPwRuh3SrlaPW22GZd',
-  role: 'Editor',
-  company: 'Ui Lib',
+  status:'Active',
+  relation: 'Editor',
+  birthdate:new Date(),
+  gender:'Female',
   name: 'Zachary Gomez',
   username: 'zachary-gomez',
   email: 'zachary-gomez@gmail.com',
@@ -110,8 +132,10 @@ export const USER_LIST = [{
   phone: '(01) 4563 4556'
 }, {
   id: '7ZmGReIxe_LDrVBPSFCC6',
-  role: 'Editor',
-  company: 'Ui Lib',
+  status:'Active',
+  relation: 'Editor',
+  birthdate:new Date(),
+  gender:'Female',
   name: 'Zachary Gomez',
   username: 'zachary-gomez',
   email: 'zachary-gomez@gmail.com',
@@ -120,8 +144,10 @@ export const USER_LIST = [{
   phone: '(01) 4563 4556'
 }, {
   id: '_aCdZoo2xSODzQhCg5LTw',
-  role: 'Editor',
-  company: 'Crona',
+  status:'Active',
+  relation: 'Editor',
+  birthdate:new Date(),
+  gender:'Female',
   name: 'Leanne Graham',
   username: 'zachary-gomez',
   avatar: '/static/avatar/013-woman-3.svg',
@@ -130,74 +156,90 @@ export const USER_LIST = [{
   phone: '(01) 8031 8031'
 }, {
   id: 'CGTU-mk0xgow_o9W6kBtC',
+  status:'Active',
   avatar: '/static/avatar/014-man-3.svg',
   name: 'Ervin Howell',
-  company: 'Deckow-Crist',
+  birthdate:new Date(),
+  gender:'Female',
   email: 'hanna@melissa.tv',
   position: 'Editor',
   phone: '(01) 6593 6593',
-  role: 'Contributor'
+  relation: 'Contributor'
 }, {
   id: 'VACOOmoeWyx2mF6vCXIuB',
+  status:'Active',
   avatar: '/static/avatar/017-girl-2.svg',
   name: 'Clementine Bauch',
-  company: 'Jacobson',
+  birthdate:new Date(),
+  gender:'Female',
   email: 'athan@yesenia.net',
   position: 'Editor',
   phone: '(01) 4447 4447',
-  role: 'Contributor'
+  relation: 'Contributor'
 }, {
   id: 'AJ_S8rp1CS7hSMSk96i-S',
+  status:'Active',
   avatar: '/static/avatar/013-woman-3.svg',
   name: 'Leanne Graham',
-  company: 'Crona',
+  birthdate:new Date(),
+  gender:'Female',
   email: 'sincere@april.biz',
   position: 'Editor',
   phone: '(01) 8031 8031',
-  role: 'Administrator'
+  relation: 'Administrator'
 }, {
   id: 'mr8IxGgIIgUVZtINltsjT',
+  status:'Active',
   avatar: '/static/avatar/014-man-3.svg',
   name: 'Ervin Howell',
-  company: 'Deckow-Crist',
+  birthdate:new Date(),
+  gender:'Female',
   email: 'hanna@melissa.tv',
   position: 'Editor',
   phone: '(01) 6593 6593',
-  role: 'Contributor'
+  relation: 'Contributor'
 }, {
   id: 'akaBZL5m5Ljwz6aRfRZ56',
+  status:'Active',
   avatar: '/static/avatar/017-girl-2.svg',
   name: 'Clementine Bauch',
-  company: 'Jacobson',
+  birthdate:new Date(),
+  gender:'Female',
   email: 'athan@yesenia.net',
   position: 'Editor',
   phone: '(01) 4447 4447',
-  role: 'Contributor'
+  relation: 'Contributor'
 }, {
   id: 'QgE6QsgmmTCyR3kMeprjy',
+  status:'Active',
   avatar: '/static/avatar/013-woman-3.svg',
   name: 'Leanne Graham',
-  company: 'Crona',
+  birthdate:new Date(),
+  gender:'Female',
   email: 'sincere@april.biz',
   position: 'Editor',
   phone: '(01) 8031 8031',
-  role: 'Subscriber'
+  relation: 'Subscriber'
 }, {
   id: 'DosSKpjRxOPpXqT73isjY',
+  status:'Active',
   avatar: '/static/avatar/020-man-4.svg',
   name: 'Chelsey Dietrich',
-  company: 'Keebler LLC',
+  birthdate:new Date(),
+  gender:'Female',
   email: 'lucio_Hettinger@annie.ca',
   position: 'Editor',
   phone: '(01) 1289 1289',
-  role: 'Subscriber'
+  relation: 'Subscriber'
 }, {
   id: 'RzL-T4dq2LY8kUbNeyr42',
+  status:'Active',
   avatar: '/static/avatar/018-boy-3.svg',
   name: 'Patricia Lebsack',
-  company: 'Robel-Corkery',
+  birthdate:new Date(),
+  gender:'Female',
   email: 'julianne.OConner@kory.org',
   position: 'Editor',
   phone: '(01) 9623 9623',
-  role: 'Subscriber'
+  relation: 'Subscriber'
 }];

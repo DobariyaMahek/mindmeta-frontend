@@ -132,6 +132,19 @@ export default function DashboardHeader() {
 
         <ProfilePopover />
       </StyledToolBar>
+      <style>
+        {`
+          /* Hide unwanted Google Translate elements */
+          .goog-te-banner-frame { display: none !important; }
+          body { top: 0px !important; }
+          .goog-te-gadget-icon { display: none !important; }
+          .goog-te-banner { display: none !important; }
+          .goog-te-banner-frame.skiptranslate { display: none !important; }
+          .goog-te-menu-value span:first-child { display: none !important; }
+          #goog-gt-tt, .goog-te-balloon-frame { display: none !important; }
+          .goog-te-banner-frame, .goog-te-menu-frame { display: none !important; }
+        `}
+      </style>
     </DashboardHeaderRoot>
   );
 }

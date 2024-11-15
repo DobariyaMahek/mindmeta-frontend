@@ -43,7 +43,7 @@ const StyledButton = styled(ButtonBase)(({ theme }) => ({
 
 export default function LoginPageView() {
   const [showPassword, setShowPassword] = useState(false);
-  const { signInWithEmail, createUserWithEmail, signInWithGoogle } = useAuth();
+  const { userIsLoggedIn, createUserWithEmail, signInWithGoogle } = useAuth();
   const navigate = useNavigate();
   const handleGoogle = async () => {
     await signInWithGoogle();
@@ -92,7 +92,7 @@ export default function LoginPageView() {
               "authUser",
               JSON.stringify({ ...res?.data?.data })
             );
-            await createUserWithEmail(values.email, values.password);
+            userIsLoggedIn(res?.data?.data);
           }
         });
       } catch (error) {

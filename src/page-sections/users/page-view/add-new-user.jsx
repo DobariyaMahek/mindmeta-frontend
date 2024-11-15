@@ -22,7 +22,19 @@ import FlexBox from "@/components/flexbox/FlexBox";
 
 import AddFamilyMember from "./add-family-member";
 import { useState } from "react";
-import { Modal } from "@mui/material";
+import {
+  Modal,
+  Table,
+  TableBody,
+  TableContainer,
+  TablePagination,
+} from "@mui/material";
+import UserTableHead from "../UserTableHead";
+import useMuiTable, { getComparator, stableSort } from "@/hooks/useMuiTable"; // CUSTOM DUMMY DATA
+import Scrollbar from "@/components/scrollbar";
+import { USER_LIST } from "@/__fakeData__/users";
+import UserTableRow from "../UserTableRow";
+import { FAMILY_HEAD_LIST } from "../../../helper/constant";
 
 const SwitchWrapper = styled("div")({
   width: "100%",
@@ -76,6 +88,30 @@ export default function AddNewUserPageView() {
     zip: "",
     about: "",
   };
+  const {
+    page,
+    order,
+    orderBy,
+    selected,
+    isSelected,
+    rowsPerPage,
+    handleSelectRow,
+    handleChangePage,
+    handleRequestSort,
+    handleSelectAllRows,
+    handleChangeRowsPerPage,
+  } = useMuiTable({
+    defaultOrderBy: "name",
+  });
+
+  const handleDeleteUser = (id) => {
+    setUsers((state) => state.filter((item) => item.id !== id));
+  };
+  const [users, setUsers] = useState([...USER_LIST]);
+  const [userFilter, setUserFilter] = useState({
+    role: "",
+    search: "",
+  });
   const [openModal, setOpenModal] = useState(false);
   const handleClose = () => setOpenModal(false);
   const handleOpenModal = () => setOpenModal(true);
@@ -100,7 +136,8 @@ export default function AddNewUserPageView() {
     validationSchema,
     onSubmit: () => {},
   });
-
+  const filteredUsers = stableSort(users, getComparator(order, orderBy));
+  console.log(filteredUsers, users);
   return (
     <div className="pt-2 pb-4">
       <Grid container spacing={3}>
@@ -443,73 +480,40 @@ export default function AddNewUserPageView() {
             <Divider />
             <AddFamilyMember open={openModal} onClose={handleClose} />
 
-            <div className="family-information">
-              {/* <div className="family-information family-information-light"> */}
-              <div className="family-info-box">
-                <div className="family-info-box-text-alignment">
-                  <p>
-                    Relation <b>:</b>
-                  </p>
-                  <span>Father</span>
-                </div>
-                <div className="family-info-box-text-alignment">
-                  <p>
-                    Name <b>:</b>
-                  </p>
-                  <span></span>
-                </div>
-                <div className="family-info-box-text-alignment">
-                  <p>
-                    Email <b>:</b>
-                  </p>
-                  <span></span>
-                </div>
-                <div className="family-info-box-text-alignment">
-                  <p>
-                    Date of Birth <b>:</b>
-                  </p>
-                  <span></span>
-                </div>
-                <div className="family-info-box-text-alignment">
-                  <p>
-                    Gender <b>:</b>
-                  </p>
-                  <span></span>
-                </div>
-              </div>
-              <div className="family-info-box">
-                <div className="family-info-box-text-alignment">
-                  <p>
-                    Relation <b>:</b>
-                  </p>
-                  <span>Father</span>
-                </div>
-                <div className="family-info-box-text-alignment">
-                  <p>
-                    Name <b>:</b>
-                  </p>
-                  <span></span>
-                </div>
-                <div className="family-info-box-text-alignment">
-                  <p>
-                    Email <b>:</b>
-                  </p>
-                  <span></span>
-                </div>
-                <div className="family-info-box-text-alignment">
-                  <p>
-                    Date of Birth <b>:</b>
-                  </p>
-                  <span></span>
-                </div>
-                <div className="family-info-box-text-alignment">
-                  <p>
-                    Gender <b>:</b>
-                  </p>
-                  <span></span>
-                </div>
-              </div>
-            </div>
+            <TableContainer>
+              <Scrollbar autoHide={false}>
+                <Table>
+                  <UserTableHead
+                    order={order}
+                    orderBy={orderBy}
+                    numSelected={selected.length}
+                    rowCount={filteredUsers.length}
+                    onRequestSort={handleRequestSort}
+                    onSelectAllRows={handleSelectAllRows(
+                      filteredUsers.map((row) => row.id)
+                    )}
+                    headList={FAMILY_HEAD_LIST}
+                    keys="family"
+                  />
+
+                  <TableBody>
+                    {filteredUsers.map((user) => (
+                      <UserTableRow
+                        key={user.id}
+                        user={user}
+                        isSelected={isSelected(user.id)}
+                        handleSelectRow={handleSelectRow}
+                        handleDeleteUser={handleDeleteUser}
+                        keys="family"
+                        openModal={openModal}
+                      />
+                    ))}
+
+                    {filteredUsers.length === 0 && <TableDataNotFound />}
+                  </TableBody>
+                </Table>
+              </Scrollbar>
+            </TableContainer>
           </Card>
           <FlexBox
             flexWrap="wrap"

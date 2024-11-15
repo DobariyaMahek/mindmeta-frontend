@@ -1,20 +1,14 @@
-import { Fragment } from 'react';
-import { Navigate, Outlet, useLocation } from 'react-router-dom'; // CUSTOM DEFINED HOOK
+import { Fragment } from "react";
+import { Navigate, Outlet, useLocation } from "react-router-dom"; // CUSTOM DEFINED HOOK
 
-import useAuth from '@/hooks/useAuth';
-export default function GuestGuard({
-  children
-}) {
-  const {
-    state
-  } = useLocation();
-  const {
-    isAuthenticated
-  } = useAuth();
+import useAuth from "@/hooks/useAuth";
+export default function GuestGuard({ children }) {
+  const { state } = useLocation();
+  const { isAuthenticated } = useAuth();
 
   if (isAuthenticated) {
     if (state?.from) return <Navigate to={state.from} />;
-    return <Navigate to="/dashboard" />;
+    return <Navigate to="/dashboard/add-patient" />;
   }
 
   return <Fragment>{children || <Outlet />}</Fragment>;
