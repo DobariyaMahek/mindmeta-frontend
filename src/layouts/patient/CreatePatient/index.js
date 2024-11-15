@@ -43,6 +43,7 @@ import {
   relations,
   SOMETHING_WRONG,
   UPDATE_PATIENT,
+  VoiceTypes,
 } from "../../../helper/constant";
 import moment from "moment";
 import DatePicker from "react-datepicker";
@@ -142,21 +143,23 @@ function CreatePatient() {
     }
     return error;
   };
-  const handleInputChange = (event) => {
+   const handleInputChange = (event) => {
     const { name, value } = event.target;
-    const error = validateField(name, name == "birthdate" ? value : value?.trim());
+    console.log("first", event, value);
+
+    const error = validateField(name, name === "birthdate" ? value : value.trim());
     setGeneralInfo((prev) => ({
       ...prev,
       [name]:
-        name == "email" || name == "patientEmail"
-          ? value?.trim()?.toLowerCase()
-          : name == "birthdate"
+        name === "email" || name === "patientEmail"
+          ? value.trim().toLowerCase()
+          : name === "birthdate"
           ? value
-          : name == "firstName" || name == "lastName"
-          ? capitalizeValue(value?.trimStart())
-          : name == "patientType"
-          ? value?.value
-          : value?.trimStart(),
+          : name === "firstName" || name === "lastName"
+          ? capitalizeValue(value.trimStart())
+          : name === "hume_voice" || name === "patientType"
+          ? value
+          : value.trimStart(),
     }));
     setErrors((prev) => ({ ...prev, [name]: error }));
   };
@@ -307,7 +310,7 @@ function CreatePatient() {
       let body = {
         last_name: generalInfo.lastName?.trim(),
         first_name: generalInfo.firstName?.trim(),
-
+        hume_voice: generalInfo.hume_voice?.trim(),
         email: generalInfo.patientEmail?.trim(),
         family_members: newFamily,
         gender: generalInfo?.gender,
@@ -340,6 +343,7 @@ function CreatePatient() {
           ...body,
           birthdate: moment(new Date(generalInfo?.birthdate))?.format("YYYY-MM-DD"),
         };
+        console.log(body,`hume_voice`)
         dispatch(createPatient(body)).then((res) => {
           if (res?.payload?.success) {
             toast.success(CREATE_PATIENT);
@@ -371,6 +375,7 @@ function CreatePatient() {
     dispatch(getPatientById({ id })).then((res) => {
       if (res?.payload?.success) {
         const data = res?.payload?.data;
+        console.log(`datadatadatadata`,data)
         const family =
           data?.family_members &&
           data?.family_members?.map((item) => {
@@ -395,6 +400,7 @@ function CreatePatient() {
           firstName: data?.first_name || "",
           gender: data?.gender || "Male",
           patientEmail: data?.email || "",
+          hume_voice: data?.hume_voice || "",
           birthdate: moment(data?.birthdate, "YYYY-MM-DD").format("YYYY/MM/DD"),
         }));
         setOldDate(moment(data?.birthdate, "YYYY-MM-DD").format("YYYY/MM/DD"));
@@ -537,6 +543,23 @@ function CreatePatient() {
                         );
                       })}
                     </select>
+                  </Grid>
+                  <Grid item xs={12} md={6}>
+                    <label htmlFor="voice">Voice</label>
+      <select
+        id="voice"
+        name="hume_voice"
+        className="relation-dropdown"
+        value={generalInfo.hume_voice}
+        onChange={handleInputChange}
+        style={{ cursor: "pointer" }}
+      >
+        {VoiceTypes.map((item) => (
+          <option value={item.value} key={item.value} style={{ cursor: "pointer" }}>
+            {item.label}
+          </option>
+        ))}
+      </select>
                   </Grid>
                   <Grid item xs={12} md={6}>
                     <label>Gender</label>

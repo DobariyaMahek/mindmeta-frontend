@@ -8,13 +8,14 @@ import PrivateRoute from "./PrivateRoute";
 import PublicRoute from "./PublicRoute";
 import "./App.css"; // Import your CSS file for animations
 import useRoutes from "routes";
-import Loader from "components/Loader";
 import { useSelector } from "react-redux";
 import Calling from "components/Calling";
 import { getSession } from "helper/authHelper";
 import { useWebSocketContext } from "api/WebSocketProvider";
 import { checkToken } from "helper/authHelper";
 import { jwtDecode } from "jwt-decode";
+// import Loader fro./components/AppLoader/Loaderder";
+import Loader from "./components/AppLoader/Loader";
 export default function App() {
   const { authLoader } = useSelector((state) => state.auth);
   const { patientLoader } = useSelector((state) => state.patient);
@@ -28,6 +29,7 @@ export default function App() {
   const routes = useRoutes();
   const navigate = useNavigate();
   const { notificationMessages } = useWebSocketContext();
+  
   useEffect(() => {
     if (userInfo) {
       const intervalId = setInterval(() => {
@@ -42,6 +44,7 @@ export default function App() {
       return () => clearInterval(intervalId); // Clear interval on component unmount
     }
   }, [userInfo]);
+  console.log(1)
   const isTokenExpired = (token) => {
     if (!token) return true; // If no token, consider it expired
     try {
