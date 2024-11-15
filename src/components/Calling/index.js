@@ -45,7 +45,7 @@ function Calling({ setCallReceive, callReceive }) {
   };
   return (
     <>
-      {accessToken && (
+      {accessToken&&configId && (
         <VoiceProvider
           auth={{ type: "accessToken", value: accessToken }}
           configId={configId}
