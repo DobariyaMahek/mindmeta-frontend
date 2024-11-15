@@ -42,6 +42,7 @@ export default function App() {
       return () => clearInterval(intervalId); // Clear interval on component unmount
     }
   }, [userInfo]);
+  console.log(1)
   const isTokenExpired = (token) => {
     if (!token) return true; // If no token, consider it expired
     try {
