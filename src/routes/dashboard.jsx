@@ -91,54 +91,6 @@ export const DashboardRoutes = [
         index: true,
         element: <Analytics />,
       },
-      // {
-      //   path: "crm",
-      //   element: <CRM />,
-      // },
-      // {
-      //   path: "crm-2",
-      //   element: <CRMV2 />,
-      // },
-      // {
-      //   path: "sales",
-      //   element: <Sales />,
-      // },
-      // {
-      //   path: "sales-2",
-      //   element: <SalesV2 />,
-      // },
-      // {
-      //   path: "finance",
-      //   element: <Finance />,
-      // },
-      // {
-      //   path: "finance-2",
-      //   element: <FinanceV2 />,
-      // },
-      // {
-      //   path: "ecommerce",
-      //   element: <Ecommerce />,
-      // },
-      // {
-      //   path: "logistics",
-      //   element: <Logistics />,
-      // },
-      // {
-      //   path: "marketing",
-      //   element: <Marketing />,
-      // },
-      // {
-      //   path: "analytics-2",
-      //   element: <AnalyticsV2 />,
-      // },
-      // {
-      //   path: "learning-management",
-      //   element: <LMS />,
-      // },
-      // {
-      //   path: "job-management",
-      //   element: <JobManagement />,
-      // },
       {
         path: "add-patient",
         element: <AddNewUser />,
@@ -150,6 +102,10 @@ export const DashboardRoutes = [
       {
         path: "patient-grid-list",
         element: <UserGridView />,
+      },
+      {
+        path: "photo-gallery",
+        element: `<PhotoGallery />`,
       },
       // {
       //   path: "user-list-2",

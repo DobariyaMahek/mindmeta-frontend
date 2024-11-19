@@ -1,89 +1,151 @@
-import { useMemo } from 'react';
-import { useTranslation } from 'react-i18next';
-import { useLocation, useNavigate } from 'react-router-dom'; // CUSTOM DEFINED HOOK
+import { useMemo } from "react";
+import { useTranslation } from "react-i18next";
+import { useLocation, useNavigate } from "react-router-dom";
+import useAuth from "@/hooks/useAuth";
+import useLayout from "@/layouts/layout-1/context/useLayout";
+import SidebarAccordion from "./SidebarAccordion";
+import {
+  ItemText,
+  ListLabel,
+  BulletIcon,
+  ICON_STYLE,
+  ExternalLink,
+  NavItemButton,
+} from "@/layouts/layout-1/styles";
+import {
+  navigations,
+  roleWiseRouteAccess,
+} from "@/layouts/layout-parts/navigation";
 
-import useAuth from '@/hooks/useAuth'; // LAYOUT BASED HOOK
-
-import useLayout from '@/layouts/layout-1/context/useLayout'; // CUSTOM COMPONENTS
-
-import SidebarAccordion from './SidebarAccordion';
-import { navigations } from '@/layouts/layout-parts/navigation'; // CUSTOM STYLED COMPONENTS
-
-import { ItemText, ListLabel, BulletIcon, ICON_STYLE, ExternalLink, NavItemButton } from '@/layouts/layout-1/styles'; // ===========================================================================
-
-// ===========================================================================
-export default function MultiLevelMenu({
-  sidebarCompact
-}) {
-  const {
-    user
-  } = useAuth();
-  const {
-    t
-  } = useTranslation();
+export default function MultiLevelMenu({ sidebarCompact }) {
+  const { user } = useAuth(); // Get authenticated user data
+  const { t } = useTranslation();
   const navigate = useNavigate();
-  const {
-    pathname
-  } = useLocation();
-  const {
-    handleCloseMobileSidebar
-  } = useLayout(); // HANDLE ACTIVE CURRENT PAGE
+  const { pathname } = useLocation();
+  const { handleCloseMobileSidebar } = useLayout();
 
-  const activeRoute = path => pathname === path ? 1 : 0; // HANDLE NAVIGATE TO ANOTHER PAGE
+  // Highlight the active route
+  const activeRoute = (path) => (pathname === path ? 1 : 0);
 
-
-  const handleNavigation = path => {
+  // Navigate to the specified route
+  const handleNavigation = (path) => {
     navigate(path);
     handleCloseMobileSidebar?.();
-  }; // ACTIVATE SIDEBAR COMPACT
+  };
 
+  const COMPACT = sidebarCompact ? 1 : 0;
 
-  const COMPACT = sidebarCompact ? 1 : 0; // RECURSIVE FUNCTION TO RENDER MULTI LEVEL MENU
+  // Recursive function to filter navigation based on user roles
+  const filterRoutes = (items, allowedRoutes) => {
+    return items
+      .map((item) => {
+        // If it's a label, check if it has any valid children
+        if (item.type === "label") {
+          const hasValidChildren = items.some(
+            (child) =>
+              child.type !== "label" &&
+              (child.path ? allowedRoutes.includes(child.path) : false) &&
+              (!child.children ||
+                filterRoutes(child.children, allowedRoutes).length > 0)
+          );
+          return hasValidChildren ? item : null; // Keep label only if it has valid children
+        }
 
-  const renderLevels = data => {
+        // Exclude items not in the allowed routes
+        if (item.path && !allowedRoutes.includes(item.path)) {
+          return null;
+        }
+
+        // If it has children, filter them recursively
+        if (item.children) {
+          const filteredChildren = filterRoutes(item.children, allowedRoutes);
+          return filteredChildren.length > 0
+            ? { ...item, children: filteredChildren }
+            : null;
+        }
+
+        return item; // Include valid items
+      })
+      .filter(Boolean); // Remove null entries
+  };
+
+  // Filter navigation items based on user's role
+  const filteredNavigation = useMemo(() => {
+    if (!user?.role) return [];
+
+    // Get allowed routes for the user's role
+    const allowedRoutes =
+      roleWiseRouteAccess.find((role) => role.roleName === user.role)
+        ?.routeAccess || [];
+
+    return filterRoutes(navigations, allowedRoutes);
+  }, [user?.role]);
+
+  // Recursive function to render the navigation menu
+  const renderLevels = (data) => {
     return data.map((item, index) => {
-      // MENU LABEL DESIGN
-      if (item.type === 'label') {
-        return <ListLabel key={index} compact={COMPACT}>
+      // Render Labels
+      if (item.type === "label") {
+        return (
+          <ListLabel key={index} compact={COMPACT}>
             {t(item.label)}
-          </ListLabel>;
-      } // MENU LIST WITH CHILDREN
+          </ListLabel>
+        );
+      }
 
-
+      // Render items with children
       if (item.children) {
-        return <SidebarAccordion key={index} item={item} sidebarCompact={COMPACT}>
+        return (
+          <SidebarAccordion key={index} item={item} sidebarCompact={COMPACT}>
             {renderLevels(item.children)}
-          </SidebarAccordion>;
-      } // MENU ITEM WITH EXTERNAL LINK
+          </SidebarAccordion>
+        );
+      }
 
-
-      if (item.type === 'extLink') {
-        return <ExternalLink key={index} href={item.path} rel="noopener noreferrer" target="_blank">
+      // Render external links
+      if (item.type === "extLink") {
+        return (
+          <ExternalLink
+            key={index}
+            href={item.path}
+            rel="noopener noreferrer"
+            target="_blank"
+          >
             <NavItemButton key={item.name} name="child" active={0}>
-              {item.icon ? <item.icon sx={ICON_STYLE(0)} /> : <span className="item-icon icon-text">{item.iconText}</span>}
-
+              {item.icon ? (
+                <item.icon sx={ICON_STYLE(0)} />
+              ) : (
+                <span className="item-icon icon-text">{item.iconText}</span>
+              )}
               <ItemText compact={COMPACT} active={activeRoute(item.path)}>
                 {item.name}
               </ItemText>
             </NavItemButton>
-          </ExternalLink>;
+          </ExternalLink>
+        );
       }
 
-      return <NavItemButton key={index} disabled={item.disabled} active={activeRoute(item.path)} onClick={() => handleNavigation(item.path)}>
-          {item?.icon ? <item.icon sx={ICON_STYLE(activeRoute(item.path))} /> : <BulletIcon active={activeRoute(item.path)} />}
-
+      // Render standard navigation items
+      return (
+        <NavItemButton
+          key={index}
+          disabled={item.disabled}
+          active={activeRoute(item.path)}
+          onClick={() => handleNavigation(item.path)}
+        >
+          {item.icon ? (
+            <item.icon sx={ICON_STYLE(activeRoute(item.path))} />
+          ) : (
+            <BulletIcon active={activeRoute(item.path)} />
+          )}
           <ItemText compact={COMPACT} active={activeRoute(item.path)}>
             {t(item.name)}
           </ItemText>
-        </NavItemButton>;
+        </NavItemButton>
+      );
     });
-  }; // USER ROLE BASED ON FILTER NAVIGATION
+  };
 
-
-  const filterNavigation = useMemo(() => {
-    return navigations.filter(navigation => {
-      if (!navigation.access) return true;else if (navigation.access === user?.role) return true;else return false;
-    });
-  }, [user?.role]);
-  return <>{renderLevels(filterNavigation)}</>;
+  // Render the filtered navigation
+  return <>{renderLevels(filteredNavigation)}</>;
 }

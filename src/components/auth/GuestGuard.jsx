@@ -7,8 +7,8 @@ export default function GuestGuard({ children }) {
   const { isAuthenticated } = useAuth();
 
   if (isAuthenticated) {
-    if (state?.from) return <Navigate to={state.from} />;
-    return <Navigate to="/dashboard/add-patient" />;
+    // if (state?.from) return <Navigate to={state.from} />;
+    return <Navigate to="/dashboard" />;
   }
 
   return <Fragment>{children || <Outlet />}</Fragment>;

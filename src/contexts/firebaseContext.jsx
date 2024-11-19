@@ -1,17 +1,17 @@
 import { createContext, useEffect, useReducer, useMemo } from "react";
-import { initializeApp } from "firebase/app";
 import {
   getAuth,
   signOut,
   signInWithPopup,
   GoogleAuthProvider,
-  onAuthStateChanged,
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
-} from "firebase/auth"; // CUSTOM COMPONENT
+} from "firebase/auth"; // Firebase auth functions
 
-import { SplashScreen } from "@/components/splash-screen"; // CONFIGURATION SETTINGS
+import { initializeApp } from "firebase/app";
+import { SplashScreen } from "@/components/splash-screen";
 
+// Firebase Configuration
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_FIREBASE_APT_KEY,
   authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
@@ -20,17 +20,20 @@ const firebaseConfig = {
   messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
   appId: import.meta.env.VITE_FIREBASE_ID,
   measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID,
-}; // ==============================================================
+};
 
-// ==============================================================
+// Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
+
+// Initial state
 const initialAuthState = {
   user: null,
   isInitialized: false,
   isAuthenticated: false,
 };
 
+// Reducer function
 const reducer = (state, action) => {
   switch (action.type) {
     case "AUTH_STATE_CHANGED":
@@ -39,17 +42,15 @@ const reducer = (state, action) => {
     default:
       return state;
   }
-}; // LOGIN WITH EMAIL HANDLER
+};
 
-const signInWithEmail = (email, password) => {
-  return signInWithEmailAndPassword(auth, email, password);
-}; // LOGIN WITH GOOGLE ACCOUNT HANDLER
-
+// Firebase authentication handlers
 const provider = new GoogleAuthProvider();
 
-const signInWithGoogle = () => {
-  return signInWithPopup(auth, provider);
-}; // REGISTER USER WITH EMAIL HANDLER
+const signInWithEmail = (email, password) =>
+  signInWithEmailAndPassword(auth, email, password);
+
+const signInWithGoogle = () => signInWithPopup(auth, provider);
 
 const createUserWithEmail = async (email, password) => {
   try {
@@ -61,7 +62,6 @@ const createUserWithEmail = async (email, password) => {
     return userCredential;
   } catch (error) {
     if (error.code === "auth/email-already-in-use") {
-      // If the user already exists, sign in with the same credentials
       return signInWithEmail(email, password);
     } else {
       throw error;
@@ -69,8 +69,12 @@ const createUserWithEmail = async (email, password) => {
   }
 };
 
-const logout = () => signOut(auth); // AUTH CONTEXT INITIALIZE
+const logout = () => {
+  localStorage.removeItem("authUser"); // Clear authUser from localStorage
+  return signOut(auth);
+};
 
+// Context initialization
 export const AuthContext = createContext({
   ...initialAuthState,
   method: "FIREBASE",
@@ -79,40 +83,62 @@ export const AuthContext = createContext({
   signInWithEmail,
   createUserWithEmail,
 });
+
 export function AuthProvider({ children }) {
   const [state, dispatch] = useReducer(reducer, initialAuthState);
-  // useEffect(() => {
-  //   const unsubscribe = onAuthStateChanged(auth, user => {
-  //     if (user) {
-  //       const payload = {
-  //         isAuthenticated: true,
-  //         user: {
-  //           id: user.uid,
-  //           role: 'admin',
-  //           email: user.email,
-  //           avatar: user.photoURL || '',
-  //           name: user.displayName || user.email
-  //         }
-  //       };
-  //       dispatch({
-  //         type: 'AUTH_STATE_CHANGED',
-  //         payload
-  //       });
-  //     } else {
-  //       dispatch({
-  //         type: 'AUTH_STATE_CHANGED',
-  //         payload: {
-  //           isAuthenticated: false,
-  //           user: null
-  //         }
-  //       });
-  //     }
-  //   });
-  //   return () => unsubscribe();
-  // }, [dispatch]);
+
+  useEffect(() => {
+    const user = JSON.parse(localStorage.getItem("authUser"));
+
+    if (user) {
+      const payload = {
+        isAuthenticated: true,
+        user: {
+          id: user?.user_info?.uid,
+          role: user?.role,
+          email: user?.user_info?.email,
+          avatar: "",
+          name: user?.email,
+        },
+      };
+      dispatch({
+        type: "AUTH_STATE_CHANGED",
+        payload,
+      });
+    } else {
+      dispatch({
+        type: "AUTH_STATE_CHANGED",
+        payload: {
+          isAuthenticated: false,
+          user: null,
+        },
+      });
+    }
+  }, []);
+
+  useEffect(() => {
+    const handleStorageChange = (event) => {
+      if (event.key === "authUser" && !event.newValue) {
+        // If authUser is removed or localStorage is cleared, log out
+        logout();
+        dispatch({
+          type: "AUTH_STATE_CHANGED",
+          payload: {
+            isAuthenticated: false,
+            user: null,
+          },
+        });
+      }
+    };
+
+    window.addEventListener("storage", handleStorageChange);
+
+    return () => {
+      window.removeEventListener("storage", handleStorageChange);
+    };
+  }, []);
 
   const userIsLoggedIn = (user) => {
-    console.log(user);
     const payload = {
       isAuthenticated: true,
       user: {
@@ -123,11 +149,13 @@ export function AuthProvider({ children }) {
         name: user?.email,
       },
     };
+    localStorage.setItem("authUser", JSON.stringify(user));
     dispatch({
       type: "AUTH_STATE_CHANGED",
       payload,
     });
   };
+
   const contextValue = useMemo(
     () => ({
       ...state,
@@ -139,9 +167,11 @@ export function AuthProvider({ children }) {
       createUserWithEmail,
     }),
     [state]
-  ); // SHOW LOADING
+  );
 
-  // if (!state.isInitialized) return <SplashScreen />;
+  // Show splash screen while initializing
+  if (!state.isInitialized) return <SplashScreen />;
+
   return (
     <AuthContext.Provider value={contextValue}>{children}</AuthContext.Provider>
   );
