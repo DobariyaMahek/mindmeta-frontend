@@ -5,7 +5,6 @@ import ThemeProvider from "@mui/material/styles/ThemeProvider";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFnsV3";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider"; // AUTH CONTEXT FILE
 
-import { AuthProvider } from "@/contexts/firebaseContext"; // RIGHT-TO-LEFT SUPPORT COMPONENT
 
 import RTL from "@/components/rtl"; // ROUTES METHOD
 
@@ -42,7 +41,6 @@ export default function App() {
   return (
     <LocalizationProvider dateAdapter={AdapterDateFns}>
       <ThemeProvider theme={theme}>
-        <AuthProvider>
           <RTL>
             <ToastLimitEffect />
             <Toaster
@@ -60,7 +58,6 @@ export default function App() {
             <CssBaseline />
             <RouterProvider router={router} />
           </RTL>
-        </AuthProvider>
       </ThemeProvider>
     </LocalizationProvider>
   );

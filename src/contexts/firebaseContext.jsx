@@ -69,16 +69,10 @@ const createUserWithEmail = async (email, password) => {
   }
 };
 
-const logout = () => {
-  localStorage.removeItem("authUser"); // Clear authUser from localStorage
-  return signOut(auth);
-};
-
 // Context initialization
 export const AuthContext = createContext({
   ...initialAuthState,
   method: "FIREBASE",
-  logout,
   signInWithGoogle,
   signInWithEmail,
   createUserWithEmail,
@@ -87,6 +81,17 @@ export const AuthContext = createContext({
 export function AuthProvider({ children }) {
   const [state, dispatch] = useReducer(reducer, initialAuthState);
 
+  const logout = () => {
+    dispatch({
+      type: "AUTH_STATE_CHANGED",
+      payload: {
+        isAuthenticated: false,
+        user: null,
+      },
+    });
+    localStorage.clear(); // Clear all data in localStorage
+  };
+
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem("authUser"));
 
@@ -94,13 +99,14 @@ export function AuthProvider({ children }) {
       const payload = {
         isAuthenticated: true,
         user: {
-          id: user?.user_info?.uid,
+          id: user?.user_info?.id,
           role: user?.role,
           email: user?.user_info?.email,
           avatar: "",
-          name: user?.email,
+          name: user?.user_info?.email,
         },
       };
+
       dispatch({
         type: "AUTH_STATE_CHANGED",
         payload,
@@ -116,27 +122,27 @@ export function AuthProvider({ children }) {
     }
   }, []);
 
-  useEffect(() => {
-    const handleStorageChange = (event) => {
-      if (event.key === "authUser" && !event.newValue) {
-        // If authUser is removed or localStorage is cleared, log out
-        logout();
-        dispatch({
-          type: "AUTH_STATE_CHANGED",
-          payload: {
-            isAuthenticated: false,
-            user: null,
-          },
-        });
-      }
-    };
+  // useEffect(() => {
+  //   const handleStorageChange = (event) => {
+  //     if (event.key === "authUser" && !event.newValue) {
+  //       // If authUser is removed or localStorage is cleared, log out
+  //       logout();
+  //       dispatch({
+  //         type: "AUTH_STATE_CHANGED",
+  //         payload: {
+  //           isAuthenticated: false,
+  //           user: null,
+  //         },
+  //       });
+  //     }
+  //   };
 
-    window.addEventListener("storage", handleStorageChange);
+  //   window.addEventListener("storage", handleStorageChange);
 
-    return () => {
-      window.removeEventListener("storage", handleStorageChange);
-    };
-  }, []);
+  //   return () => {
+  //     window.removeEventListener("storage", handleStorageChange);
+  //   };
+  // }, []);
 
   const userIsLoggedIn = (user) => {
     const payload = {

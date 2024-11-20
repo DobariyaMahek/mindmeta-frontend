@@ -103,7 +103,7 @@ export default function ProfilePopover() {
             }}
           />
 
-          <StyledSmall onClick={logout}>Log Out</StyledSmall>
+          <StyledSmall onClick={() => { logout(); navigate("/login")}}>Log Out</StyledSmall>
         </Box>
       </PopoverLayout>
     </Fragment>

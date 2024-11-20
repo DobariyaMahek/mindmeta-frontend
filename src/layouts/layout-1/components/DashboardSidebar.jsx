@@ -12,6 +12,8 @@ import UserAccount from "@/layouts/layout-parts/UserAccount"; // CUSTOM ICON COM
 import { useContext } from "react";
 import { SettingsContext } from "@/contexts/settingsContext";
 import ArrowLeftToLine from "@/icons/duotone/ArrowLeftToLine"; // STYLED COMPONENTS
+import useAuth from "@/hooks/useAuth";
+
 
 import { SidebarWrapper } from "@/layouts/layout-1/styles";
 const TOP_HEADER_AREA = 70;
@@ -19,6 +21,22 @@ export default function DashboardSidebar() {
   const { sidebarCompact, handleSidebarCompactToggle } = useLayout();
   const [onHover, setOnHover] = useState(false); // ACTIVATE COMPACT WHEN TOGGLE BUTTON CLICKED AND NOT ON HOVER STATE
   const { settings } = useContext(SettingsContext);
+
+  const { user } = useAuth();
+  function convertToReadableName(snakeCaseName) {
+    if (!snakeCaseName) return "";
+
+    // Split the string by underscore
+    const words = snakeCaseName.split("_");
+
+    // Capitalize the first letter of each word
+    const readableName = words
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+      .join(" ");
+
+    return readableName;
+  }
+
 
   const COMPACT = sidebarCompact && !onHover ? 1 : 0;
   return (
@@ -48,7 +66,7 @@ export default function DashboardSidebar() {
             )}
             <div className="dashboard-sidebar-logo-text">
               {!COMPACT ? <h2>MIND META AI</h2> : null}
-              {!COMPACT ? <p>Family Member</p> : null}
+              {!COMPACT ? <p>{convertToReadableName(user?.role)}</p> : null}
             </div>
           </FlexBetween>
         </Link>
