@@ -16,6 +16,8 @@ import useSettings from "@/hooks/useSettings"; // I18N FILE
 import "./global.css";
 import "./i18n";
 import { Toaster, useToasterStore } from "react-hot-toast";
+import toast from "react-hot-toast";
+
 import { useEffect } from "react";
 export default function App() {
   // SITE SETTINGS CUSTOM DEFINED HOOK

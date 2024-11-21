@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   Dialog,
   DialogTitle,
@@ -12,42 +12,97 @@ import {
   FormControlLabel,
   Radio,
 } from "@mui/material";
+import { handleSpaceKeyPress } from "@/utils";
 import * as Yup from "yup";
 import { useFormik } from "formik";
 import CloseIcon from "@mui/icons-material/Close";
 import KeyboardArrowDown from "@mui/icons-material/KeyboardArrowDown";
+import toast from "react-hot-toast";
+import { v4 as uuidv4 } from "uuid";
+import moment from "moment";
+import { capitalizeValue, EMAIL_REGEX } from "../../../helper/constant";
 
-export default function AddFamilyMember({ open, onClose }) {
+export default function AddFamilyMember({
+  open,
+  onClose,
+  users,
+  setUsers,
+  userId,
+  setUserId,
+}) {
+  function isEmpty(value) {
+    return (
+      value == null ||
+      value == undefined ||
+      value == 0 ||
+      (typeof value === "string" && !value?.trim()) ||
+      (Array?.isArray(value) && !value?.length)
+    );
+  }
   const initialValues = {
-    firstName: "",
-    lastName: "",
-    dob: "",
+    name: "",
     email: "",
+    birth_date: "",
     relation: "",
+    gender: "Female",
     otherRelation: "",
-    gender: "female",
   };
 
   const validationSchema = Yup.object().shape({
-    firstName: Yup.string().required("First Name is required!"),
-    dob: Yup.date().required("Date of Birth is required!"),
-    email: Yup.string()
-      .email("Invalid email format")
-      .required("Email is required!"),
     relation: Yup.string().required("Relation is required!"),
-    otherRelation: Yup.string().when("relation", {
-      is: "Other",
-      then: Yup.string().required("Please specify the relation"),
-    }),
+    name: Yup.string().required("Name is required!"),
+    birth_date: Yup.date().required("Date of Birth is required!"),
+    email: Yup.string()
+      .required("Email is required!")
+      .test("is-valid-email", "Invalid email format", (value) =>
+        EMAIL_REGEX.test(value)
+      ),
+    otherRelation: Yup.string()
+      .nullable()
+      .when("relation", {
+        is: "Other",
+        then: (schema) => schema.required("Please specify the relation"),
+        otherwise: (schema) => schema.notRequired(),
+      }),
   });
 
   const formik = useFormik({
     initialValues,
     validationSchema,
     onSubmit: (values, { resetForm }) => {
-      console.log("Form Data:", values); // Replace with actual submit logic
+      const submissionData = { ...values };
+
+      // Adjust relation if it's "Other"
+      if (values.relation !== "Other") {
+        delete submissionData.otherRelation;
+      } else {
+        submissionData.relation = submissionData.otherRelation;
+        delete submissionData.otherRelation;
+      }
+
+      if (!isEmpty(userId)) {
+        // Update the existing user
+        setUsers((prevUsers) =>
+          prevUsers.map((user) =>
+            user.id === userId ? { ...submissionData, id: userId } : user
+          )
+        );
+        toast.success("Family member updated successfully");
+      } else {
+        console.log(`add user `, submissionData);
+        // Add a new user
+        submissionData.id = uuidv4();
+        if (users?.length > 0) {
+          setUsers((prevUsers) => [...prevUsers, submissionData]);
+        } else {
+          setUsers([submissionData]);
+        }
+        toast.success("Family member added successfully");
+      }
+
       resetForm();
       onClose();
+      handleClose();
     },
   });
 
@@ -59,31 +114,65 @@ export default function AddFamilyMember({ open, onClose }) {
     handleSubmit,
     resetForm,
     setFieldValue,
+    validateField,
+    setFieldTouched,
   } = formik;
+
+  useEffect(() => {
+    if (open) {
+      if (userId) {
+        resetForm();
+        const userToEdit = users.find((user) => user.id === userId);
+        if (userToEdit) {
+          setFieldValue("name", userToEdit.name || "");
+          setFieldValue("email", userToEdit.email || "");
+          setFieldValue("birth_date", userToEdit.birth_date || "");
+          setFieldValue("gender", userToEdit.gender || "Female");
+          const staticRelation = [
+            "Father",
+            "Mother",
+            "Sibling",
+            "Son",
+            "Daughter",
+            "Spouse",
+          ];
+          if (staticRelation.includes(userToEdit?.relation)) {
+            setFieldValue("relation", userToEdit.relation || "");
+          } else {
+            setFieldValue("relation", "Other");
+            setFieldValue("otherRelation", userToEdit.relation || "");
+          }
+        }
+      } else {
+        resetForm();
+      }
+    }
+  }, [open, userId]);
+
+  const handleClose = () => {
+    resetForm(); // Reset form values when the dialog is closed
+    setUserId("");
+    onClose();
+  };
 
   const handleRelationChange = (event) => {
     const selectedValue = event.target.value;
     setFieldValue("relation", selectedValue);
-    if (selectedValue !== "Other") {
-      setFieldValue("otherRelation", ""); // Clear otherRelation if not "Other"
-    }
-  };
 
-  const handleClose = () => {
-    resetForm();
-    onClose();
+    if (selectedValue === "Other") {
+      setFieldValue("otherRelation", ""); // Clear any previous value
+      setFieldTouched("otherRelation", true); // Mark as touched
+      validateField("otherRelation"); // Trigger validation
+    } else {
+      setFieldValue("otherRelation", ""); // Reset the field when not "Other"
+      setFieldTouched("otherRelation", false);
+    }
   };
 
   return (
     <Dialog open={open} onClose={handleClose} maxWidth="sm" fullWidth>
-      <DialogTitle
-        sx={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-        }}
-      >
-        Add Family Member
+      <DialogTitle>
+        {userId ? "Edit Family Member" : "Add Family Member"}
         <IconButton onClick={handleClose} size="small">
           <CloseIcon />
         </IconButton>
@@ -102,15 +191,14 @@ export default function AddFamilyMember({ open, onClose }) {
                 value={values.relation}
                 helperText={touched.relation && errors.relation}
                 error={Boolean(touched.relation && errors.relation)}
-                InputLabelProps={{
-                  shrink: true, // Ensures label stays visible above the field
-                }}
                 SelectProps={{
                   native: true,
                   IconComponent: KeyboardArrowDown,
                 }}
               >
-                <option value="" disabled></option>
+                <option value="" disabled>
+                  Select Relation
+                </option>
                 <option value="Father">Father</option>
                 <option value="Mother">Mother</option>
                 <option value="Sibling">Sibling</option>
@@ -125,10 +213,14 @@ export default function AddFamilyMember({ open, onClose }) {
               <Grid item xs={12}>
                 <TextField
                   fullWidth
+                  onKeyDown={handleSpaceKeyPress}
+                  onChange={(e) => {
+                    const sendValue = e.target.value?.trimStart();
+                    setFieldValue("otherRelation", capitalizeValue(sendValue));
+                  }}
                   name="otherRelation"
                   label="Specify Relation"
                   value={values.otherRelation}
-                  onChange={handleChange}
                   helperText={touched.otherRelation && errors.otherRelation}
                   error={Boolean(touched.otherRelation && errors.otherRelation)}
                 />
@@ -137,39 +229,53 @@ export default function AddFamilyMember({ open, onClose }) {
 
             <Grid item xs={12}>
               <TextField
+                onKeyDown={handleSpaceKeyPress}
                 fullWidth
-                name="firstName"
-                label="First Name"
-                value={values.firstName}
-                onChange={handleChange}
-                helperText={touched.firstName && errors.firstName}
-                error={Boolean(touched.firstName && errors.firstName)}
+                name="name"
+                label="Name"
+                value={values.name}
+                onChange={(e) => {
+                  const sendValue = e.target.value?.trimStart();
+                  setFieldValue("name", capitalizeValue(sendValue));
+                }}
+                helperText={touched.name && errors.name}
+                error={Boolean(touched.name && errors.name)}
               />
             </Grid>
 
             <Grid item xs={12}>
               <TextField
                 fullWidth
-                name="dob"
+                name="birth_date"
                 type="date"
                 label="Date of Birth"
                 InputLabelProps={{
-                  shrink: true,
+                  shrink: true, // Keeps the label above the input
                 }}
-                value={values.dob}
+                value={values.birth_date}
                 onChange={handleChange}
-                helperText={touched.dob && errors.dob}
-                error={Boolean(touched.dob && errors.dob)}
+                helperText={touched.birth_date && errors.birth_date}
+                error={Boolean(touched.birth_date && errors.birth_date)}
+                inputProps={{
+                  max: moment().format("YYYY-MM-DD"), // Today's date
+                  min: moment().subtract(150, "years").format("YYYY-MM-DD"), // 150 years ago
+                }}
               />
             </Grid>
 
             <Grid item xs={12}>
               <TextField
+                onKeyDown={handleSpaceKeyPress}
                 fullWidth
                 name="email"
                 label="Email Address"
                 value={values.email}
-                onChange={handleChange}
+                onChange={(e) => {
+                  // Convert the email value to lowercase before updating the field value
+                  const lowercaseEmail = e.target.value.trim().toLowerCase();
+                  setFieldValue("email", lowercaseEmail);
+                }}
+                // onChange={handleChange}
                 helperText={touched.email && errors.email}
                 error={Boolean(touched.email && errors.email)}
               />
@@ -183,17 +289,17 @@ export default function AddFamilyMember({ open, onClose }) {
                 onChange={handleChange}
               >
                 <FormControlLabel
-                  value="female"
+                  value="Female"
                   control={<Radio />}
                   label="Female"
                 />
                 <FormControlLabel
-                  value="male"
+                  value="Male"
                   control={<Radio />}
                   label="Male"
                 />
                 <FormControlLabel
-                  value="other"
+                  value="Other"
                   control={<Radio />}
                   label="Other"
                 />

@@ -97,7 +97,7 @@ export default function UserTableRow(props) {
                 handleCloseOpenMenu();
                 navigate(`/dashboard/add-patient?id=${user?.id}`);
               } else {
-                openModal();
+                openModal(user?.id);
               }
             }}
           />

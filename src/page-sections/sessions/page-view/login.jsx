@@ -209,7 +209,7 @@ export default function LoginPageView() {
           </Grid>
         </form>
 
-        <Divider
+        {/* <Divider
           sx={{
             my: 4,
             color: "text.secondary",
@@ -229,7 +229,7 @@ export default function LoginPageView() {
           <StyledButton>
             <Twitter sx={{ color: "#45ABF7", fontSize: 18 }} />
           </StyledButton>
-        </FlexBox>
+        </FlexBox> */}
       </Box>
     </Layout>
   );

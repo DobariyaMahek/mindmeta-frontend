@@ -2,7 +2,6 @@ import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
 import Grid from "@mui/material/Grid2";
 import Button from "@mui/material/Button";
-import Switch from "@mui/material/Switch";
 import TextField from "@mui/material/TextField";
 import IconButton from "@mui/material/IconButton";
 import styled from "@mui/material/styles/styled";
@@ -10,9 +9,10 @@ import PhotoCamera from "@mui/icons-material/PhotoCamera";
 import KeyboardArrowDown from "@mui/icons-material/KeyboardArrowDown";
 import * as Yup from "yup";
 import { useFormik } from "formik";
-
-import Block from "@/components/block";
+// import { EMAIL_REGEX } from "@helper/constant";
+import { handleSpaceKeyPress } from "@/utils";
 import { Paragraph, Small } from "@/components/typography";
+import { TableDataNotFound } from "@/components/table";
 import { isDark } from "@/utils/constants";
 import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
@@ -34,7 +34,15 @@ import useMuiTable, { getComparator, stableSort } from "@/hooks/useMuiTable"; //
 import Scrollbar from "@/components/scrollbar";
 import { USER_LIST } from "@/__fakeData__/users";
 import UserTableRow from "../UserTableRow";
-import { FAMILY_HEAD_LIST } from "../../../helper/constant";
+import {
+  capitalizeValue,
+  EMAIL_REGEX,
+  FAMILY_HEAD_LIST,
+} from "../../../helper/constant";
+import moment from "moment";
+import toast from "react-hot-toast";
+import { createUser } from "../../../api/axiosApis/post";
+import { useNavigate } from "react-router-dom";
 
 const SwitchWrapper = styled("div")({
   width: "100%",
@@ -77,16 +85,13 @@ export default function AddNewUserPageView() {
   const initialValues = {
     firstName: "",
     lastName: "",
-    dob: "",
+    birthdate: "",
     fullName: "",
-    email: "",
-    phone: "",
-    country: "",
-    state: "",
-    city: "",
-    address: "",
-    zip: "",
-    about: "",
+    patientEmail: "",
+    hume_voice: "ITO",
+    gender: "Female",
+    description: "",
+    relation: "",
   };
   const {
     page,
@@ -107,113 +112,144 @@ export default function AddNewUserPageView() {
   const handleDeleteUser = (id) => {
     setUsers((state) => state.filter((item) => item.id !== id));
   };
-  const [users, setUsers] = useState([...USER_LIST]);
+  const [users, setUsers] = useState([
+    // {
+    //   id: "fkki_JgjwEOMmyizDsy6J",
+    //   status: "Active",
+    //   relation: "Editor",
+    //   birthdate: new Date(),
+    //   gender: "Female",
+    //   name: "Zachary Gomez",
+    //   username: "zachary-gomez",
+    //   email: "zachary-gomez@gmail.com",
+    //   avatar: "/static/avatar/001-man.svg",
+    //   position: "Editor",
+    //   phone: "(01) 4563 4556",
+    // },
+  ]);
   const [userFilter, setUserFilter] = useState({
     role: "",
     search: "",
   });
   const [openModal, setOpenModal] = useState(false);
-  const handleClose = () => setOpenModal(false);
-  const handleOpenModal = () => setOpenModal(true);
+  const [userId, setUserId] = useState("");
+
+  const handleClose = () => setOpenModal(!openModal);
+
+  const handleOpenModal = () => {
+    setOpenModal(!openModal);
+  };
+
+  const getUserIdForUpdate = (userid) => {
+    setUserId(userid);
+    setOpenModal(!openModal);
+  };
 
   const validationSchema = Yup.object().shape({
     firstName: Yup.string().required("First Name is Required!"),
     lastName: Yup.string().required("Last Name is Required!"),
-    dob: Yup.date().required("Date of Birth is Required!"),
-    fullName: Yup.string().required("Name is Required!"),
-    email: Yup.string().email().required("Email is Required!"),
-    phone: Yup.number().min(8).required("Phone is Required!"),
-    country: Yup.string().required("Country is Required!"),
-    state: Yup.string().required("State is Required!"),
-    city: Yup.string().required("City is Required!"),
-    address: Yup.string().required("Address is Required!"),
-    zip: Yup.string().required("Zip is Required!"),
-    about: Yup.string().required("About is Required!"),
+    // patientEmail: Yup.string().email().required("Email is Required!"),
+    patientEmail: Yup.string()
+      .required("Email is required!")
+      .test("is-valid-email", "Invalid email format", (value) =>
+        EMAIL_REGEX.test(value)
+      ),
+    description: Yup.string().required("Description is Required!"),
+    birthdate: Yup.date().required("Date of Birth is Required!"),
   });
+  const navigate = useNavigate();
 
-  const { values, errors, handleChange, handleSubmit, touched } = useFormik({
-    initialValues,
-    validationSchema,
-    onSubmit: () => {},
-  });
+  const { values, setFieldValue, errors, handleChange, handleSubmit, touched } =
+    useFormik({
+      initialValues,
+      validationSchema,
+      onSubmit: async (values, { resetForm }) => {
+        if (users.length > 0) {
+          try {
+            await createUser({
+              first_name: values?.firstName?.trim(),
+              last_name: values?.lastName?.trim(),
+              hume_voice: validationSchema?.hume_voice?.trim(),
+              email: values?.patientEmail?.trim(),
+              family_members: users.map(({ id, ...rest }) => rest),
+              gender: values.gender,
+              medical_history: values?.description?.trim(),
+              birthdate: moment(new Date(values?.birthdate))?.format(
+                "YYYY-MM-DD"
+              ),
+            }).then((res) => {
+              if (res?.data?.success) {
+                resetForm();
+                navigate("/dashboard/patient-list");
+              }
+            });
+          } catch (error) {
+            console.log(error);
+          }
+        } else {
+          toast.error("At least one family member must be included.");
+        }
+      },
+    });
   const filteredUsers = stableSort(users, getComparator(order, orderBy));
-  console.log(filteredUsers, users);
+
   return (
     <div className="pt-2 pb-4">
-      <Grid container spacing={3}>
-        <Grid size={{ md: 4, xs: 12 }}>
-          <StyledCard style={{ height: "100%", justifyContent: "center" }}>
-            <ButtonWrapper>
-              <UploadButton>
-                <label htmlFor="upload-btn">
-                  <input
-                    accept="image/*"
-                    id="upload-btn"
-                    type="file"
-                    style={{ display: "none" }}
-                  />
-                  <IconButton component="span">
-                    <PhotoCamera sx={{ fontSize: 26, color: "grey.400" }} />
-                  </IconButton>
-                </label>
-              </UploadButton>
-            </ButtonWrapper>
+      <form onSubmit={handleSubmit}>
+        <Grid container spacing={3}>
+          <Grid size={{ md: 4, xs: 12 }}>
+            <StyledCard style={{ height: "100%", justifyContent: "center" }}>
+              <ButtonWrapper>
+                <UploadButton>
+                  <label htmlFor="upload-btn">
+                    <input
+                      accept="image/*"
+                      id="upload-btn"
+                      type="file"
+                      style={{ display: "none" }}
+                    />
+                    <IconButton component="span">
+                      <PhotoCamera sx={{ fontSize: 26, color: "grey.400" }} />
+                    </IconButton>
+                  </label>
+                </UploadButton>
+              </ButtonWrapper>
 
-            <Paragraph
-              marginTop={2}
-              maxWidth={200}
-              display="block"
-              textAlign="center"
-              color="text.secondary"
-            >
-              Allowed *.jpeg, *.jpg, *.png, *.gif max size of 3.1 MB
-            </Paragraph>
+              <Paragraph
+                marginTop={2}
+                maxWidth={200}
+                display="block"
+                textAlign="center"
+                color="text.secondary"
+              >
+                Allowed *.jpeg, *.jpg, *.png, *.gif max size of 3.1 MB
+              </Paragraph>
+            </StyledCard>
+          </Grid>
 
-            {/* <Box maxWidth={250} marginTop={5} marginBottom={1}>
-              <SwitchWrapper>
-                <Paragraph display="block" fontWeight={600}>
-                  Public Profile
-                </Paragraph>
-                <Switch defaultChecked />
-              </SwitchWrapper>
-
-              <SwitchWrapper>
-                <Paragraph display="block" fontWeight={600}>
-                  Banned
-                </Paragraph>
-                <Switch defaultChecked />
-              </SwitchWrapper>
-
-              <Small display="block" color="text.secondary">
-                Apply disable account
-              </Small>
-
-              <SwitchWrapper>
-                <Paragraph display="block" fontWeight={600}>
-                  Email Verified
-                </Paragraph>
-                <Switch defaultChecked />
-              </SwitchWrapper>
-
-              <Small display="block" color="text.secondary">
-                Disabling this will automatically send the user a verification
-                email
-              </Small>
-            </Box> */}
-          </StyledCard>
-        </Grid>
-
-        <Grid size={{ md: 8, xs: 12 }}>
-          <Card className="p-3">
-            <form onSubmit={handleSubmit}>
+          <Grid size={{ md: 8, xs: 12 }}>
+            <Card className="p-3">
+              <Grid
+                size={12}
+                container
+                justifyContent="space-between"
+                alignItems="center"
+                sx={{ pb: 2 }}
+              >
+                <span>General Information</span>
+              </Grid>
               <Grid container spacing={3}>
                 <Grid size={{ sm: 6, xs: 12 }}>
                   <TextField
+                    onKeyDown={handleSpaceKeyPress}
                     fullWidth
                     name="firstName"
                     label="First Name"
+                    onChange={(e) => {
+                      const sendValue = e.target.value?.trimStart();
+                      setFieldValue("firstName", capitalizeValue(sendValue));
+                    }}
                     value={values.firstName}
-                    onChange={handleChange}
                     helperText={touched.firstName && errors.firstName}
                     error={Boolean(touched.firstName && errors.firstName)}
                   />
@@ -222,10 +258,14 @@ export default function AddNewUserPageView() {
                 <Grid size={{ sm: 6, xs: 12 }}>
                   <TextField
                     fullWidth
+                    onKeyDown={handleSpaceKeyPress}
                     name="lastName"
                     label="Last Name"
                     value={values.lastName}
-                    onChange={handleChange}
+                    onChange={(e) => {
+                      const sendValue = e.target.value?.trimStart();
+                      setFieldValue("lastName", capitalizeValue(sendValue));
+                    }}
                     helperText={touched.lastName && errors.lastName}
                     error={Boolean(touched.lastName && errors.lastName)}
                   />
@@ -234,24 +274,64 @@ export default function AddNewUserPageView() {
                 <Grid size={{ sm: 6, xs: 12 }}>
                   <TextField
                     fullWidth
-                    name="dob"
+                    name="birthdate"
                     label="Date of Birth"
-                    value={values.dob}
-                    onChange={handleChange}
-                    helperText={touched.dob && errors.dob}
-                    error={Boolean(touched.dob && errors.dob)}
+                    type="date"
+                    value={
+                      values.birthdate
+                        ? moment(values.birthdate, "YYYY/MM/DD").format(
+                            "YYYY-MM-DD"
+                          )
+                        : "" // Ensure the value is empty if birthdate is undefined
+                    }
+                    onChange={(e) => {
+                      const selectedDate = e.target.value;
+
+                      // Validate if the date is within the allowed range
+                      const minDate = moment()
+                        .subtract(150, "years")
+                        .format("YYYY-MM-DD");
+                      const maxDate = moment()
+                        .subtract(40, "years")
+                        .format("YYYY-MM-DD");
+
+                      if (selectedDate >= minDate && selectedDate <= maxDate) {
+                        // Save the formatted date back to the field
+                        setFieldValue(
+                          "birthdate",
+                          moment(selectedDate).format("YYYY/MM/DD")
+                        );
+                      } else {
+                        alert(
+                          "Please select a valid date of birth within the allowed range."
+                        );
+                      }
+                    }}
+                    helperText={touched.birthdate && errors.birthdate}
+                    error={Boolean(touched.birthdate && errors.birthdate)}
+                    inputProps={{
+                      min: moment().subtract(150, "years").format("YYYY-MM-DD"),
+                      max: moment().subtract(40, "years").format("YYYY-MM-DD"),
+                    }}
                   />
                 </Grid>
 
                 <Grid size={{ sm: 6, xs: 12 }}>
                   <TextField
                     fullWidth
-                    name="email"
+                    onKeyDown={handleSpaceKeyPress}
+                    name="patientEmail"
                     label="Email Address"
-                    value={values.email}
-                    onChange={handleChange}
-                    helperText={touched.email && errors.email}
-                    error={Boolean(touched.email && errors.email)}
+                    onChange={(e) => {
+                      // Convert the email value to lowercase before updating the field value
+                      const lowercaseEmail = e.target.value
+                        .trim()
+                        .toLowerCase();
+                      setFieldValue("patientEmail", lowercaseEmail);
+                    }}
+                    value={values.patientEmail}
+                    helperText={touched.patientEmail && errors.patientEmail}
+                    error={Boolean(touched.patientEmail && errors.patientEmail)}
                   />
                 </Grid>
 
@@ -266,10 +346,6 @@ export default function AddNewUserPageView() {
                     fullWidth
                     name="country"
                     variant="outlined"
-                    onChange={handleChange}
-                    value={values.country}
-                    helperText={touched.country && errors.country}
-                    error={Boolean(touched.country && errors.country)}
                     slotProps={{
                       select: {
                         native: true,
@@ -277,9 +353,47 @@ export default function AddNewUserPageView() {
                       },
                     }}
                   >
-                    <option value="usa">New patient</option>
-                    <option value="uk">Existing resident patient</option>
-                    <option value="uae">Local Council new patient</option>
+                    <option value="new-patient">New patient</option>
+                    <option value="existing-resident-patient">
+                      Existing resident patient
+                    </option>
+                    <option value="local-council-new-patient">
+                      Local Council new patient
+                    </option>
+                  </TextField>
+                </Grid>
+
+                <Grid
+                  size={{
+                    sm: 6,
+                    xs: 12,
+                  }}
+                >
+                  <TextField
+                    name="hume_voice"
+                    label="Voice"
+                    value={values.hume_voice}
+                    onChange={handleChange}
+                    helperText={touched.hume_voice && errors.hume_voice}
+                    error={Boolean(touched.hume_voice && errors.hume_voice)}
+                    select
+                    fullWidth
+                    variant="outlined"
+                    slotProps={{
+                      select: {
+                        native: true,
+                        IconComponent: KeyboardArrowDown,
+                      },
+                    }}
+                  >
+                    <option value="ITO">Ito</option>
+                    <option value="KORA">Kora</option>
+                    <option value="DACHER">Dacher</option>
+                    <option value="AURA">Aura</option>
+                    <option value="FINN">Finn</option>
+                    <option value="WHIMSY">Whimsy</option>
+                    <option value="STELLA">Stella</option>
+                    <option value="SUNNY">Sunny</option>
                   </TextField>
                 </Grid>
 
@@ -291,113 +405,45 @@ export default function AddNewUserPageView() {
                 >
                   <RadioGroup
                     row
-                    defaultValue="female"
-                    name="radio-buttons-group"
+                    value={values.gender}
+                    helperText={touched.gender && errors.gender}
+                    error={Boolean(touched.gender && errors.gender)}
+                    defaultValue="Female"
+                    name="gender"
+                    onChange={handleChange}
                     sx={{
                       justifyContent: "start",
                     }}
                   >
                     <FormControlLabel
-                      value="female"
+                      value="Female"
                       control={<Radio />}
                       label="Female"
                     />
                     <FormControlLabel
-                      value="male"
+                      value="Male"
                       control={<Radio />}
                       label="Male"
                     />
                     <FormControlLabel
-                      value="other"
+                      value="Other"
                       control={<Radio />}
                       label="Other"
                     />
                   </RadioGroup>
                 </Grid>
-
-                {/* <Grid size={{ sm: 6, xs: 12 }}>
-                  <TextField
-                    fullWidth
-                    name="phone"
-                    label="Phone Number"
-                    value={values.phone}
-                    onChange={handleChange}
-                    helperText={touched.phone && errors.phone}
-                    error={Boolean(touched.phone && errors.phone)}
-                  />
-                </Grid>
-
-                <Grid size={{ sm: 6, xs: 12 }}>
-                  <TextField
-                    fullWidth
-                    name="country"
-                    label="Country"
-                    value={values.country}
-                    onChange={handleChange}
-                    helperText={touched.country && errors.country}
-                    error={Boolean(touched.country && errors.country)}
-                  />
-                </Grid>
-
-                <Grid size={{ sm: 6, xs: 12 }}>
-                  <TextField
-                    fullWidth
-                    name="state"
-                    label="State/Region"
-                    value={values.state}
-                    onChange={handleChange}
-                    helperText={touched.state && errors.state}
-                    error={Boolean(touched.state && errors.state)}
-                  />
-                </Grid>
-
-                <Grid size={{ sm: 6, xs: 12 }}>
-                  <TextField
-                    fullWidth
-                    name="city"
-                    label="City"
-                    value={values.city}
-                    onChange={handleChange}
-                    helperText={touched.city && errors.city}
-                    error={Boolean(touched.city && errors.city)}
-                  />
-                </Grid>
-
-                <Grid size={{ sm: 6, xs: 12 }}>
-                  <TextField
-                    fullWidth
-                    name="address"
-                    label="Address"
-                    value={values.address}
-                    onChange={handleChange}
-                    helperText={touched.address && errors.address}
-                    error={Boolean(touched.address && errors.address)}
-                  />
-                </Grid>
-
-                <Grid size={{ sm: 6, xs: 12 }}>
-                  <TextField
-                    fullWidth
-                    name="zip"
-                    label="Zip/Code"
-                    value={values.zip}
-                    onChange={handleChange}
-                    helperText={touched.zip && errors.zip}
-                    error={Boolean(touched.zip && errors.zip)}
-                  />
-                </Grid> */}
-
                 <Grid size={12}>
                   <TextField
-                    multiline
                     fullWidth
-                    rows={10}
-                    name="about"
-                    label="Write description here "
-                    value={values.about}
+                    onKeyDown={handleSpaceKeyPress}
+                    name="description"
+                    value={values.description}
                     onChange={handleChange}
-                    helperText={touched.about && errors.about}
-                    error={Boolean(touched.about && errors.about)}
+                    helperText={touched.description && errors.description}
+                    error={Boolean(touched.description && errors.description)}
+                    multiline
+                    rows={10}
+                    label="Write description here "
                     sx={{
                       "& .MuiOutlinedInput-root textarea": {
                         padding: 0,
@@ -406,132 +452,85 @@ export default function AddNewUserPageView() {
                   />
                 </Grid>
               </Grid>
-            </form>
-          </Card>
-          {/* <Card className="p-3" sx={{ mt: 3 }}>
-            <Grid
-              size={12}
-              container
-              justifyContent="space-between"
-              alignItems="center"
-              sx={{ pb: 2 }}
+            </Card>
+          </Grid>
+          <Grid size={{ md: 12, xs: 12 }}>
+            <Card className="p-3">
+              <Grid
+                size={12}
+                container
+                justifyContent="space-between"
+                alignItems="center"
+                sx={{ pb: 2 }}
+              >
+                <span>Family Information</span>
+                <Button variant="contained" onClick={handleOpenModal}>
+                  Add Family Member
+                </Button>
+              </Grid>
+              <Divider />
+              <AddFamilyMember
+                open={openModal}
+                onClose={handleClose}
+                users={users}
+                userId={userId}
+                setUsers={setUsers}
+                setUserId={setUserId}
+              />
+
+              <TableContainer>
+                <Scrollbar autoHide={false}>
+                  <Table>
+                    <UserTableHead
+                      order={order}
+                      orderBy={orderBy}
+                      numSelected={selected.length}
+                      rowCount={filteredUsers.length}
+                      onRequestSort={handleRequestSort}
+                      onSelectAllRows={handleSelectAllRows(
+                        filteredUsers.map((row) => row.id)
+                      )}
+                      headList={FAMILY_HEAD_LIST}
+                      keys="family"
+                    />
+
+                    <TableBody>
+                      {filteredUsers.map((user) => (
+                        <UserTableRow
+                          key={user.id}
+                          user={user}
+                          isSelected={isSelected(user.id)}
+                          handleSelectRow={handleSelectRow}
+                          handleDeleteUser={handleDeleteUser}
+                          keys="family"
+                          openModal={getUserIdForUpdate}
+                        />
+                      ))}
+
+                      {filteredUsers.length === 0 && <TableDataNotFound />}
+                    </TableBody>
+                  </Table>
+                </Scrollbar>
+              </TableContainer>
+            </Card>
+            <FlexBox
+              flexWrap="wrap"
+              gap={2}
+              sx={{
+                my: 3,
+              }}
             >
-              <span>Family Information</span>
               <Button type="submit" variant="contained">
-                Add Family Member
+                Save
               </Button>
-            </Grid>
-            <Divider />
 
-            <div className="family-information">
-              <div className="family-info-box">
-                <p>
-                  Relation: <span>Father</span>
-                </p>
-                <p>
-                  Name: <span></span>
-                </p>
-                <p>
-                  Email: <span></span>
-                </p>
-                <p>
-                  Date of Birth: <span></span>
-                </p>
-                <p>
-                  Gender: <span></span>
-                </p>
-              </div>
-            </div>
-          </Card> */}
-
-          {/* add family member modal */}
-          {/* <AddFamilyMember /> */}
-
-          {/* <FlexBox
-            flexWrap="wrap"
-            gap={2}
-            sx={{
-              my: 3,
-            }}
-          >
-            <Button type="submit" variant="contained">
-              Save
-            </Button>
-
-            <Button variant="outlined" color="secondary">
-              Clear
-            </Button>
-          </FlexBox> */}
-        </Grid>
-        <Grid size={{ md: 12, xs: 12 }}>
-          <Card className="p-3">
-            <Grid
-              size={12}
-              container
-              justifyContent="space-between"
-              alignItems="center"
-              sx={{ pb: 2 }}
-            >
-              <span>Family Information</span>
-              <Button variant="contained" onClick={handleOpenModal}>
-                Add Family Member
+              <Button variant="outlined" color="secondary">
+                Clear
               </Button>
-            </Grid>
-            <Divider />
-            <AddFamilyMember open={openModal} onClose={handleClose} />
-
-            <TableContainer>
-              <Scrollbar autoHide={false}>
-                <Table>
-                  <UserTableHead
-                    order={order}
-                    orderBy={orderBy}
-                    numSelected={selected.length}
-                    rowCount={filteredUsers.length}
-                    onRequestSort={handleRequestSort}
-                    onSelectAllRows={handleSelectAllRows(
-                      filteredUsers.map((row) => row.id)
-                    )}
-                    headList={FAMILY_HEAD_LIST}
-                    keys="family"
-                  />
-
-                  <TableBody>
-                    {filteredUsers.map((user) => (
-                      <UserTableRow
-                        key={user.id}
-                        user={user}
-                        isSelected={isSelected(user.id)}
-                        handleSelectRow={handleSelectRow}
-                        handleDeleteUser={handleDeleteUser}
-                        keys="family"
-                        openModal={openModal}
-                      />
-                    ))}
-
-                    {filteredUsers.length === 0 && <TableDataNotFound />}
-                  </TableBody>
-                </Table>
-              </Scrollbar>
-            </TableContainer>
-          </Card>
-          <FlexBox
-            flexWrap="wrap"
-            gap={2}
-            sx={{
-              my: 3,
-            }}
-          >
-            <Button type="submit" variant="contained">
-              Save
-            </Button>
-
-            <Button variant="outlined" color="secondary">
-              Clear
-            </Button>
-          </FlexBox>
+            </FlexBox>
+          </Grid>
         </Grid>
-      </Grid>
+      </form>
     </div>
   );
 }
