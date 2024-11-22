@@ -28,15 +28,18 @@ export default function HeadingArea({
   changeTab
 }) {
   const navigate = useNavigate();
-  return <FlexBetween flexWrap="wrap" gap={1}>
+  return (
+    <FlexBetween flexWrap="wrap" gap={1}>
       <FlexBox alignItems="center">
         <IconWrapper>
-          <GroupSenior sx={{
-          color: 'primary.main'
-        }} />
+          <GroupSenior
+            sx={{
+              color: "primary.main",
+            }}
+          />
         </IconWrapper>
 
-        <Paragraph fontSize={16}>Users</Paragraph>
+        <Paragraph fontSize={16}>Patient List</Paragraph>
       </FlexBox>
 
       <TabContext value={value}>
@@ -49,8 +52,13 @@ export default function HeadingArea({
         </TabListWrapper> */}
       </TabContext>
 
-      <Button variant="contained" startIcon={<Add />} onClick={() => navigate('/dashboard/add-patient')}>
+      <Button
+        variant="contained"
+        startIcon={<Add />}
+        onClick={() => navigate("/dashboard/add-patient")}
+      >
         Add New User
       </Button>
-    </FlexBetween>;
+    </FlexBetween>
+  );
 }

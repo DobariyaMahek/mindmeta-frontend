@@ -78,7 +78,11 @@ export default function UserTableRow(props) {
         <TableCell padding="normal">{user.relation}</TableCell>
       )}
       {keys == "patient" ? (
-        <TableCell padding="normal">{user.status}</TableCell>
+        user?.is_active ? (
+          <TableCell padding="normal">Active</TableCell>
+        ) : (
+          <TableCell padding="normal">De-Active</TableCell>
+        )
       ) : (
         <TableCell padding="normal">{user.gender}</TableCell>
       )}

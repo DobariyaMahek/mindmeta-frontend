@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Dialog,
   DialogTitle,
@@ -21,6 +21,8 @@ import toast from "react-hot-toast";
 import { v4 as uuidv4 } from "uuid";
 import moment from "moment";
 import { capitalizeValue, EMAIL_REGEX } from "../../../helper/constant";
+import { useLocation, useParams, useSearchParams } from "react-router-dom";
+import { createFamilyMember } from "../../../api/axiosApis/post";
 
 export default function AddFamilyMember({
   open,
@@ -29,7 +31,10 @@ export default function AddFamilyMember({
   setUsers,
   userId,
   setUserId,
+  isEdit,
+  setIsEdit,
 }) {
+  const id = new URL(window.location).searchParams.get("id");
   function isEmpty(value) {
     return (
       value == null ||
@@ -47,7 +52,6 @@ export default function AddFamilyMember({
     gender: "Female",
     otherRelation: "",
   };
-
   const validationSchema = Yup.object().shape({
     relation: Yup.string().required("Relation is required!"),
     name: Yup.string().required("Name is required!"),
@@ -69,7 +73,7 @@ export default function AddFamilyMember({
   const formik = useFormik({
     initialValues,
     validationSchema,
-    onSubmit: (values, { resetForm }) => {
+    onSubmit: async (values, { resetForm }) => {
       const submissionData = { ...values };
 
       // Adjust relation if it's "Other"
@@ -81,7 +85,6 @@ export default function AddFamilyMember({
       }
 
       if (!isEmpty(userId)) {
-        // Update the existing user
         setUsers((prevUsers) =>
           prevUsers.map((user) =>
             user.id === userId ? { ...submissionData, id: userId } : user
@@ -89,15 +92,25 @@ export default function AddFamilyMember({
         );
         toast.success("Family member updated successfully");
       } else {
-        console.log(`add user `, submissionData);
-        // Add a new user
-        submissionData.id = uuidv4();
-        if (users?.length > 0) {
-          setUsers((prevUsers) => [...prevUsers, submissionData]);
+        if (id) {
+          await createFamilyMember(submissionData, id).then((res) => {
+            if (res?.data?.success) {
+              if (users?.length > 0) {
+                setUsers((prevUsers) => [...prevUsers, res?.data?.data]);
+              } else {
+                setUsers([res?.data?.data]);
+              }
+              toast.success("Family member added successfully");
+            }
+          });
         } else {
-          setUsers([submissionData]);
+          submissionData.id = uuidv4();
+          if (users.length > 0) {
+            setUsers((prevUsers) => [...prevUsers, submissionData]);
+          } else {
+            setUsers([submissionData]);
+          }
         }
-        toast.success("Family member added successfully");
       }
 
       resetForm();
@@ -105,6 +118,19 @@ export default function AddFamilyMember({
       handleClose();
     },
   });
+
+  const [searchParams] = useSearchParams();
+  const location = useLocation();
+
+  const userUpdateId = searchParams.get("id");
+  useEffect(() => {
+    if (!userUpdateId) {
+      formik.resetForm();
+    }
+    if (userUpdateId === null) {
+      resetForm();
+    }
+  }, [location, userUpdateId]);
 
   const {
     values,
@@ -121,8 +147,8 @@ export default function AddFamilyMember({
   useEffect(() => {
     if (open) {
       if (userId) {
-        resetForm();
         const userToEdit = users.find((user) => user.id === userId);
+        setIsEdit(true);
         if (userToEdit) {
           setFieldValue("name", userToEdit.name || "");
           setFieldValue("email", userToEdit.email || "");
@@ -171,7 +197,7 @@ export default function AddFamilyMember({
 
   return (
     <Dialog open={open} onClose={handleClose} maxWidth="sm" fullWidth>
-      <DialogTitle>
+      <DialogTitle display={"flex"} justifyContent={"space-between"}>
         {userId ? "Edit Family Member" : "Add Family Member"}
         <IconButton onClick={handleClose} size="small">
           <CloseIcon />
@@ -267,11 +293,11 @@ export default function AddFamilyMember({
               <TextField
                 onKeyDown={handleSpaceKeyPress}
                 fullWidth
+                disabled={isEdit}
                 name="email"
                 label="Email Address"
                 value={values.email}
                 onChange={(e) => {
-                  // Convert the email value to lowercase before updating the field value
                   const lowercaseEmail = e.target.value.trim().toLowerCase();
                   setFieldValue("email", lowercaseEmail);
                 }}

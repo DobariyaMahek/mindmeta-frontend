@@ -68,7 +68,8 @@ export default function UserGrid1PageView() {
         />
 
         <Grid container spacing={3}>
-          {paginate(page, userPerPage, filteredUsers).map((item, index) => (
+          {paginate(page, userPerPage, filteredUsers)
+            .map((item, index) => (
             <Grid
               size={{
                 lg: 3,

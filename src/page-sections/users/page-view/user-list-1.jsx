@@ -1,30 +1,59 @@
-import { useState } from 'react'; // MUI
+import { useState } from "react"; // MUI
+import { fetchUserData } from "../../../api/axiosApis/get";
+import Grid from "@mui/material/Grid2";
+import { deletePatient } from "../../../api/axiosApis/delete";
+import Stack from "@mui/material/Stack";
+import Avatar from "@mui/material/Avatar";
+import Checkbox from "@mui/material/Checkbox";
+import IconButton from "@mui/material/IconButton";
+import { FlexBetween } from "@/components/flexbox";
+import Box from "@mui/material/Box";
+import Card from "@mui/material/Card";
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableContainer from "@mui/material/TableContainer";
+import TablePagination from "@mui/material/TablePagination"; // CUSTOM COMPONENTS
+import Modal from "@/components/modal";
+import Scrollbar from "@/components/scrollbar";
+import { TableDataNotFound, TableToolbar } from "@/components/table"; // CUSTOM PAGE SECTION COMPONENTS
+import useDebounce from "@/helper/useDebounce";
+import MoreHorizontal from "@/icons/MoreHorizontal"; // CUSTOM UTILS METHOD
 
-import Box from '@mui/material/Box';
-import Card from '@mui/material/Card';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableContainer from '@mui/material/TableContainer';
-import TablePagination from '@mui/material/TablePagination'; // CUSTOM COMPONENTS
+import {
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  Button,
+} from "@mui/material";
+import SearchArea from "../SearchArea";
+import HeadingArea from "../HeadingArea";
+import UserTableRow from "../UserTableRow";
+import UserTableHead from "../UserTableHead"; // CUSTOM DEFINED HOOK
 
-import Scrollbar from '@/components/scrollbar';
-import { TableDataNotFound, TableToolbar } from '@/components/table'; // CUSTOM PAGE SECTION COMPONENTS
+import useMuiTable from "@/hooks/useMuiTable"; // CUSTOM DUMMY DATA
+import { useEffect } from "react";
 
-import SearchArea from '../SearchArea';
-import HeadingArea from '../HeadingArea';
-import UserTableRow from '../UserTableRow';
-import UserTableHead from '../UserTableHead'; // CUSTOM DEFINED HOOK
+import { PATIENT_HEAD_LIST } from "../../../helper/constant";
+import { Paragraph, Small } from "@/components/typography"; // CUSTOM PAGE SECTION COMPONENTS
+import Email from "@/icons/Email";
+import UserBigIcon from "@/icons/UserBigIcon";
+import Chat from "@/icons/Chat";
 
-import useMuiTable, { getComparator, stableSort } from '@/hooks/useMuiTable'; // CUSTOM DUMMY DATA
+import LoaderWithLogo from "../../../components/Loader/LoaderWithLogo";
+import LoadingProgress from "../../../components/Loader/LoadingProgress";
 
-import { USER_LIST } from '@/__fakeData__/users';
-import { PATIENT_HEAD_LIST } from '../../../helper/constant';
 export default function UserList1PageView() {
-  const [users, setUsers] = useState([...USER_LIST]);
+  const [users, setUsers] = useState([]);
+  const [deleteModal, setDeleteModal] = useState(false);
+  const [deleteUserID, setDeleteUserID] = useState("");
+  const [usersCount, setUsersCount] = useState(0);
   const [userFilter, setUserFilter] = useState({
-    role: '',
-    search: ''
+    role: "",
+    search: "",
   });
+  const debounceSearch = useDebounce(userFilter?.search, 1000);
   const {
     page,
     order,
@@ -36,33 +65,53 @@ export default function UserList1PageView() {
     handleChangePage,
     handleRequestSort,
     handleSelectAllRows,
-    handleChangeRowsPerPage
+    handleChangeRowsPerPage,
   } = useMuiTable({
-    defaultOrderBy: 'name'
+    defaultOrderBy: "name",
   });
 
+  const getUserData = () => {
+    fetchUserData(page + 1, rowsPerPage, debounceSearch).then((resp) => {
+      setUsers(resp?.data);
+      setUsersCount(resp?.count);
+    });
+  };
+  useEffect(() => {
+    getUserData();
+  }, [rowsPerPage, page, debounceSearch]);
+
   const handleChangeFilter = (key, value) => {
-    setUserFilter(state => ({ ...state,
-      [key]: value
-    }));
+    setUserFilter((state) => ({ ...state, [key]: value?.trimStart() }));
+    handleChangePage("", 0);
   };
 
   const handleChangeTab = (_, newValue) => {
-    handleChangeFilter('role', newValue);
+    handleChangeFilter("role", newValue);
   };
 
-  const filteredUsers = stableSort(users, getComparator(order, orderBy)).filter(item => {
-    if (userFilter.role) return item.role.toLowerCase() === userFilter.role;else if (userFilter.search) return item.name.toLowerCase().includes(userFilter.search.toLowerCase());else return true;
-  });
-
-  const handleDeleteUser = id => {
-    setUsers(state => state.filter(item => item.id !== id));
+  const handleDeleteUser = (id) => {
+    // setUsers((state) => state.filter((item) => item.id !== id));
+    modalToggle();
+    setDeleteUserID(id);
   };
 
+  const modalToggle = () => setDeleteModal(!deleteModal);
+  const handleDelete = () => {
+    deletePatient(deleteUserID).then((resp) => {
+      setUsers((state) => state.filter((item) => item.id !== deleteUserID));
+      modalToggle();
+    });
+  };
   const handleAllUserDelete = () => {
-    setUsers(state => state.filter(item => !selected.includes(item.id)));
+    setUsers((state) => state.filter((item) => !selected.includes(item.id)));
     handleSelectAllRows([])();
   };
+  const iconStyle = {
+    color: "grey.500",
+    fontSize: 18,
+  };
+  const [gridRoute, setGridRoute] = useState(false);
+  const toggleRoute = () => setGridRoute(!gridRoute);
 
   return (
     <div className="pt-2 pb-4">
@@ -72,8 +121,8 @@ export default function UserList1PageView() {
 
           <SearchArea
             value={userFilter.search}
-            gridRoute="/dashboard/patient-grid-list"
-            listRoute="/dashboard/patient-list"
+            toggleRoute={toggleRoute}
+            listRoute={toggleRoute}
             onChange={(e) => handleChangeFilter("search", e.target.value)}
           />
         </Box>
@@ -85,8 +134,6 @@ export default function UserList1PageView() {
             handleDeleteRows={handleAllUserDelete}
           />
         )}
-
-        {/* TABLE HEAD & BODY ROWS */}
         <TableContainer>
           <Scrollbar autoHide={false}>
             <Table>
@@ -95,16 +142,16 @@ export default function UserList1PageView() {
                 orderBy={orderBy}
                 headList={PATIENT_HEAD_LIST}
                 numSelected={selected.length}
-                rowCount={filteredUsers.length}
+                rowCount={users.length}
                 onRequestSort={handleRequestSort}
                 onSelectAllRows={handleSelectAllRows(
-                  filteredUsers.map((row) => row.id)
+                  users.map((row) => row.id)
                 )}
               />
 
               <TableBody>
-                {filteredUsers
-                  .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                {users
+                  // .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                   .map((user) => (
                     <UserTableRow
                       key={user.id}
@@ -112,15 +159,76 @@ export default function UserList1PageView() {
                       isSelected={isSelected(user.id)}
                       handleSelectRow={handleSelectRow}
                       handleDeleteUser={handleDeleteUser}
-                      keys={'patient'}
+                      keys={"patient"}
                     />
                   ))}
 
-                {filteredUsers.length === 0 && <TableDataNotFound />}
+                {users.length === 0 && <TableDataNotFound />}
               </TableBody>
             </Table>
           </Scrollbar>
         </TableContainer>
+        {/* {!gridRoute ? (
+          <></>
+        ) : (
+          users.map((item, index) => (
+            <Grid
+              size={{
+                lg: 3,
+                md: 4,
+                sm: 6,
+                xs: 12,
+              }}
+              key={index}
+            >
+              <Box
+                sx={{
+                  p: 3,
+                  borderRadius: 2,
+                  border: "1px solid",
+                  borderColor: "divider",
+                }}
+              >
+                <FlexBetween mx={-1} mt={-1}>
+                  <Checkbox size="small" />
+
+                  <IconButton>
+                    <MoreHorizontal sx={iconStyle} />
+                  </IconButton>
+                </FlexBetween>
+
+                <Stack direction="row" alignItems="center" py={2} spacing={2}>
+                  <Avatar
+                    src={item.avatar}
+                    sx={{
+                      borderRadius: "20%",
+                    }}
+                  />
+
+                  <div>
+                    <Paragraph fontWeight={500}>{item.name}</Paragraph>
+                    <Small color="grey.500">{item.username}</Small>
+                  </div>
+                </Stack>
+
+                <Stack direction="row" alignItems="center" spacing={1}>
+                  <Email sx={iconStyle} />
+                  <Small color="grey.500">{item.email}</Small>
+                </Stack>
+
+                <Stack direction="row" alignItems="center" mt={1} spacing={1}>
+                  <UserBigIcon sx={iconStyle} />
+                  <Small color="grey.500">Status: {item.role}</Small>
+                </Stack>
+
+                <Stack direction="row" alignItems="center" mt={1} spacing={1}>
+                  <Chat sx={iconStyle} />
+                  <Small color="grey.500">Posts: 12</Small>
+                </Stack>
+              </Box>
+            </Grid>
+          ))
+        )} */}
 
         {/* PAGINATION SECTION */}
         <Box padding={1}>
@@ -128,13 +236,41 @@ export default function UserList1PageView() {
             page={page}
             component="div"
             rowsPerPage={rowsPerPage}
-            count={filteredUsers.length}
+            count={usersCount}
             onPageChange={handleChangePage}
             rowsPerPageOptions={[5, 10, 25]}
             onRowsPerPageChange={handleChangeRowsPerPage}
           />
         </Box>
       </Card>
+      {deleteModal && (
+        <>
+          <Dialog
+            open={deleteModal}
+            onClose={modalToggle}
+            aria-labelledby="delete-confirmation-title"
+            aria-describedby="delete-confirmation-description"
+          >
+            <DialogTitle id="delete-confirmation-title">
+              Delete Confirmation
+            </DialogTitle>
+            <DialogContent>
+              <DialogContentText id="delete-confirmation-description">
+                Are you sure you want to delete this item? This action cannot be
+                undone.
+              </DialogContentText>
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={modalToggle} variant="outlined" color="primary">
+                Cancel
+              </Button>
+              <Button onClick={handleDelete} variant="contained" color="error">
+                Delete
+              </Button>
+            </DialogActions>
+          </Dialog>
+        </>
+      )}
     </div>
   );
 }

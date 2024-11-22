@@ -1,15 +1,13 @@
-import { get } from "http";
-import { isSuccessResp } from "../base";
+import { isSuccessResp, get } from "../base";
 
-export async function fetchUserData() {
+export const fetchUserData = async (page, rowsPerPage, search) => {
   try {
-    const response = await get("/users/123");
-    if (isSuccessResp(response.status)) {
-      return response;
-    } else {
-      console.error("Failed to fetch user data.");
+    const resp = await get(
+      `/patients/list-and-search-patients?page=${page}&limit=${rowsPerPage}${search ? `&name=${search}` : ``}`
+    );
+    if (isSuccessResp(resp.status)) {
+      return resp.data;
     }
   } catch (error) {
-    console.error("Error fetching user data:", error);
   }
-}
+};

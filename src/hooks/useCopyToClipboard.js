@@ -6,7 +6,6 @@ export default function useCopyToClipboard() {
       await navigator.clipboard.writeText(text);
       setCopiedText(text);
     } catch (error) {
-      console.log(error);
       setCopiedText(null);
     }
   }, [setCopiedText]);

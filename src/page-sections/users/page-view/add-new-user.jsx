@@ -21,7 +21,7 @@ import Divider from "@mui/material/Divider";
 import FlexBox from "@/components/flexbox/FlexBox";
 
 import AddFamilyMember from "./add-family-member";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Modal,
   Table,
@@ -42,7 +42,10 @@ import {
 import moment from "moment";
 import toast from "react-hot-toast";
 import { createUser } from "../../../api/axiosApis/post";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import { get, isSuccessResp } from "../../../api/base";
+import { deleteFamilyMember } from "../../../api/axiosApis/delete";
+import { UpdateUser } from "../../../api/axiosApis/Put";
 
 const SwitchWrapper = styled("div")({
   width: "100%",
@@ -82,6 +85,26 @@ const UploadButton = styled("div")(({ theme }) => ({
 }));
 
 export default function AddNewUserPageView() {
+  const [users, setUsers] = useState([]);
+  const [isEdit, setIsEdit] = useState(false);
+  const [searchParams] = useSearchParams();
+  const id = searchParams.get("id");
+
+  const getUserData = async () => {
+    try {
+      const resp = await get(`patients/get-patient/${id}`);
+      if (isSuccessResp(resp.status)) {
+        updateFormData(resp?.data?.data);
+        setUsers(resp?.data?.data?.family_members);
+      }
+    } catch (error) {
+    }
+  };
+  
+  useEffect(() => {
+    getUserData();
+  }, [id]);
+
   const initialValues = {
     firstName: "",
     lastName: "",
@@ -109,28 +132,18 @@ export default function AddNewUserPageView() {
     defaultOrderBy: "name",
   });
 
-  const handleDeleteUser = (id) => {
-    setUsers((state) => state.filter((item) => item.id !== id));
+  const handleDeleteUser = async (familyId) => {
+    if (id) {
+      await deleteFamilyMember(familyId).then((res) => {
+        if (res?.data?.success) {
+          setUsers((state) => state.filter((item) => item.id !== familyId));
+        }
+      });
+    } else {
+      setUsers((state) => state.filter((item) => item.id !== deleteId));
+    }
   };
-  const [users, setUsers] = useState([
-    // {
-    //   id: "fkki_JgjwEOMmyizDsy6J",
-    //   status: "Active",
-    //   relation: "Editor",
-    //   birthdate: new Date(),
-    //   gender: "Female",
-    //   name: "Zachary Gomez",
-    //   username: "zachary-gomez",
-    //   email: "zachary-gomez@gmail.com",
-    //   avatar: "/static/avatar/001-man.svg",
-    //   position: "Editor",
-    //   phone: "(01) 4563 4556",
-    // },
-  ]);
-  const [userFilter, setUserFilter] = useState({
-    role: "",
-    search: "",
-  });
+
   const [openModal, setOpenModal] = useState(false);
   const [userId, setUserId] = useState("");
 
@@ -138,13 +151,13 @@ export default function AddNewUserPageView() {
 
   const handleOpenModal = () => {
     setOpenModal(!openModal);
+    setIsEdit(false);
   };
 
   const getUserIdForUpdate = (userid) => {
     setUserId(userid);
     setOpenModal(!openModal);
   };
-
   const validationSchema = Yup.object().shape({
     firstName: Yup.string().required("First Name is Required!"),
     lastName: Yup.string().required("Last Name is Required!"),
@@ -159,38 +172,81 @@ export default function AddNewUserPageView() {
   });
   const navigate = useNavigate();
 
-  const { values, setFieldValue, errors, handleChange, handleSubmit, touched } =
+  const { values, setFieldValue, errors, handleChange, handleSubmit, touched ,resetForm } =
     useFormik({
       initialValues,
       validationSchema,
       onSubmit: async (values, { resetForm }) => {
         if (users.length > 0) {
-          try {
-            await createUser({
-              first_name: values?.firstName?.trim(),
-              last_name: values?.lastName?.trim(),
-              hume_voice: validationSchema?.hume_voice?.trim(),
-              email: values?.patientEmail?.trim(),
-              family_members: users.map(({ id, ...rest }) => rest),
-              gender: values.gender,
-              medical_history: values?.description?.trim(),
-              birthdate: moment(new Date(values?.birthdate))?.format(
-                "YYYY-MM-DD"
-              ),
-            }).then((res) => {
-              if (res?.data?.success) {
-                resetForm();
-                navigate("/dashboard/patient-list");
-              }
-            });
-          } catch (error) {
-            console.log(error);
+          if (id) {
+            try {
+              await UpdateUser(
+                {
+                  first_name: values?.firstName?.trim(),
+                  last_name: values?.lastName?.trim(),
+                  hume_voice: validationSchema?.hume_voice?.trim(),
+                  email: values?.patientEmail?.trim(),
+                  family_members: users.map(({ id, ...rest }) => rest),
+                  gender: values.gender,
+                  medical_history: values?.description?.trim(),
+                  birthdate: moment(new Date(values?.birthdate))?.format(
+                    "YYYY-MM-DD"
+                  ),
+                },
+                id
+              ).then((res) => {
+                if (res?.data?.success) {
+                  resetForm();
+                  navigate("/dashboard/patient-list");
+                }
+              });
+            } catch (error) {
+            }
+          } else {
+            try {
+              await createUser({
+                first_name: values?.firstName?.trim(),
+                last_name: values?.lastName?.trim(),
+                hume_voice: validationSchema?.hume_voice?.trim(),
+                email: values?.patientEmail?.trim(),
+                family_members: users.map(({ id, ...rest }) => rest),
+                gender: values.gender,
+                medical_history: values?.description?.trim(),
+                birthdate: moment(new Date(values?.birthdate))?.format(
+                  "YYYY-MM-DD"
+                ),
+              }).then((res) => {
+                if (res?.data?.success) {
+                  resetForm();
+                  navigate("/dashboard/patient-list");
+                }
+              });
+            } catch (error) {
+            }
           }
         } else {
           toast.error("At least one family member must be included.");
         }
       },
     });
+  
+    const handleClear = () => {
+      setUsers([]);
+      resetForm();
+    };
+
+  const updateFormData = (value) => {
+    setFieldValue("firstName", value?.first_name ? value?.first_name : "");
+    setFieldValue("birthdate", value?.birthdate ? value?.birthdate : "");
+    setFieldValue("lastName", value?.last_name ? value?.last_name : "");
+    setFieldValue("patientEmail", value?.email ? value?.email : "");
+    setFieldValue("hume_voice", value?.hume_voice ? value?.hume_voice : "");
+    setFieldValue("gender", value?.gender ? value?.gender : "");
+    setFieldValue(
+      "description",
+      value?.medical_history ? value?.medical_history : ""
+    );
+  };
   const filteredUsers = stableSort(users, getComparator(order, orderBy));
 
   return (
@@ -322,8 +378,8 @@ export default function AddNewUserPageView() {
                     onKeyDown={handleSpaceKeyPress}
                     name="patientEmail"
                     label="Email Address"
+                    disabled={id ? true : false}
                     onChange={(e) => {
-                      // Convert the email value to lowercase before updating the field value
                       const lowercaseEmail = e.target.value
                         .trim()
                         .toLowerCase();
@@ -476,6 +532,8 @@ export default function AddNewUserPageView() {
                 userId={userId}
                 setUsers={setUsers}
                 setUserId={setUserId}
+                isEdit={isEdit}
+                setIsEdit={setIsEdit}
               />
 
               <TableContainer>
@@ -521,12 +579,17 @@ export default function AddNewUserPageView() {
               }}
             >
               <Button type="submit" variant="contained">
-                Save
+                {id ? "Update" : "Save"}
               </Button>
-
-              <Button variant="outlined" color="secondary">
-                Clear
-              </Button>
+              {!id && (
+                <Button
+                  onClick={handleClear}
+                  variant="outlined"
+                  color="secondary"
+                >
+                  Clear
+                </Button>
+              )}
             </FlexBox>
           </Grid>
         </Grid>
