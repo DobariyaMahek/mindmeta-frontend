@@ -11,34 +11,41 @@ import { Span } from '@/components/typography'; // CUSTOM UTILS METHOD
 import { isDark } from '@/utils/constants'; // ==============================================================
 
 // ==============================================================
-const headCells = [{
-  id: 'name',
-  numeric: false,
-  disablePadding: false,
-  label: 'Product'
-}, {
-  id: 'createdAt',
-  numeric: true,
-  disablePadding: false,
-  label: 'Created At'
-}, {
-  id: 'stock',
-  numeric: true,
-  disablePadding: false,
-  label: 'Stock'
-}, {
-  id: 'price',
-  numeric: true,
-  disablePadding: false,
-  label: 'Price'
-}, {
-  id: 'publish',
-  numeric: true,
-  disablePadding: false,
-  label: 'Publish'
-}, {
-  id: ''
-}];
+const headCells = [
+  {
+    id: "name",
+    numeric: false,
+    disablePadding: false,
+    label: "Patient Name",
+  },
+  {
+    id: "createdAt",
+    numeric: false,
+    disablePadding: false,
+    label: "Title",
+  },
+  {
+    id: "stock",
+    numeric: false,
+    disablePadding: false,
+    label: "Call Duration",
+  },
+  {
+    id: "Time",
+    numeric: true,
+    disablePadding: false,
+    label: "Call Time",
+  },
+  {
+    id: "Description",
+    numeric: true,
+    disablePadding: true,
+    label: "Description",
+  },
+  {
+    id: "",
+  },
+];
 export default function ProductTableHead(props) {
   const {
     onSelectAllRows,
@@ -57,9 +64,9 @@ export default function ProductTableHead(props) {
     backgroundColor: theme => isDark(theme) ? 'grey.700' : 'grey.100'
   }}>
       <TableRow>
-        <TableCell padding="checkbox">
+        {/* <TableCell padding="checkbox">
           <Checkbox size="small" color="primary" onChange={onSelectAllRows} checked={rowCount > 0 && numSelected === rowCount} indeterminate={numSelected > 0 && numSelected < rowCount} />
-        </TableCell>
+        </TableCell> */}
 
         {headCells.map(headCell => <TableCell key={headCell.id} padding={headCell.disablePadding ? 'none' : 'normal'} sortDirection={orderBy === headCell.id ? order : false} sx={{
         color: 'text.primary',

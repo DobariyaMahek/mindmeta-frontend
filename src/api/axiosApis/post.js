@@ -48,7 +48,27 @@ export async function createUser(body) {
     console.error("Error creating user:", error);
   }
 }
-export async function createFamilyMember(body,id) {
+export async function createScheduleCall(body) {
+  try {
+    const response = await post("/call/schedule-call", body);
+    if (isSuccessResp(response.status)) {
+      toast.success(response.data?.message);
+      return response;
+    } else {
+      toast.error(
+        response?.data?.detail && !Array.isArray(response?.data?.detail)
+          ? response?.data?.detail
+          : response?.data?.message
+            ? response?.data?.message
+            : SOMETHING_WRONG
+      );
+      return response;
+    }
+  } catch (error) {
+    console.error("Error creating user:", error);
+  }
+}
+export async function createFamilyMember(body, id) {
   try {
     const response = await post(`/patients/add-family-member/${id}`, body);
     if (isSuccessResp(response.status)) {

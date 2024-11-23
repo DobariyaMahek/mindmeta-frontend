@@ -58,7 +58,8 @@ export default function ProductGridPageView() {
     }
   };
 
-  return <div className="pt-2 pb-4">
+  return (
+    <div className="pt-2 pb-4">
       <TabContext value={selectTab}>
         <HeadingWrapper>
           <FlexBox gap={0.5} alignItems="center">
@@ -75,45 +76,66 @@ export default function ProductGridPageView() {
             <Tab disableRipple label="Out of Stock" value="out-of-stock" />
           </TabList>
 
-          <Button variant="contained" startIcon={<Add />} LinkComponent={Link} href="/dashboard/create-product">
-            Add Product
+          <Button
+            variant="contained"
+            startIcon={<Add />}
+            LinkComponent={Link}
+            href="/dashboard/schedule-call"
+          >
+            Schedule Call
           </Button>
         </HeadingWrapper>
 
-        <SearchArea value={searchValue} gridRoute="/dashboard/product-grid" listRoute="/dashboard/product-list" onChange={e => setSearchValue(e.target.value)} />
+        <SearchArea
+          value={searchValue}
+          gridRoute="/dashboard/product-grid"
+          listRoute="/dashboard/product-list"
+          onChange={(e) => setSearchValue(e.target.value)}
+        />
 
         <Grid container spacing={3}>
-          {
-          /* PRODUCT CARD LIST */
-        }
-          {FILTER_PRODUCTS.map(item => <Grid size={{
-          md: 3,
-          sm: 6,
-          xs: 12
-        }} key={item.id}>
+          {/* PRODUCT CARD LIST */}
+          {FILTER_PRODUCTS.map((item) => (
+            <Grid
+              size={{
+                md: 3,
+                sm: 6,
+                xs: 12,
+              }}
+              key={item.id}
+            >
               <ProductCard product={item} handleDelete={handleDeleteProduct} />
-            </Grid>)}
+            </Grid>
+          ))}
 
-          {
-          /* NOT FOUND PRODUCT VIEW */
-        }
-          {FILTER_PRODUCTS.length === 0 ? <Grid size={12}>
-              <FlexRowAlign fontSize={18} minHeight={300} fontWeight={700} borderRadius={2} bgcolor="action.selected">
+          {/* NOT FOUND PRODUCT VIEW */}
+          {FILTER_PRODUCTS.length === 0 ? (
+            <Grid size={12}>
+              <FlexRowAlign
+                fontSize={18}
+                minHeight={300}
+                fontWeight={700}
+                borderRadius={2}
+                bgcolor="action.selected"
+              >
                 Data Not Found!
               </FlexRowAlign>
-            </Grid> : null}
+            </Grid>
+          ) : null}
 
-          {
-          /* LOAD MORE BUTTON */
-        }
-          {FILTER_PRODUCTS.length !== 0 && products.length > FILTER_PRODUCTS.length ? <Grid size={12}>
+          {/* LOAD MORE BUTTON */}
+          {FILTER_PRODUCTS.length !== 0 &&
+          products.length > FILTER_PRODUCTS.length ? (
+            <Grid size={12}>
               <FlexRowAlign mt={2}>
-                <Button onClick={() => setPageIndex(state => state + 1)}>
+                <Button onClick={() => setPageIndex((state) => state + 1)}>
                   Load More Products
                 </Button>
               </FlexRowAlign>
-            </Grid> : null}
+            </Grid>
+          ) : null}
         </Grid>
       </TabContext>
-    </div>;
+    </div>
+  );
 }

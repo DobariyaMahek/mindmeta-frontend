@@ -10,7 +10,7 @@
         "/dashboard/patient-list",
         "/dashboard/schedule-call-list",
         "/dashboard/schedule-call",
-        "/dashboard/call-details",
+        // "/dashboard/call-details",
         "/dashboard/profile",
         "/dashboard/account",
       ],
@@ -92,10 +92,10 @@
           name: "Schedule call",
           path: "/dashboard/schedule-call",
         },
-        {
-          name: "Call Details",
-          path: "/dashboard/call-details",
-        },
+        // {
+        //   name: "Call Details",
+        //   path: "/dashboard/call-details",
+        // },
       ],
     },
     {

@@ -9,7 +9,7 @@ import * as Yup from "yup";
 import { useFormik } from "formik"; // CUSTOM COMPONENTS
 
 import { H6 } from "@/components/typography";
-export default function InfoForm() {
+export default function InfoForm({ handleUpdateProfile, adminData }) {
   const initialValues = {
     firstName: "Pixy",
     lastName: "Krovasky",
@@ -51,7 +51,7 @@ export default function InfoForm() {
       }}
     >
       <H6 fontSize={14} px={3} py={2}>
-        Basic Information
+        Basic Information 
       </H6>
 
       <Divider />
@@ -306,6 +306,7 @@ export default function InfoForm() {
               </Button>
 
               <Button
+                onClick={handleUpdateProfile}
                 variant="outlined"
                 sx={{
                   ml: 2,

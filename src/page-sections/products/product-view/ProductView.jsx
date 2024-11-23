@@ -22,7 +22,15 @@ import Heart from "@/icons/Heart";
 import Twitter from "@/icons/social/Twitter";
 
 import { CarouselRoot, SlideThumb, StyledIconButton } from "./styles";
-export default function ProductViewCard() {
+export default function ProductViewCard({ details, setDetails }) {
+  const options = {
+    weekday: "short", // Fri
+    month: "short", // Nov
+    day: "numeric", // 22
+    hour: "numeric", // 1
+    minute: "2-digit", // 03
+    hour12: true, // AM/PM format
+  };
   return (
     <>
       <Card
@@ -32,61 +40,48 @@ export default function ProductViewCard() {
       >
         <H6 fontSize={16}>Call Details</H6>
         <div className="call-details">
-        {/* <div className="call-details call-details-box-light"> */}
-          <div className="call-details-box">
-            <div className="call-details-box-text-alignment">
-              <p>
-                Title <b>:</b>
-              </p>
-              <span>Alen</span>
-            </div>
-            <div className="call-details-box-text-alignment">
-              <p>
-                Patient Name <b>:</b>
-              </p>
-              <span></span>
-            </div>
-            <div className="call-details-box-text-alignment">
-              <p>
-                Call Time <b>:</b>
-              </p>
-              <span></span>
-            </div>
-            <div className="call-details-box-text-alignment">
-              <p>
-                Call Duration <b>:</b>
-              </p>
-              <span></span>
-            </div>
-            <div className="call-details-box-text-alignment">
-              <p>
-                Description <b>:</b>
-              </p>
-              <span>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                Consequuntur aliquam facere expedita beatae quibusdam delectus
-                officiis, quidem adipisci nobis earum cum labore in inventore.
-                Vitae iure ullam quis sed deleniti.
-              </span>
+          <div className="call-details call-details-box-light">
+            <div className="call-details-box">
+              <div className="call-details-box-text-alignment">
+                <p>
+                  Tittle <b>:</b>
+                </p>
+                <span>{details.title}</span>
+              </div>
+              <div className="call-details-box-text-alignment">
+                <p>
+                  Patient Name <b>:</b>
+                </p>
+                <span>
+                  {details.patient.first_name} {details.patient.last_name}
+                </span>
+              </div>
+
+              <div className="call-details-box-text-alignment">
+                <p>
+                  Call Duration <b>:</b>
+                </p>
+                <span>{Math.floor(details.call_duration)} minutes</span>
+              </div>
+              <div className="call-details-box-text-alignment">
+                <p>
+                  Call Time <b>:</b>
+                </p>
+                <span>
+                  {new Date(details?.call_time).toLocaleString(
+                    "en-US",
+                    options
+                  )}
+                </span>
+              </div>
+              <div className="call-details-box-text-alignment">
+                <p>
+                  Description <b>:</b>
+                </p>
+                <span>{details?.description}</span>
+              </div>
             </div>
           </div>
-          {/* <div className="call-details-box">
-            <p>
-              Title: <span>Alen</span>
-            </p>
-            <p>
-              Patient Name: <span></span>
-            </p>
-            <p>
-              Call Time: <span></span>
-            </p>
-            <p>
-              Call Duration: <span></span>
-            </p>
-            <p>
-              Description: <span></span>
-            </p>
-          </div> */}
         </div>
       </Card>
 
@@ -97,12 +92,14 @@ export default function ProductViewCard() {
           my: 3,
         }}
       >
-        <Button type="submit" variant="contained">
-          Add
-        </Button>
-
-        <Button variant="outlined" color="secondary">
-          Clear
+        <Button
+          onClick={() => {
+            setDetails(null);
+          }}
+          type="submit"
+          variant="contained"
+        >
+          Go Back
         </Button>
       </FlexBox>
     </>

@@ -19,7 +19,15 @@ import { FlexBetween, FlexBox } from '@/components/flexbox';
 import { H6, Paragraph, Small } from '@/components/typography'; // STYLED COMPONENTS
 
 import { ProgressWrapper, ContentWrapper } from '../styles';
+import { useEffect, useState } from 'react';
+import { getProfileList } from '../../../../api/axiosApis/get';
 export default function UserInfo() {
+    const [adminData, setAdminData] = useState(null);
+    useEffect(() => {
+      getProfileList().then((resp) => {
+        setAdminData(resp?.data);
+      });
+    }, []);
   return (
     <ContentWrapper>
       <FlexBox justifyContent="center">
@@ -61,15 +69,18 @@ export default function UserInfo() {
 
       <Box mt={2}>
         <H6 fontSize={18} textAlign="center">
-          Pixy Krovasky
+          {adminData?.administrator_name}
         </H6>
 
         <FlexBetween maxWidth={250} flexWrap="wrap" margin="auto" mt={1}>
-          {/* <InfoItem Icon={Bratislava} title="Developer" />
-          <InfoItem Icon={MapMarkerIcon} title="New York" />
-          <InfoItem Icon={DateRange} title="Joined March 17" /> */}
-          <InfoItem Icon={MailOutlineIcon} title="Email" />
-          <InfoItem Icon={CallIcon} title="Mobile Number" />
+          <InfoItem
+            Icon={MailOutlineIcon}
+            title={`Email :- ${adminData?.email}`}
+          />
+          <InfoItem
+            Icon={CallIcon}
+            title={`Phone  :-${adminData?.phone_number}`}
+          />
         </FlexBetween>
 
         {/* <FlexBetween marginTop={6} flexWrap="wrap">
