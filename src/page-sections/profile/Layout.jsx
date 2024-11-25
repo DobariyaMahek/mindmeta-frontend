@@ -19,6 +19,7 @@ import CreateIcon from "@mui/icons-material/Create";
 
 import { getProfileList } from "../../api/axiosApis/get";
 import InfoForm from "../accounts/basic-information/info-form";
+import { useLoader } from "../../contexts/LoaderContext";
 
 const ContentWrapper = styled("div")({
   zIndex: 1,
@@ -43,8 +44,9 @@ const StyledFlexBetween = styled(FlexBetween)({
 // =======================================================================
 export default function Layout({ children, handleTabList }) {
   const [adminData, setAdminData] = useState(null);
+  const { showLoader, hideLoader } = useLoader(); 
   useEffect(() => {
-    getProfileList().then((resp) => {
+    getProfileList(showLoader, hideLoader).then((resp) => {
       setAdminData(resp?.data);
     });
   }, []);

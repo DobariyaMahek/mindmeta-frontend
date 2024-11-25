@@ -1,11 +1,22 @@
-import { Fragment } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import Card from '@mui/material/Card'; // CUSTOM COMPONENTS
 
 import InfoForm from './info-form';
 import UserInfo from './user-info'; // STYLED COMPONENTS
 
 import { CoverPicWrapper } from './styles';
+import { getProfileList } from '../../../api/axiosApis/get';
+import { useLoader } from '../../../contexts/LoaderContext';
 export default function BasicInformation() {
+  const [adminData, setAdminData] = useState(null);
+  const { showLoader, hideLoader } = useLoader(); 
+  
+
+    useEffect(() => {
+      getProfileList(showLoader, hideLoader).then((resp) => {
+        setAdminData(resp?.data);
+      });
+    }, []);
   return <Fragment>
       <Card sx={{
       padding: 3,
@@ -21,12 +32,12 @@ export default function BasicInformation() {
         {
         /* USER INFO SECTION */
       }
-        <UserInfo />
+        <UserInfo {...{adminData}} />
       </Card>
 
       {
       /* BASIC INFORMATION FORM SECTION */
     }
-      <InfoForm />
+      <InfoForm {...{adminData}} />
     </Fragment>;
 }

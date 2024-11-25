@@ -21,13 +21,8 @@ import { H6, Paragraph, Small } from '@/components/typography'; // STYLED COMPON
 import { ProgressWrapper, ContentWrapper } from '../styles';
 import { useEffect, useState } from 'react';
 import { getProfileList } from '../../../../api/axiosApis/get';
-export default function UserInfo() {
-    const [adminData, setAdminData] = useState(null);
-    useEffect(() => {
-      getProfileList().then((resp) => {
-        setAdminData(resp?.data);
-      });
-    }, []);
+export default function UserInfo({adminData}) {
+    
   return (
     <ContentWrapper>
       <FlexBox justifyContent="center">

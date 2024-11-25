@@ -25,6 +25,7 @@ import ProductTableActions from "../ProductTableActions"; // CUSTOM DUMMY DATA
 
 import { PRODUCTS } from "@/__fakeData__/products"; //  STYLED COMPONENTS
 import { getCallList } from "../../../api/axiosApis/get";
+import { useLoader } from "../../../contexts/LoaderContext";
 
 const ListWrapper = styled("div")(({ theme }) => ({
   gap: 16,
@@ -66,9 +67,9 @@ export default function ProductListPageView() {
   } = useMuiTable({
     defaultOrderBy: "name",
   });
-
+  const { showLoader, hideLoader } = useLoader(); 
   const fetchCallList = () => {
-    getCallList().then((data) => {
+    getCallList(showLoader, hideLoader).then((data) => {
       setProducts(data?.data);
     });
   };

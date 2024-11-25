@@ -22,6 +22,7 @@ export const RootStyle = styled('div')(({
   display: 'grid',
   position: 'fixed',
   placeItems: 'center',
+  zIndex:"999999999999",
   backgroundColor: theme.palette.background.default,
   '.loading-content': {
     width: 170,

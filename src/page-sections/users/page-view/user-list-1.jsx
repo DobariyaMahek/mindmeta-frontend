@@ -43,6 +43,7 @@ import Chat from "@/icons/Chat";
 
 import LoaderWithLogo from "../../../components/Loader/LoaderWithLogo";
 import LoadingProgress from "../../../components/Loader/LoadingProgress";
+import { useLoader } from "../../../contexts/LoaderContext";
 
 export default function UserList1PageView() {
   const [users, setUsers] = useState([]);
@@ -69,9 +70,9 @@ export default function UserList1PageView() {
   } = useMuiTable({
     defaultOrderBy: "name",
   });
-
+  const { showLoader, hideLoader } = useLoader(); 
   const getUserData = () => {
-    fetchUserData(page + 1, rowsPerPage, debounceSearch).then((resp) => {
+    fetchUserData(page + 1, rowsPerPage, debounceSearch,showLoader, hideLoader).then((resp) => {
       setUsers(resp?.data);
       setUsersCount(resp?.count);
     });

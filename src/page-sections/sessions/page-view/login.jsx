@@ -1,7 +1,7 @@
 import { useState } from "react";
 import * as Yup from "yup";
 import { useFormik } from "formik";
-
+import { handleSpaceKeyPress } from "@/utils";
 // MUI Components
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid2";
@@ -33,6 +33,7 @@ import { loginUser } from "../../../api/axiosApis/post";
 import { isSuccessResp } from "../../../api/base";
 import { useNavigate } from "react-router-dom";
 import { setSession } from "../../../contexts/jwtContext";
+import { EMAIL_REGEX } from "../../../helper/constant";
 
 // Styled Component
 const StyledButton = styled(ButtonBase)(({ theme }) => ({
@@ -59,11 +60,11 @@ export default function LoginPageView() {
   const validationSchema = Yup.object().shape({
     username: Yup.string().required("Username is required"),
     email: Yup.string()
-      .matches(
-        /^(?!.*[@]{2})(?!.*[._%+-]{2})[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
-        "Must be a valid email address"
-      )
-      .required("Email is required"),
+      .required("Email is required!")
+      .test("is-valid-email", "Invalid email format", (value) =>
+        EMAIL_REGEX.test(value)
+      ),
+    
     password: Yup.string()
       .min(8, "Password must be at least 8 characters long")
       .required("Password is required"),
@@ -75,6 +76,7 @@ export default function LoginPageView() {
     touched,
     isSubmitting,
     handleBlur,
+    setFieldValue,
     handleChange,
     handleSubmit,
   } = useFormik({
@@ -83,9 +85,9 @@ export default function LoginPageView() {
     onSubmit: async (values) => {
       try {
         await loginUser({
-          username: values.username,
-          email: values.email,
-          password: values.password,
+          username: values.username?.trimStart(),
+          email: values.email.trim(),
+          password: values.password?.trim(),
         }).then(async (res) => {
           if (isSuccessResp(res.status)) {
             localStorage.setItem(
@@ -113,6 +115,7 @@ export default function LoginPageView() {
             <Grid size={12}>
               <TextField
                 fullWidth
+                onKeyDown={handleSpaceKeyPress}
                 placeholder="Username"
                 name="username"
                 onBlur={handleBlur}
@@ -128,13 +131,20 @@ export default function LoginPageView() {
               <TextField
                 fullWidth
                 placeholder="Email"
+                onKeyDown={handleSpaceKeyPress}
+                onChange={(e) => {
+                  const lowercaseEmail = e.target.value
+                    .trim()
+                    .toLowerCase();
+                  setFieldValue("email", lowercaseEmail);
+                }}
                 name="email"
                 onBlur={handleBlur}
                 value={values.email}
-                onChange={(e) => {
-                  e.target.value = e.target.value?.toLowerCase();
-                  handleChange(e);
-                }}
+                // onChange={(e) => {
+                //   e.target.value = e.target.value?.toLowerCase();
+                //   handleChange(e);
+                // }}
                 helperText={touched.email && errors.email}
                 error={Boolean(touched.email && errors.email)}
               />
@@ -146,6 +156,7 @@ export default function LoginPageView() {
                 fullWidth
                 placeholder="Password"
                 type={showPassword ? "text" : "password"}
+                onKeyDown={handleSpaceKeyPress}
                 name="password"
                 onBlur={handleBlur}
                 value={values.password}
